@@ -27,6 +27,11 @@
   background:
     radial-gradient(1100px 620px at 68% 34%, #23264b 0%, rgba(35, 38, 75, 0) 64%),
     radial-gradient(900px 500px at 18% 92%, #181a2c, #0f1019 72%);
+
+  // Phones: as tall as its content — the dragon across the full width on top, the text right under it.
+  @media (max-width: #{$bp-tablet - 1px}) {
+    min-height: 0;
+  }
 }
 
 .dragon {
@@ -37,6 +42,13 @@
   height: auto;
   transform-origin: 52% 54%;
   animation: zm-approach 1.9s $ease-approach both;
+
+  @media (max-width: #{$bp-tablet - 1px}) {
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+  }
 }
 
 .shade {
@@ -49,6 +61,11 @@
     rgba(15, 16, 25, 0.15) 62%,
     transparent 78%
   );
+
+  // Phones: the text sits below the dragon, so fade the image into the page at its bottom edge instead.
+  @media (max-width: #{$bp-tablet - 1px}) {
+    background: linear-gradient(to bottom, transparent 42%, rgba(15, 16, 25, 0.9) 66%, #0f1019 78%);
+  }
 }
 
 .glow {
@@ -60,6 +77,12 @@
   pointer-events: none;
   background: radial-gradient(48% 46% at 50% 52%, $accent-glow, transparent 72%);
   animation: zm-approach 1.9s $ease-approach both;
+
+  @media (max-width: #{$bp-tablet - 1px}) {
+    right: 0;
+    top: 0;
+    width: 100%;
+  }
 }
 
 // As in the design, reduced motion stills the dragon itself.
@@ -76,6 +99,12 @@
   margin: 0 auto;
   padding: 0 $gutter 88px;
   width: 100%;
+
+  // Phones: start just under the full-width dragon (3:2 → two thirds of the width tall).
+  @media (max-width: #{$bp-tablet - 1px}) {
+    padding-top: calc(66.667vw - 2px);
+    padding-bottom: 44px;
+  }
 }
 
 .kicker {

@@ -4,6 +4,12 @@
   @include container;
   padding-top: 110px;
   padding-bottom: 120px;
+
+  // Phones: less air between sections.
+  @media (max-width: #{$bp-tablet - 1px}) {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
 }
 
 .panel {
@@ -39,6 +45,10 @@
   position: relative;
   padding: 72px 40px;
   max-width: 600px;
+
+  @media (max-width: #{$bp-tablet - 1px}) {
+    padding: 44px 22px;
+  }
 }
 
 .heading {

@@ -7,11 +7,10 @@ import {
   Environment,
   Lightformer,
   OrbitControls,
-  useBounds,
   useGLTF,
   useProgress,
 } from "@react-three/drei";
-import { Component, Suspense, memo, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Component, Suspense, memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Mesh, MeshStandardMaterial, NeutralToneMapping, Quaternion, Vector3, type Material } from "three";
 import { MODEL_URL } from "@/content/playground";
 import { createValueStore, type ValueStore } from "@/lib/valueStore";
@@ -67,8 +66,6 @@ const KEY_ORBIT_STEP = Math.PI / 12;
 useGLTF.preload(MODEL_URL);
 
 type ModelViewerProps = {
-  /** Increment to send the camera back to its home framing. */
-  resetSignal: number;
   /** Lower jaw, 0 = closed … 1 = fully open. */
   jaw: number;
   /** Head joint, -1 = left then up … 0 = neutral … 1 = right then down (HEAD_PATH). */
@@ -88,7 +85,7 @@ type ModelViewerProps = {
 };
 
 /** Full 3D view of the Zmago GLB: orbit, zoom and pan, plus the head and mouth joints. */
-export default function ModelViewer({ resetSignal, jaw, head, neck, paws, fingers, tail, wings, wingsH }: ModelViewerProps) {
+export default function ModelViewer({ jaw, head, neck, paws, fingers, tail, wings, wingsH }: ModelViewerProps) {
   // Joint values reach the scene through stores, not as props: re-rendering
   // <Canvas> would re-measure it and make <Bounds observe> refit (zoom) the camera.
   const [jawStore] = useState(() => createValueStore(jaw));
@@ -109,7 +106,6 @@ export default function ModelViewer({ resetSignal, jaw, head, neck, paws, finger
 
   return (
     <ViewerScene
-      resetSignal={resetSignal}
       jawStore={jawStore}
       headStore={headStore}
       neckStore={neckStore}
@@ -121,9 +117,8 @@ export default function ModelViewer({ resetSignal, jaw, head, neck, paws, finger
   );
 }
 
-/** Memoised: only a Reset (new resetSignal) re-renders the canvas. */
+/** Memoised: the canvas never re-renders; joint values arrive through the stores. */
 const ViewerScene = memo(function ViewerScene({
-  resetSignal,
   jawStore,
   headStore,
   neckStore,
@@ -132,7 +127,6 @@ const ViewerScene = memo(function ViewerScene({
   tailStore,
   wingsStore,
 }: {
-  resetSignal: number;
   jawStore: ValueStore<number>;
   headStore: ValueStore<number>;
   neckStore: ValueStore<number>;
@@ -170,7 +164,6 @@ const ViewerScene = memo(function ViewerScene({
                   wingsStore={wingsStore}
                 />
               </Center>
-              <CameraReset signal={resetSignal} />
             </Bounds>
             {/* Soft contact shadows at the joints between parts; mounts once the model is in. */}
             <ModelAmbientOcclusion />
@@ -363,27 +356,6 @@ function Lighting() {
       </Environment>
     </>
   );
-}
-
-/** Puts the camera back on its home direction and refits the model. */
-function CameraReset({ signal }: { signal: number }) {
-  const bounds = useBounds();
-  const camera = useThree((s) => s.camera);
-  const controls = useThree((s) => s.controls) as OrbitControlsLike | null;
-  const first = useRef(true);
-
-  useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    const target = controls?.target ?? new Vector3();
-    const distance = camera.position.distanceTo(target);
-    camera.position.copy(target).addScaledVector(HOME_DIRECTION, distance);
-    bounds.refresh().clip().fit();
-  }, [signal, bounds, camera, controls]);
-
-  return null;
 }
 
 /** Makes the canvas focusable and lets ←/→ orbit around the model. */

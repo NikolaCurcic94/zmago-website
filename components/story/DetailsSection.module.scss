@@ -4,6 +4,12 @@
   margin-top: 120px;
   padding: 96px 0;
   background: linear-gradient(180deg, $bg, #191b2e 40%, $bg);
+
+  // Phones: less air between sections.
+  @media (max-width: #{$bp-tablet - 1px}) {
+    margin-top: 56px;
+    padding: 48px 0;
+  }
 }
 
 .inner {

@@ -3,6 +3,11 @@
 .section {
   @include container;
   padding-top: 110px;
+
+  // Phones: less air between sections.
+  @media (max-width: #{$bp-tablet - 1px}) {
+    padding-top: 56px;
+  }
 }
 
 .grid {

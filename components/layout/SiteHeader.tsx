@@ -113,6 +113,15 @@ export function SiteHeader() {
     <header ref={headerRef} className={styles.header}>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
+          {/* Round seal on phones (keeps the header to one row), the wordmark from tablet up. */}
+          <Image
+            src="/images/logo/zmago-seal-violet.svg"
+            width={240}
+            height={240}
+            alt="Zmago"
+            className={styles.seal}
+            loading="eager"
+          />
           <Image
             src="/images/logo/zmago-wordmark-on-dark.svg"
             width={784}

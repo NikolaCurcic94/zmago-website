@@ -13,6 +13,7 @@ import {
   type ModelState,
 } from "@/content/playground";
 import { ControlPanel, type ControlKey } from "./ControlPanel";
+import { PlaygroundIntro } from "./PlaygroundIntro";
 import { ViewerStatus } from "./ViewerStatus";
 import styles from "./PlaygroundStage.module.scss";
 
@@ -34,13 +35,12 @@ const withPaw = (values: PerPaw, index: number, value: number): PerPaw => {
 
 /**
  * Owns the stage and the controls. The 3D viewer handles the camera (orbit,
- * zoom, pan, reset) and the rigged joints; the remaining controls keep their
+ * zoom, pan) and the rigged joints; the remaining controls keep their
  * state here until the model's rig is wired to them.
  */
 export function PlaygroundStage() {
-  // Opens with the mouth slightly ajar (a third of the Jaw slider); Reset closes the jaw.
+  // Opens with the mouth slightly ajar (a third of the Jaw slider).
   const [model, setModel] = useState<ModelState>({ ...DEFAULT_MODEL_STATE, jaw: JAW_ON_LOAD });
-  const [resetSignal, setResetSignal] = useState(0);
   const [selectedPaw, setSelectedPaw] = useState(0);
   const [selectedFingers, setSelectedFingers] = useState(0);
 
@@ -66,20 +66,12 @@ export function PlaygroundStage() {
       return { ...m, [joint]: value };
     });
 
-  const reset = () => {
-    setModel(DEFAULT_MODEL_STATE); // jaw 0 = closed, paws and fingers 0 = neutral
-    setSelectedPaw(0);
-    setSelectedFingers(0);
-    setResetSignal((n) => n + 1);
-  };
-
   return (
     <div className={styles.stage}>
       <div className={styles.floorGlow} aria-hidden="true" />
 
       <div className={styles.modelArea}>
         <ModelViewer
-          resetSignal={resetSignal}
           jaw={model.jaw}
           head={model.head}
           neck={model.neck}
@@ -93,13 +85,6 @@ export function PlaygroundStage() {
 
       <div className={styles.intro}>
         <div className={styles.kicker}>Playground</div>
-        <div className={styles.hint}>Drag to orbit. Scroll to zoom, right-drag to pan.</div>
-      </div>
-
-      <div className={styles.camera}>
-        <button type="button" className={styles.reset} onClick={reset}>
-          Reset camera
-        </button>
       </div>
 
       <ControlPanel
@@ -117,6 +102,8 @@ export function PlaygroundStage() {
         }}
         isEnabled={(key) => LIVE_CONTROLS.has(key)}
       />
+
+      <PlaygroundIntro />
     </div>
   );
 }
