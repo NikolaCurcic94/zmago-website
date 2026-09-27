@@ -1,0 +1,100 @@
+@use "tokens" as *;
+
+// Hairline ring drawn as a shadow, the Nocturne way to outline a surface.
+@function ring($alpha) {
+  @return 0 0 0 1px rgba($text, $alpha);
+}
+
+@mixin from($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding-left: $gutter;
+  padding-right: $gutter;
+}
+
+// Small uppercase kicker ("01 / The Idea", "Gallery", …)
+@mixin eyebrow($tracking: 0.26em, $color: $accent-400) {
+  font-size: 10px;
+  letter-spacing: $tracking;
+  text-transform: uppercase;
+  color: $color;
+}
+
+@mixin section-heading {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+// Rounded frame that holds a transparent render.
+@mixin media-frame($ring-alpha: 0.09, $radius: $radius-lg) {
+  position: relative;
+  border-radius: $radius;
+  overflow: hidden;
+  background: $frame-ground;
+  box-shadow: ring($ring-alpha);
+}
+
+@mixin frame-image($shadow: 0 16px 30px rgba(0, 0, 0, 0.5)) {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow($shadow);
+}
+
+// Outlined accent action (Nocturne .btn-primary as the page draws it)
+@mixin button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: $accent-400;
+  background: transparent;
+  border: 1px solid $accent;
+  border-radius: $radius-md;
+  padding: 12px 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: $accent-400;
+    background: $accent-tint;
+  }
+}
+
+@mixin button-secondary {
+  @include button-primary;
+  color: $text;
+  border-color: rgba($text, 0.18);
+
+  &:hover {
+    color: $text;
+    background: rgba($text, 0.07);
+  }
+}
+
+// Small quiet control (Reset camera, Close)
+@mixin button-quiet {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  color: $text;
+  background: transparent;
+  border: 1px solid rgba($text, 0.2);
+  border-radius: $radius-md;
+  padding: 8px 14px;
+
+  &:hover {
+    background: rgba($text, 0.1);
+  }
+}

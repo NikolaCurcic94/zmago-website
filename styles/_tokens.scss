@@ -1,0 +1,53 @@
+// Nocturne tokens as used by the Zmago design (design/Zmago.dc.html).
+// Where the page deviates from the Nocturne defaults, the page wins.
+
+// Grounds
+$bg: #12131f; // page ground (Nocturne --color-bg is #161826)
+$bg-deep: #0f1019;
+$surface: #1a1c2b; // raised surfaces (Nocturne --color-surface is #232532)
+$section: #262a60; // Nocturne --color-section
+
+// Text
+$text: #e9e9ed;
+
+// Accent ramp (Nocturne --color-accent-*)
+$accent: #968ae0; // accent-500
+$accent-400: #b5abfc;
+$accent-300: #d2cefd;
+$ds-accent: #9184d9; // Nocturne --color-accent, used by the focus ring
+
+// Neutral ramp (Nocturne --color-neutral-*)
+$neutral-200: #e4e7f5;
+$neutral-300: #cfd3e5;
+$neutral-400: #b2b6ca;
+$neutral-500: #9397ab;
+$neutral-600: #75798c;
+$neutral-800: #3f424d;
+
+// Tints
+$accent-tint: rgba($accent, 0.14);
+$accent-glow: rgba($accent, 0.2);
+
+// Image frame ground
+$frame-ground: radial-gradient(64% 64% at 50% 48%, #1e2140, #0f1020 76%);
+
+// Type
+$font: var(--font-inter), Inter, system-ui, sans-serif;
+
+// Layout
+$max-width: 1320px;
+$gutter: 24px;
+$header-height: 58px;
+
+// Breakpoints (mobile first)
+$bp-tablet: 600px;
+$bp-desktop: 1024px;
+
+// Radii
+$radius-md: 8px;
+$radius-lg: 14px;
+$radius-xl: 16px;
+$radius-2xl: 18px;
+
+// Motion
+$ease-approach: cubic-bezier(0.16, 0.84, 0.24, 1);

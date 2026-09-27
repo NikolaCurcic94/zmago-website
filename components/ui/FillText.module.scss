@@ -1,0 +1,61 @@
+@use "../../styles" as *;
+
+.box {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: $neutral-500;
+  text-wrap: pretty;
+}
+
+// Fill mode: the box takes the leftover height, the text is lifted out of
+// flow (so it never adds height), sits on the bottom edge and is clamped.
+@mixin fill {
+  // Stays in layout while hidden so it can be measured again on resize.
+  visibility: hidden;
+
+  &[data-visible] {
+    visibility: visible;
+  }
+
+  .text {
+    position: absolute;
+    inset: auto 0 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.fillAlways {
+  @include fill;
+}
+
+.fillDesktop {
+  @include from($bp-desktop) {
+    @include fill;
+  }
+}
+
+// Run-in kicker, in the site's eyebrow voice.
+.lead {
+  @include eyebrow(0.2em);
+  font-weight: 500;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.leadLine {
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: $accent;
+}

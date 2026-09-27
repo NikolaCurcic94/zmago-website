@@ -1,0 +1,55 @@
+@use "../../styles" as *;
+
+.section {
+  @include container;
+  padding-top: 110px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 64px;
+  align-items: center;
+}
+
+.heading {
+  @include section-heading;
+  margin-bottom: 20px;
+  max-width: 22ch;
+}
+
+.body,
+.bodyMuted {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: $neutral-300;
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+.body {
+  margin-bottom: 14px;
+}
+
+.bodyMuted {
+  color: $neutral-500;
+}
+
+.frame {
+  @include media-frame(0.1);
+  box-shadow:
+    ring(0.1),
+    0 30px 70px rgba(0, 0, 0, 0.55);
+}
+
+.image {
+  @include frame-image(0 18px 34px rgba(0, 0, 0, 0.55));
+}
+
+.caption {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: $neutral-600;
+}

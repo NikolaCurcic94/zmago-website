@@ -1,0 +1,119 @@
+@use "../../styles" as *;
+
+.section {
+  @include container;
+  padding-top: 110px;
+}
+
+.heading {
+  @include section-heading;
+  margin-bottom: 46px;
+  max-width: 24ch;
+}
+
+.layout {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px;
+  align-items: stretch;
+}
+
+.mainColumn {
+  flex: 1.78 1 390px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sideColumn {
+  flex: 1 1 355px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.frame {
+  @include media-frame(0.09);
+}
+
+.image {
+  @include frame-image;
+}
+
+.mainCaption {
+  font-size: 12px;
+  line-height: 1.6;
+  color: $neutral-500;
+  max-width: 48ch;
+}
+
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px;
+}
+
+.detail {
+  margin: 0;
+  flex: 1 1 130px;
+  min-width: 0;
+}
+
+.detailCaption {
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: $neutral-500;
+}
+
+.notes {
+  flex: 1;
+  min-width: 0;
+  // More air under the detail shots; since the card fills the column, this also makes it shorter.
+  margin-top: 28px;
+  margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 7px;
+  padding: 18px 20px 6px;
+  border-radius: $radius-lg;
+  background: $surface;
+  box-shadow: ring(0.08);
+}
+
+.notesTitle {
+  @include eyebrow(0.2em);
+}
+
+.notesList {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.noteRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: $neutral-300;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba($text, 0.08);
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.noteLabel {
+  color: $neutral-500;
+}
+
+.noteValue {
+  margin: 0;
+}

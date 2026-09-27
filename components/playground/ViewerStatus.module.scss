@@ -1,0 +1,20 @@
+@use "../../styles" as *;
+
+.status {
+  @include eyebrow(0.2em, $neutral-600);
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.statusLine {
+  width: 18px;
+  height: 1px;
+  background: rgba($accent, 0.6);
+}

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-4235ab10-7a55-4207-a58b-1002018a4f36/styles.css">
+<script src="_ds/nocturne-4235ab10-7a55-4207-a58b-1002018a4f36/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#12131f;color:#e9e9ed}
+a{color:#b5abfc}a:hover{color:#d2cefd}
+@keyframes zm-drift{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:.5}100%{transform:translate3d(18px,-140px,0);opacity:0}}
+@keyframes zm-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes zm-breathe{0%,100%{opacity:.5}50%{opacity:.85}}
+@keyframes zm-approach{
+  0%{opacity:0;transform:perspective(1600px) translate3d(0,26px,-1400px) scale(.72);filter:blur(9px) brightness(.32) drop-shadow(0 30px 50px rgba(0,0,0,.6))}
+  38%{opacity:.55;filter:blur(5px) brightness(.55) drop-shadow(0 30px 50px rgba(0,0,0,.6))}
+  100%{opacity:1;transform:perspective(1600px) translate3d(0,0,0) scale(1);filter:blur(0) brightness(1) drop-shadow(0 30px 50px rgba(0,0,0,.6)) drop-shadow(0 0 72px rgba(150,138,224,.22))}
+}
+@media (prefers-reduced-motion:reduce){[data-zm-approach]{animation:none !important}}
+input[type=range]{accent-color:#968ae0}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#3f424d;border-radius:8px}::-webkit-scrollbar-track{background:#12131f}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#12131f;font-family:Inter,system-ui,sans-serif;overflow-x:hidden">
+
+<sc-if value="{{ showGate }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:24px;background:radial-gradient(1000px 600px at 50% 40%,rgba(38,42,96,.55),rgba(10,11,19,.94) 70%);backdrop-filter:blur(6px)">
+  <div style="width:min(520px,100%);padding:34px 34px 28px;border-radius:14px;background:#1a1c2b;box-shadow:0 0 0 1px #3f424d,0 30px 80px rgba(0,0,0,.7);animation:zm-rise .5s ease both">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+      <span style="width:26px;height:1px;background:#968ae0"></span>
+      <span style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#b5abfc">Fan project</span>
+    </div>
+    <h2 style="margin:0 0 14px;font-size:27px;font-weight:500;letter-spacing:-.02em;line-height:1.15">Before you enter</h2>
+    <p style="margin:0 0 10px;font-size:14px;line-height:1.65;color:#cfd3e5">This is a fan-made project and is not sponsored, authorized, or endorsed by The LEGO Group.</p>
+    <p style="margin:0 0 26px;font-size:13px;line-height:1.65;color:#9397ab">LEGO is a trademark of The LEGO Group. Zmago is an independent creation, presented here as a personal build log and portfolio piece.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+      <button type="button" onClick="{{ enter }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:Inter,system-ui,sans-serif;font-weight:500;font-size:14px;color:#b5abfc;background:transparent;border:1px solid #968ae0;border-radius:8px;padding:11px 20px" style-hover="background:rgba(150,138,224,.14)">Enter Zmago
+        <span style="font-size:15px;line-height:1">&#8594;</span>
+      </button>
+      <span style="font-size:11px;color:#75798c">You can read this notice again from the footer.</span>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(18,19,31,.82);border-bottom:1px solid rgba(233,233,237,.08)">
+  <div style="max-width:1320px;margin:0 auto;padding:14px 20px;display:flex;flex-wrap:wrap;align-items:center;column-gap:18px;row-gap:8px">
+    <a href="#story" onClick="{{ goStory }}" style="display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;margin-right:auto">
+      <span style="display:block;width:26px;height:26px;border:1px solid #968ae0;border-radius:6px;position:relative">
+        <span style="position:absolute;left:6px;top:6px;width:12px;height:12px;background:#968ae0;border-radius:2px;transform:rotate(45deg)"></span>
+      </span>
+      <span style="font-size:15px;font-weight:500;letter-spacing:.22em;text-transform:uppercase">Zmago</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:4px">
+      <a href="#story" onClick="{{ goStory }}" style="padding:8px 14px;border-radius:8px;text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:{{ storyInk }};background:{{ storyBg }}">Story</a>
+      <a href="#gallery" onClick="{{ goGallery }}" style="padding:8px 14px;border-radius:8px;text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:{{ galleryInk }};background:{{ galleryBg }}">Gallery</a>
+      <a href="#playground" onClick="{{ goPlayground }}" style="padding:8px 14px;border-radius:8px;text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:{{ playInk }};background:{{ playBg }}">Playground</a>
+    </nav>
+    <a href="{{ ideasUrl }}" target="_blank" rel="noopener" style="display:none;text-decoration:none"></a>
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(150,138,224,.5) 20%,rgba(150,138,224,.5) 80%,transparent);opacity:.5"></div>
+</header>
+
+<sc-if value="{{ isStory }}" hint-placeholder-val="{{ true }}">
+<main>
+  <section style="position:relative;min-height:min(88vh,860px);display:flex;align-items:flex-end;overflow:hidden;background:radial-gradient(1100px 620px at 68% 34%,#23264b 0%,rgba(35,38,75,0) 64%),radial-gradient(900px 500px at 18% 92%,#181a2c,#0f1019 72%)">
+    <sc-if value="{{ particles }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;pointer-events:none">
+      <span style="position:absolute;left:5%;bottom:8%;width:3px;height:3px;border-radius:50%;background:#d2cefd;animation:zm-drift 8s linear infinite;animation-delay:0s"></span>
+      <span style="position:absolute;left:11%;bottom:20%;width:2px;height:2px;border-radius:50%;background:#b5abfc;animation:zm-drift 9.5s linear infinite;animation-delay:1.2s"></span>
+      <span style="position:absolute;left:17%;bottom:4%;width:2px;height:2px;border-radius:50%;background:#e4e7f5;animation:zm-drift 7.5s linear infinite;animation-delay:3.4s"></span>
+      <span style="position:absolute;left:22%;bottom:34%;width:3px;height:3px;border-radius:50%;background:#968ae0;animation:zm-drift 10s linear infinite;animation-delay:.6s"></span>
+      <span style="position:absolute;left:28%;bottom:12%;width:2px;height:2px;border-radius:50%;background:#d2cefd;animation:zm-drift 8.8s linear infinite;animation-delay:4.2s"></span>
+      <span style="position:absolute;left:33%;bottom:26%;width:2px;height:2px;border-radius:50%;background:#b5abfc;animation:zm-drift 11s linear infinite;animation-delay:2.1s"></span>
+      <span style="position:absolute;left:39%;bottom:6%;width:3px;height:3px;border-radius:50%;background:#e4e7f5;animation:zm-drift 7.8s linear infinite;animation-delay:5.5s"></span>
+      <span style="position:absolute;left:44%;bottom:18%;width:2px;height:2px;border-radius:50%;background:#968ae0;animation:zm-drift 9.2s linear infinite;animation-delay:1.8s"></span>
+      <span style="position:absolute;left:49%;bottom:40%;width:2px;height:2px;border-radius:50%;background:#d2cefd;animation:zm-drift 10.5s linear infinite;animation-delay:3.9s"></span>
+      <span style="position:absolute;left:54%;bottom:10%;width:3px;height:3px;border-radius:50%;background:#b5abfc;animation:zm-drift 8.4s linear infinite;animation-delay:.3s"></span>
+      <span style="position:absolute;left:59%;bottom:28%;width:2px;height:2px;border-radius:50%;background:#e4e7f5;animation:zm-drift 9.8s linear infinite;animation-delay:6.1s"></span>
+      <span style="position:absolute;left:64%;bottom:2%;width:2px;height:2px;border-radius:50%;background:#968ae0;animation:zm-drift 7.2s linear infinite;animation-delay:2.7s"></span>
+      <span style="position:absolute;left:69%;bottom:22%;width:3px;height:3px;border-radius:50%;background:#d2cefd;animation:zm-drift 10.2s linear infinite;animation-delay:4.8s"></span>
+      <span style="position:absolute;left:74%;bottom:36%;width:2px;height:2px;border-radius:50%;background:#b5abfc;animation:zm-drift 8.6s linear infinite;animation-delay:1.5s"></span>
+      <span style="position:absolute;left:79%;bottom:14%;width:2px;height:2px;border-radius:50%;background:#e4e7f5;animation:zm-drift 9.4s linear infinite;animation-delay:5.2s"></span>
+      <span style="position:absolute;left:84%;bottom:6%;width:3px;height:3px;border-radius:50%;background:#968ae0;animation:zm-drift 7.6s linear infinite;animation-delay:2.4s"></span>
+      <span style="position:absolute;left:89%;bottom:30%;width:2px;height:2px;border-radius:50%;background:#d2cefd;animation:zm-drift 10.8s linear infinite;animation-delay:.9s"></span>
+      <span style="position:absolute;left:94%;bottom:16%;width:2px;height:2px;border-radius:50%;background:#b5abfc;animation:zm-drift 8.2s linear infinite;animation-delay:3.1s"></span>
+      <span style="position:absolute;left:8%;bottom:44%;width:2px;height:2px;border-radius:50%;background:#e4e7f5;animation:zm-drift 9.6s linear infinite;animation-delay:6.4s"></span>
+      <span style="position:absolute;left:36%;bottom:48%;width:2px;height:2px;border-radius:50%;background:#968ae0;animation:zm-drift 11.2s linear infinite;animation-delay:2.9s"></span>
+      <span style="position:absolute;left:61%;bottom:52%;width:2px;height:2px;border-radius:50%;background:#d2cefd;animation:zm-drift 10.6s linear infinite;animation-delay:5.8s"></span>
+      <span style="position:absolute;left:86%;bottom:46%;width:3px;height:3px;border-radius:50%;background:#b5abfc;animation:zm-drift 9s linear infinite;animation-delay:1.1s"></span>
+      <span style="position:absolute;left:46%;bottom:44%;width:2px;height:2px;border-radius:50%;background:#968ae0;animation:zm-drift 19s linear infinite;animation-delay:11s"></span>
+    </div>
+    </sc-if>
+    <sc-if value="{{ entered }}" hint-placeholder-val="{{ true }}">
+    <img src="assets/hero.png" alt="Zmago the Dragon, LEGO model, three-quarter view" data-zm-approach="1" style="position:absolute;right:-5%;top:4%;width:min(1060px,68%);transform-origin:52% 54%;animation:zm-approach 1.9s cubic-bezier(.16,.84,.24,1) both">
+    </sc-if>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(15,16,25,.94) 0%,rgba(15,16,25,.78) 34%,rgba(15,16,25,.15) 62%,transparent 78%)"></div>
+    <sc-if value="{{ entered }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;right:-5%;top:4%;width:min(1060px,68%);aspect-ratio:3/2;pointer-events:none;background:radial-gradient(48% 46% at 50% 52%,rgba(150,138,224,.2),transparent 72%);animation:zm-approach 1.9s cubic-bezier(.16,.84,.24,1) both"></div>
+    </sc-if>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:0 24px 88px;width:100%">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <span style="width:40px;height:1px;background:#968ae0"></span>
+        <span style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc">LEGO Ideas submission</span>
+      </div>
+      <h1 style="margin:0;font-size:clamp(48px,9vw,132px);font-weight:500;line-height:.92;letter-spacing:-.045em">Zmago<br><span style="color:#b2b6ca">the Dragon</span></h1>
+      <p style="margin:26px 0 0;max-width:38ch;font-size:clamp(15px,1.6vw,19px);line-height:1.6;color:#cfd3e5;text-wrap:pretty">A LEGO creation brought to life.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px">
+        <a href="{{ ideasUrl }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:14px;font-weight:500;color:#b5abfc;border:1px solid #968ae0;border-radius:8px;padding:12px 20px" style-hover="background:rgba(150,138,224,.14)">Support on LEGO Ideas <span style="font-size:15px;line-height:1">&#8599;</span></a>
+        <a href="#playground" onClick="{{ goPlayground }}" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:14px;font-weight:500;color:#e9e9ed;border:1px solid rgba(233,233,237,.18);border-radius:8px;padding:12px 20px" style-hover="background:rgba(233,233,237,.07)">Handle the model</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1320px;margin:0 auto;padding:110px 24px 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:64px;align-items:center">
+      <div>
+        <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc;margin-bottom:18px">01 &nbsp;/&nbsp; The Idea</div>
+        <h2 style="margin:0 0 20px;font-size:clamp(28px,3.4vw,44px);font-weight:500;letter-spacing:-.03em;line-height:1.08;max-width:22ch">It started as a head I could not stop rebuilding.</h2>
+        <p style="margin:0 0 14px;font-size:15px;line-height:1.75;color:#cfd3e5;max-width:52ch;text-wrap:pretty">Zmago began with one question: could a dragon built entirely from standard bricks still move like an animal? The jaw came first, then the eyes, and after that the rest of the body had to earn its place around them.</p>
+        <p style="margin:0;font-size:15px;line-height:1.75;color:#9397ab;max-width:52ch;text-wrap:pretty">Placeholder copy &mdash; send me the story in your own words and it goes in verbatim.</p>
+      </div>
+      <figure style="margin:0">
+        <div style="position:relative;border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.1),0 30px 70px rgba(0,0,0,.55)">
+          <img src="assets/idea-main.png" alt="Close-up of Zmago's head" style="display:block;width:100%;filter:drop-shadow(0 18px 34px rgba(0,0,0,.55))">
+          
+        </div>
+        <figcaption style="margin-top:12px;font-size:11px;letter-spacing:.06em;color:#75798c">The head &mdash; first assembly, still the anchor of the build</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section style="max-width:1320px;margin:0 auto;padding:110px 24px 0">
+    <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc;margin-bottom:18px">02 &nbsp;/&nbsp; The Build</div>
+    <h2 style="margin:0 0 46px;font-size:clamp(28px,3.4vw,44px);font-weight:500;letter-spacing:-.03em;line-height:1.08;max-width:24ch">Built forward from the skull, one segment at a time.</h2>
+    <figure style="margin:0;display:flex;flex-wrap:wrap;gap:26px;align-items:stretch">
+      <div style="flex:1.78 1 390px;min-width:0;display:flex;flex-direction:column;gap:12px">
+        <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)">
+          <img src="assets/build-main.png" alt="Zmago in profile" style="display:block;width:100%;height:auto;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))">
+        </div>
+        <figcaption style="font-size:12px;line-height:1.6;color:#9397ab;max-width:48ch">The spine is a repeating segment: two hinge plates, a curved slope, a gold claw. Repeat it and the body finds its own curve.</figcaption>
+      </div>
+      <div style="flex:1 1 355px;min-width:0;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-wrap:wrap;gap:26px">
+          <figure style="margin:0;flex:1 1 130px;min-width:0">
+            <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)">
+              <img src="assets/build-detail-1.png" alt="Head and neck seen from above" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))">
+            </div>
+            <figcaption style="margin-top:12px;font-size:12px;line-height:1.6;color:#9397ab">Horns and whiskers, held on friction pins.</figcaption>
+          </figure>
+          <figure style="margin:0;flex:1 1 130px;min-width:0">
+            <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)">
+              <img src="assets/build-detail-2.png" alt="Segmented tail rising above the wings" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))">
+            </div>
+            <figcaption style="margin-top:12px;font-size:12px;line-height:1.6;color:#9397ab">Tail segments &mdash; the last part to be solved.</figcaption>
+          </figure>
+        </div>
+        <div style="flex:1;min-width:0;margin-bottom:70px;display:flex;flex-direction:column;justify-content:flex-start;gap:7px;padding:18px 20px 6px;border-radius:14px;background:#1a1c2b;box-shadow:0 0 0 1px rgba(233,233,237,.08)">
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#b5abfc">Build notes</div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#cfd3e5;padding-bottom:9px;border-bottom:1px solid rgba(233,233,237,.08)"><span style="color:#9397ab">Pieces</span><span>580</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#cfd3e5;padding-bottom:9px;border-bottom:1px solid rgba(233,233,237,.08)"><span style="color:#9397ab">Length</span><span>20 cm</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#cfd3e5"><span style="color:#9397ab">Wingspan</span><span>20 cm</span></div>
+        </div>
+      </div>
+    </figure>
+  </section>
+
+  <section style="margin-top:120px;padding:96px 0;background:linear-gradient(180deg,#12131f,#191b2e 40%,#12131f)">
+    <div style="max-width:1320px;margin:0 auto;padding:0 24px">
+      <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc;margin-bottom:18px">03 &nbsp;/&nbsp; The Details</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;align-items:start">
+        <div>
+          <h2 style="margin:0 0 34px;font-size:clamp(28px,3.4vw,44px);font-weight:500;letter-spacing:-.03em;line-height:1.08;max-width:20ch">Everything that moves, moves on purpose.</h2>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="display:grid;grid-template-columns:34px 1fr;gap:16px;padding:18px 0;border-top:1px solid rgba(233,233,237,.1)">
+              <span style="font-size:11px;color:#75798c;padding-top:3px">01</span>
+              <div><div style="font-size:16px;font-weight:500;margin-bottom:5px">Poseable head and jaw</div><p style="margin:0;font-size:13px;line-height:1.65;color:#9397ab;max-width:44ch">The skull turns on a click hinge and the lower jaw opens far enough to show the red tongue.</p></div>
+            </div>
+            <div style="display:grid;grid-template-columns:34px 1fr;gap:16px;padding:18px 0;border-top:1px solid rgba(233,233,237,.1)">
+              <span style="font-size:11px;color:#75798c;padding-top:3px">02</span>
+              <div><div style="font-size:16px;font-weight:500;margin-bottom:5px">Articulated neck and tail</div><p style="margin:0;font-size:13px;line-height:1.65;color:#9397ab;max-width:44ch">Segmented joints along the spine hold a pose without sagging, from a low stalk to a raised S-curve.</p></div>
+            </div>
+            <div style="display:grid;grid-template-columns:34px 1fr;gap:16px;padding:18px 0;border-top:1px solid rgba(233,233,237,.1)">
+              <span style="font-size:11px;color:#75798c;padding-top:3px">03</span>
+              <div><div style="font-size:16px;font-weight:500;margin-bottom:5px">Folding wings</div><p style="margin:0;font-size:13px;line-height:1.65;color:#9397ab;max-width:44ch">Layered blue and gold panels fan open on a shared axle and tuck flat against the body.</p></div>
+            </div>
+            <div style="display:grid;grid-template-columns:34px 1fr;gap:16px;padding:18px 0;border-top:1px solid rgba(233,233,237,.1);border-bottom:1px solid rgba(233,233,237,.1)">
+              <span style="font-size:11px;color:#75798c;padding-top:3px">04</span>
+              <div><div style="font-size:16px;font-weight:500;margin-bottom:5px">Four gripping claws</div><p style="margin:0;font-size:13px;line-height:1.65;color:#9397ab;max-width:44ch">Each foot is built from gold clips and white horns, so the weight sits on the toes rather than a plate.</p></div>
+            </div>
+          </div>
+        </div>
+        <div style="position:relative;min-width:0">
+          <img src="assets/details-main.png" alt="Zmago from above with wings spread" style="display:block;width:100%;filter:drop-shadow(0 26px 44px rgba(0,0,0,.62)) drop-shadow(0 0 66px rgba(150,138,224,.2))">
+          <div style="font-size:11px;letter-spacing:.06em;color:#75798c;margin-top:4px">Wings at full span, seen from above</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1320px;margin:0 auto;padding:110px 24px 0">
+    <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc;margin-bottom:18px">04 &nbsp;/&nbsp; The Journey</div>
+    <h2 style="margin:0 0 14px;font-size:clamp(28px,3.4vw,44px);font-weight:500;letter-spacing:-.03em;line-height:1.08;max-width:24ch">Ten thousand supporters, then LEGO takes a look.</h2>
+    <p style="margin:0 0 54px;font-size:15px;line-height:1.75;color:#9397ab;max-width:56ch;text-wrap:pretty">A LEGO Ideas project that reaches 10,000 supporters enters the official review stage, where the LEGO Group decides whether it becomes a set. Zmago is somewhere along that road.</p>
+    <div style="position:relative;padding:34px 0 0">
+      <div style="height:2px;background:linear-gradient(to right,#968ae0 0%,#968ae0 {{ progressPct }},rgba(233,233,237,.12) {{ progressPct }},rgba(233,233,237,.12) 100%)"></div>
+      <div style="position:absolute;top:26px;left:{{ progressPct }};width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#b5abfc;box-shadow:0 0 0 6px rgba(150,138,224,.18),0 0 24px rgba(181,171,252,.6);animation:zm-breathe 3.5s ease-in-out infinite"></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px">
+        <div><div style="font-size:19px;font-weight:500">100</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#75798c;margin-top:5px">First hundred</div></div>
+        <div><div style="font-size:19px;font-weight:500">1,000</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#75798c;margin-top:5px">Second window opens</div></div>
+        <div><div style="font-size:19px;font-weight:500">5,000</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#75798c;margin-top:5px">Halfway</div></div>
+        <div><div style="font-size:19px;font-weight:500;color:#b5abfc">10,000</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#b5abfc;margin-top:5px">Review stage</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-top:44px">
+      <span style="font-size:clamp(34px,5vw,58px);font-weight:500;letter-spacing:-.03em;line-height:1">{{ supportersLabel }}</span>
+      <span style="font-size:13px;color:#9397ab">supporters so far &mdash; placeholder count until you send the live number</span>
+    </div>
+  </section>
+
+  <section style="max-width:1320px;margin:0 auto;padding:110px 24px 120px">
+    <div style="position:relative;overflow:hidden;border-radius:18px;background:radial-gradient(900px 420px at 78% 50%,#262a60,#171930 62%);box-shadow:0 0 0 1px rgba(233,233,237,.09)">
+      <img src="assets/z03.png" alt="Zmago with wings spread" style="position:absolute;right:-2%;bottom:-8%;width:min(640px,56%);filter:drop-shadow(0 26px 44px rgba(0,0,0,.62)) drop-shadow(0 0 66px rgba(150,138,224,.2))">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(23,25,48,.95) 0%,rgba(23,25,48,.82) 38%,rgba(23,25,48,.2) 66%,transparent 82%)"></div>
+      <div style="position:relative;padding:72px 40px;max-width:600px">
+        <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc;margin-bottom:18px">05 &nbsp;/&nbsp; Support Zmago</div>
+        <h2 style="margin:0 0 18px;font-size:clamp(26px,3.2vw,40px);font-weight:500;letter-spacing:-.03em;line-height:1.1">If you like him, say so on LEGO Ideas.</h2>
+        <p style="margin:0 0 30px;font-size:15px;line-height:1.75;color:#cfd3e5;max-width:46ch;text-wrap:pretty">Supporting takes a free account and one click. No money, no newsletter &mdash; it only tells LEGO that someone wants to build this dragon.</p>
+        <a href="{{ ideasUrl }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:14px;font-weight:500;color:#b5abfc;border:1px solid #968ae0;border-radius:8px;padding:12px 20px" style-hover="background:rgba(150,138,224,.14)">Open the project <span style="font-size:15px;line-height:1">&#8599;</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isGallery }}" hint-placeholder-val="{{ true }}">
+<main style="max-width:1320px;margin:0 auto;padding:64px 24px 120px">
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:44px">
+    <div>
+      <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc;margin-bottom:16px">Gallery</div>
+      <h1 style="margin:0;font-size:clamp(34px,5.4vw,68px);font-weight:500;letter-spacing:-.04em;line-height:1">Twelve looks at one dragon</h1>
+    </div>
+    <p style="margin:0;font-size:13px;line-height:1.7;color:#9397ab;max-width:34ch">Click any frame to open it full screen. Arrow keys move through the set.</p>
+  </div>
+
+  <figure style="margin:0 0 28px;cursor:zoom-in" onClick="{{ open2 }}">
+    <div style="position:relative;border-radius:16px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)">
+      <img src="assets/z03.png" alt="Zmago with wings spread" style="display:block;width:100%;filter:drop-shadow(0 24px 40px rgba(0,0,0,.6))">
+      <span style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,15,26,.72),transparent 55%)"></span>
+      <figcaption style="position:absolute;left:28px;bottom:24px;right:28px;display:flex;flex-wrap:wrap;align-items:baseline;gap:14px">
+        <span style="font-size:clamp(18px,2.4vw,30px);font-weight:500;letter-spacing:-.02em">Wings open</span>
+        <span style="font-size:12px;color:#b2b6ca">Full model, three-quarter high angle</span>
+      </figcaption>
+    </div>
+  </figure>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px">
+    <figure style="margin:0;grid-column:span 2;min-width:0;cursor:zoom-in" onClick="{{ open9 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z10.png" alt="Zmago front three-quarter" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Standing, front three-quarter</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open7 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z08.png" alt="Head close-up" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Eyes and open jaw</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open4 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z05.png" alt="Head in profile" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Head in profile</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open1 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z02.png" alt="Zmago walking in profile" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Walking, wings folded</figcaption>
+    </figure>
+    <figure style="margin:0;grid-column:span 2;min-width:0;cursor:zoom-in" onClick="{{ open6 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z07.png" alt="Zmago seen from directly above" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Plan view &mdash; the wing panels laid out flat</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open10 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z11.png" alt="Tail detail" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Tail segments</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open8 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z09.png" alt="Neck and horns" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Horns, whiskers, neck joint</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open0 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z01.png" alt="Zmago crouched with tail raised" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Crouched, tail raised</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open3 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z04.png" alt="Wings spread from above" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Wings spread, from above</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open5 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z06.png" alt="Zmago three-quarter view" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Head low, ready to move</figcaption>
+    </figure>
+    <figure style="margin:0;min-width:0;cursor:zoom-in" onClick="{{ open11 }}">
+      <div style="border-radius:14px;overflow:hidden;background:radial-gradient(64% 64% at 50% 48%,#1e2140,#0f1020 76%);box-shadow:0 0 0 1px rgba(233,233,237,.09)"><img src="assets/z12.png" alt="Zmago in full profile" style="display:block;width:100%;filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))"></div>
+      <figcaption style="margin-top:11px;font-size:12px;color:#9397ab">Full profile, jaw open</figcaption>
+    </figure>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isPlayground }}" hint-placeholder-val="{{ true }}">
+<main style="position:relative">
+  <div style="position:relative;min-height:calc(100vh - 58px);overflow:hidden;background:radial-gradient(900px 620px at 50% 44%,#23264d 0%,rgba(35,38,77,0) 66%),radial-gradient(600px 400px at 50% 96%,#1c1e33,#0f101c 72%)">
+    <div style="position:absolute;left:50%;bottom:8%;transform:translateX(-50%);width:min(760px,88%);height:120px;background:radial-gradient(60% 100% at 50% 100%,rgba(150,138,224,.22),transparent 72%);filter:blur(4px)"></div>
+    <div onPointerDown="{{ dragStart }}" onPointerMove="{{ dragMove }}" onPointerUp="{{ dragEnd }}" onPointerLeave="{{ dragEnd }}" style="position:absolute;inset:0;box-sizing:border-box;padding:24px 0 178px;display:grid;grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr);place-items:center;cursor:grab;touch-action:none">
+      {{ stageImg }}
+    </div>
+    <div style="position:absolute;left:24px;top:24px;pointer-events:none">
+      <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc">Playground</div>
+      <div style="font-size:12px;color:#75798c;margin-top:7px;max-width:24ch">Drag to orbit. Placeholder stands in for the Three.js model.</div>
+    </div>
+    <div style="position:absolute;right:24px;top:24px;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#75798c">View {{ viewLabel }}</div>
+      <button type="button" onClick="{{ reset }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;color:#e9e9ed;background:rgba(26,28,43,.8);border:1px solid rgba(233,233,237,.16);border-radius:8px;padding:8px 14px" style-hover="background:rgba(233,233,237,.1)">Reset camera</button>
+    </div>
+
+    <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:min(880px,calc(100% - 32px));padding:16px 18px;border-radius:14px;background:rgba(22,24,38,.86);backdrop-filter:blur(16px);box-shadow:0 0 0 1px rgba(233,233,237,.1),0 24px 60px rgba(0,0,0,.6);display:flex;flex-wrap:wrap;gap:20px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:150px;flex:1 1 150px">
+        <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#75798c">Poses</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <button type="button" onClick="{{ posePerched }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid {{ poseBorder0 }};color:{{ poseInk0 }};background:transparent">Perched</button>
+          <button type="button" onClick="{{ poseWings }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid {{ poseBorder1 }};color:{{ poseInk1 }};background:transparent">Wings</button>
+          <button type="button" onClick="{{ poseRoar }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid {{ poseBorder2 }};color:{{ poseInk2 }};background:transparent">Roar</button>
+          <button type="button" onClick="{{ poseFlight }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;padding:7px 12px;border-radius:8px;border:1px solid {{ poseBorder3 }};color:{{ poseInk3 }};background:transparent">Flight</button>
+        </div>
+      </div>
+      <div style="width:1px;align-self:stretch;background:rgba(233,233,237,.1)"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:14px;flex:3 1 380px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9397ab">Head
+          <input type="range" min="-100" max="100" value="{{ head }}" onChange="{{ setHead }}" onInput="{{ setHead }}" style="width:100%">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9397ab">Left arm
+          <input type="range" min="-100" max="100" value="{{ armL }}" onChange="{{ setArmL }}" onInput="{{ setArmL }}" style="width:100%">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9397ab">Right arm
+          <input type="range" min="-100" max="100" value="{{ armR }}" onChange="{{ setArmR }}" onInput="{{ setArmR }}" style="width:100%">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9397ab">Wings
+          <input type="range" min="0" max="100" value="{{ wings }}" onChange="{{ setWings }}" onInput="{{ setWings }}" style="width:100%">
+        </label>
+      </div>
+      <div style="width:1px;align-self:stretch;background:rgba(233,233,237,.1)"></div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9397ab;flex:1 1 120px;min-width:110px">Zoom
+        <input type="range" min="70" max="180" value="{{ zoom }}" onChange="{{ setZoom }}" onInput="{{ setZoom }}" style="width:100%">
+      </label>
+    </div>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:40px 24px 90px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:34px">
+    <div>
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#b5abfc;margin-bottom:12px">What ships here later</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;color:#9397ab">The GLB loads into this stage with orbit, zoom and reset bound to the camera, and the four sliders bound to the head, arm and wing nodes of the rig.</p>
+    </div>
+    <div>
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#b5abfc;margin-bottom:12px">Behaviour</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;color:#9397ab">Poses animate between saved joint sets. Idle breathing runs until the visitor touches a control, then hands over.</p>
+    </div>
+    <div>
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#b5abfc;margin-bottom:12px">On mobile</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;color:#9397ab">The panel drops to a bottom bar, one row of poses and a sheet for joints, so the model keeps the upper two thirds of the screen.</p>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:80;background:rgba(9,10,17,.94);display:flex;flex-direction:column;animation:zm-rise .25s ease both">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px">
+    <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#75798c">{{ lightboxCount }}</span>
+    <button type="button" onClick="{{ closeBox }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;color:#e9e9ed;background:transparent;border:1px solid rgba(233,233,237,.2);border-radius:8px;padding:8px 14px" style-hover="background:rgba(233,233,237,.1)">Close</button>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;gap:12px;padding:0 16px;min-height:0">
+    <button type="button" onClick="{{ prevBox }}" style="cursor:pointer;flex:none;width:44px;height:44px;border-radius:50%;border:1px solid rgba(233,233,237,.18);background:transparent;color:#e9e9ed;font-size:16px" style-hover="background:rgba(233,233,237,.1)">&#8592;</button>
+    {{ lightboxImg }}
+    <button type="button" onClick="{{ nextBox }}" style="cursor:pointer;flex:none;width:44px;height:44px;border-radius:50%;border:1px solid rgba(233,233,237,.18);background:transparent;color:#e9e9ed;font-size:16px" style-hover="background:rgba(233,233,237,.1)">&#8594;</button>
+  </div>
+  <div style="padding:20px 24px 28px;text-align:center;font-size:13px;color:#b2b6ca">{{ lightboxCap }}</div>
+</div>
+</sc-if>
+
+<footer style="border-top:1px solid rgba(233,233,237,.1)">
+  <div style="max-width:1320px;margin:0 auto;padding:44px 24px 56px;display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px">Zmago</div>
+      <p style="margin:0;max-width:52ch;font-size:12px;line-height:1.7;color:#75798c">A fan-made LEGO project, not sponsored, authorized, or endorsed by The LEGO Group. LEGO is a trademark of The LEGO Group.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:center">
+      <a href="#story" onClick="{{ goStory }}" style="font-size:12px;color:#b2b6ca;text-decoration:none">Story</a>
+      <a href="#gallery" onClick="{{ goGallery }}" style="font-size:12px;color:#b2b6ca;text-decoration:none">Gallery</a>
+      <a href="#playground" onClick="{{ goPlayground }}" style="font-size:12px;color:#b2b6ca;text-decoration:none">Playground</a>
+      <button type="button" onClick="{{ openGate }}" style="cursor:pointer;font-family:Inter,system-ui,sans-serif;font-size:12px;color:#b5abfc;background:transparent;border:1px solid rgba(150,138,224,.5);border-radius:8px;padding:8px 14px" style-hover="background:rgba(150,138,224,.14)">Disclaimer</button>
+    </div>
+  </div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;ideasUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://ideas.lego.com/&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;supporters&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:10000,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;goal&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:10000,&quot;min&quot;:100,&quot;max&quot;:10000,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;particles&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Atmosphere&quot;}}">
+const SHOTS = [
+  ['assets/z01.png','Crouched, tail raised'],
+  ['assets/z02.png','Walking, wings folded'],
+  ['assets/z03.png','Wings open — three-quarter high angle'],
+  ['assets/z04.png','Wings spread, from above'],
+  ['assets/z05.png','Head in profile'],
+  ['assets/z06.png','Head low, ready to move'],
+  ['assets/z07.png','Plan view — wing panels laid flat'],
+  ['assets/z08.png','Eyes and open jaw'],
+  ['assets/z09.png','Horns, whiskers, neck joint'],
+  ['assets/z10.png','Standing, front three-quarter'],
+  ['assets/z11.png','Tail segments'],
+  ['assets/z12.png','Full profile, jaw open']
+];
+const ORBIT = [11, 1, 0, 9, 5, 2, 3, 6];
+const POSES = [
+  { name: 'Perched', view: 3, head: 0, armL: 0, armR: 0, wings: 10 },
+  { name: 'Wings', view: 5, head: 10, armL: 30, armR: 30, wings: 100 },
+  { name: 'Roar', view: 2, head: -60, armL: -20, armR: 20, wings: 40 },
+  { name: 'Flight', view: 6, head: 25, armL: 60, armR: 60, wings: 90 }
+];
+
+class Component extends DCLogic {
+  state = {
+    route: 'story', entered: false, box: null,
+    orbit: 3, zoom: 112, head: 0, armL: 0, armR: 0, wings: 20, pose: 0, dragging: false, lastX: 0
+  };
+
+  componentDidMount() {
+    const p = new URLSearchParams(location.search);
+    const h = (location.hash || '').replace('#', '');
+    const st = {};
+    if (h === 'gallery' || h === 'playground' || h === 'story') st.route = h;
+    if (p.get('enter') === '1') st.entered = true;
+    if (Object.keys(st).length) this.setState(st);
+    this._key = (e) => {
+      if (this.state.box === null) return;
+      if (e.key === 'Escape') this.setState({ box: null });
+      if (e.key === 'ArrowRight') this.setState(s => ({ box: (s.box + 1) % SHOTS.length }));
+      if (e.key === 'ArrowLeft') this.setState(s => ({ box: (s.box + SHOTS.length - 1) % SHOTS.length }));
+    };
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); }
+
+  nav(route) {
+    return (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ route }); window.scrollTo(0, 0); };
+  }
+
+  applyPose(i) {
+    const p = POSES[i];
+    return () => this.setState({ pose: i, orbit: p.view, head: p.head, armL: p.armL, armR: p.armR, wings: p.wings, zoom: 112 });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const ideasUrl = this.props.ideasUrl || 'https://ideas.lego.com/';
+    const supporters = this.props.supporters ?? 0;
+    const goal = this.props.goal ?? 10000;
+    const on = (k, ink, bg) => (s.route === k ? ink : bg);
+
+    const vals = {
+      showGate: !s.entered,
+      entered: s.entered,
+      enter: () => this.setState({ entered: true }),
+      openGate: () => this.setState({ entered: false }),
+      isStory: s.route === 'story', isGallery: s.route === 'gallery', isPlayground: s.route === 'playground',
+      goStory: this.nav('story'), goGallery: this.nav('gallery'), goPlayground: this.nav('playground'),
+      storyInk: on('story', '#b5abfc', '#b2b6ca'), storyBg: s.route === 'story' ? 'rgba(150,138,224,.14)' : 'transparent',
+      galleryInk: on('gallery', '#b5abfc', '#b2b6ca'), galleryBg: s.route === 'gallery' ? 'rgba(150,138,224,.14)' : 'transparent',
+      playInk: on('playground', '#b5abfc', '#b2b6ca'), playBg: s.route === 'playground' ? 'rgba(150,138,224,.14)' : 'transparent',
+      ideasUrl,
+      particles: this.props.particles ?? true,
+      progressPct: Math.max(1.5, Math.min(100, (supporters / goal) * 100)).toFixed(1) + '%',
+      supportersLabel: supporters ? supporters.toLocaleString('en-US') : '—',
+      lightboxOpen: s.box !== null,
+      lightboxSrc: s.box !== null ? SHOTS[s.box][0] : '',
+      lightboxCap: s.box !== null ? SHOTS[s.box][1] : '',
+      lightboxCount: s.box !== null ? String(s.box + 1).padStart(2, '0') + ' / ' + SHOTS.length : '',
+      closeBox: () => this.setState({ box: null }),
+      nextBox: () => this.setState(st => ({ box: (st.box + 1) % SHOTS.length })),
+      prevBox: () => this.setState(st => ({ box: (st.box + SHOTS.length - 1) % SHOTS.length })),
+      stageImg: React.createElement('img', {
+        src: SHOTS[ORBIT[((s.orbit % ORBIT.length) + ORBIT.length) % ORBIT.length]][0],
+        alt: 'Placeholder for the interactive Zmago model',
+        draggable: false,
+        style: {
+          maxWidth: 'min(840px,76%)', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain',
+          userSelect: 'none',
+          transition: 'transform .45s cubic-bezier(.2,.7,.2,1),filter .4s ease',
+          transform: 'scale(' + (s.zoom / 112).toFixed(3) + ') rotate(' + (s.head * 0.02).toFixed(2) + 'deg)'
+            + ' translateY(' + (-s.wings * 0.12).toFixed(1) + 'px) skewX(' + ((s.armL - s.armR) * 0.012).toFixed(2) + 'deg)',
+          filter: 'brightness(' + (0.92 + s.wings * 0.0008).toFixed(3) + ') contrast(1.03)'
+            + ' drop-shadow(0 30px 52px rgba(0,0,0,.7)) drop-shadow(0 0 80px rgba(150,138,224,' + (0.18 + s.wings * 0.002).toFixed(3) + '))'
+        }
+      }),
+      lightboxImg: s.box === null ? null : React.createElement('img', {
+        src: SHOTS[s.box][0], alt: SHOTS[s.box][1],
+        style: { flex: '1', minWidth: 0, maxHeight: '76vh', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(0,0,0,.6))' }
+      }),
+      viewLabel: (((s.orbit % ORBIT.length) + ORBIT.length) % ORBIT.length + 1) + ' / ' + ORBIT.length,
+      dragStart: (e) => { this.setState({ dragging: true, lastX: e.clientX }); },
+      dragMove: (e) => {
+        if (!this.state.dragging) return;
+        const dx = e.clientX - this.state.lastX;
+        if (Math.abs(dx) > 42) this.setState(st => ({ orbit: st.orbit + (dx > 0 ? 1 : -1), lastX: e.clientX }));
+      },
+      dragEnd: () => { if (this.state.dragging) this.setState({ dragging: false }); },
+      reset: () => this.setState({ orbit: 3, zoom: 112, head: 0, armL: 0, armR: 0, wings: 20, pose: 0 }),
+      head: s.head, armL: s.armL, armR: s.armR, wings: s.wings, zoom: s.zoom,
+      setHead: (e) => this.setState({ head: +e.target.value }),
+      setArmL: (e) => this.setState({ armL: +e.target.value }),
+      setArmR: (e) => this.setState({ armR: +e.target.value }),
+      setWings: (e) => this.setState({ wings: +e.target.value }),
+      setZoom: (e) => this.setState({ zoom: +e.target.value }),
+      posePerched: this.applyPose(0), poseWings: this.applyPose(1), poseRoar: this.applyPose(2), poseFlight: this.applyPose(3)
+    };
+    POSES.forEach((p, i) => {
+      vals['poseBorder' + i] = s.pose === i ? '#968ae0' : 'rgba(233,233,237,.16)';
+      vals['poseInk' + i] = s.pose === i ? '#b5abfc' : '#cfd3e5';
+    });
+    SHOTS.forEach((sh, i) => { vals['open' + i] = () => this.setState({ box: i }); });
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+@keyframes zm-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(18px, -140px, 0);
+    opacity: 0;
+  }
+}
+
+.field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation-name: zm-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}

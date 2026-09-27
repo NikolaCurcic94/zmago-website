@@ -1,0 +1,113 @@
+@use "../styles" as *;
+
+// Nocturne base layer (design/_ds/…/styles.css) with the Zmago page overrides.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $bg;
+  color: $text;
+  font-family: $font;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0 0 5.6px;
+}
+
+p {
+  margin: 0 0 8.4px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  font-size: 11px;
+  margin-top: 2.8px;
+  color: color-mix(in srgb, $text 55%, transparent);
+}
+
+button {
+  font-family: inherit;
+}
+
+// Zero specificity so component classes always win, as inline styles did in the design.
+:where(a) {
+  color: $accent-400;
+  text-underline-offset: 3px;
+}
+
+:where(a:hover) {
+  color: $accent-300;
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid $ds-accent;
+  outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, $ds-accent 30%, transparent);
+}
+
+input[type="range"] {
+  accent-color: $accent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $neutral-800;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

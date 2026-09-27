@@ -1,0 +1,22 @@
+@use "../../styles" as *;
+
+.notes {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 40px 24px 90px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 34px;
+}
+
+.title {
+  @include eyebrow(0.2em);
+  margin-bottom: 12px;
+}
+
+.body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: $neutral-500;
+}

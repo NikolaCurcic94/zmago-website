@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/nocturne-4235ab10-7a55-4207-a58b-1002018a4f36/styles.css">
+<script src="_ds/nocturne-4235ab10-7a55-4207-a58b-1002018a4f36/_ds_bundle.js"></script>
+<style>body{margin:0;background:#0f1019;color:#e9e9ed}a{color:#b5abfc}a:hover{color:#d2cefd}</style>
+</helmet>
+<div style="min-height:100vh;background:#0f1019;font-family:Inter,system-ui,sans-serif;padding:48px 40px 80px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+    <span style="width:36px;height:1px;background:#968ae0"></span>
+    <span style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#b5abfc">Responsive behaviour</span>
+  </div>
+  <h1 style="margin:0 0 10px;font-size:40px;font-weight:500;letter-spacing:-.035em">Zmago at three widths</h1>
+  <p style="margin:0 0 44px;font-size:14px;line-height:1.7;color:#9397ab;max-width:62ch">Live frames of the same page. The header tabs wrap under the wordmark on phones, editorial columns collapse to one, and the playground panel becomes a full-width bar with the model held above it.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:44px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#75798c">Phone 390 &times; 844 &mdash; Story</div>
+      <div style="width:390px;height:844px;border-radius:34px;padding:8px;background:#1a1c2b;box-shadow:0 0 0 1px rgba(233,233,237,.12),0 30px 70px rgba(0,0,0,.6)">
+        <iframe src="Zmago.dc.html?enter=1#story" title="Zmago story on a phone" style="width:100%;height:100%;border:0;border-radius:26px;background:#0f1019"></iframe>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#75798c">Phone 390 &times; 844 &mdash; Playground</div>
+      <div style="width:390px;height:844px;border-radius:34px;padding:8px;background:#1a1c2b;box-shadow:0 0 0 1px rgba(233,233,237,.12),0 30px 70px rgba(0,0,0,.6)">
+        <iframe src="Zmago.dc.html?enter=1#playground" title="Zmago playground on a phone" style="width:100%;height:100%;border:0;border-radius:26px;background:#0f1019"></iframe>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#75798c">Tablet 834 &times; 1000 &mdash; Gallery</div>
+      <div style="width:834px;height:1000px;border-radius:26px;padding:10px;background:#1a1c2b;box-shadow:0 0 0 1px rgba(233,233,237,.12),0 30px 70px rgba(0,0,0,.6)">
+        <iframe src="Zmago.dc.html?enter=1#gallery" title="Zmago gallery on a tablet" style="width:100%;height:100%;border:0;border-radius:18px;background:#0f1019"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,212 @@
+@use "../../styles" as *;
+
+// Featured frame
+
+.featured {
+  margin: 0 0 28px;
+}
+
+.featuredFrame {
+  @include media-frame(0.09, $radius-xl);
+}
+
+.featuredImage {
+  @include frame-image(0 24px 40px rgba(0, 0, 0, 0.6));
+}
+
+.featuredShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(14, 15, 26, 0.72), transparent 55%);
+}
+
+.featuredCaption {
+  position: absolute;
+  left: 28px;
+  bottom: 24px;
+  right: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.featuredTitle {
+  font-size: clamp(18px, 2.4vw, 30px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.featuredSubtitle {
+  font-size: 12px;
+  color: $neutral-400;
+}
+
+// Rows below the featured frame. Mobile first:
+// 1 column, 2 from $bp-tablet, the design's 4 from $bp-desktop.
+
+$gap: 28px;
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin columns($count) {
+  grid-template-columns: repeat($count, minmax(0, 1fr));
+}
+
+// Wide frame beside two small ones; one note spans under the pair and ends
+// on the wide frame's bottom edge (the wide caption gets its own last row).
+.widePair {
+  display: grid;
+  gap: $gap;
+  @include columns(1);
+  grid-template-areas: "wide" "a" "b" "note";
+
+  @include from($bp-tablet) {
+    @include columns(2);
+    grid-template-areas:
+      "wide wide"
+      "a b"
+      "note note";
+  }
+
+  @include from($bp-desktop) {
+    @include columns(4);
+    row-gap: 0;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "wide wide a b"
+      "wide wide note note"
+      "wide wide . .";
+  }
+}
+
+// Small, wide, small; each small frame carries its own note.
+.flanked {
+  display: grid;
+  gap: $gap;
+  @include columns(1);
+  grid-template-areas: "a" "na" "wide" "b" "nb";
+
+  @include from($bp-tablet) {
+    @include columns(2);
+    grid-template-areas:
+      "a b"
+      "na nb"
+      "wide wide";
+  }
+
+  @include from($bp-desktop) {
+    @include columns(4);
+    row-gap: 0;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "a wide wide b"
+      "na wide wide nb"
+      ". wide wide .";
+  }
+}
+
+.plainGrid {
+  display: grid;
+  gap: $gap;
+  @include columns(1);
+
+  @include from($bp-tablet) {
+    @include columns(2);
+  }
+
+  @include from($bp-desktop) {
+    @include columns(4);
+  }
+}
+
+.figure,
+.wideFigure {
+  margin: 0;
+  min-width: 0;
+}
+
+// On desktop the wide figure shares the row tracks: its frame spans the
+// image and note rows, its caption drops into the last row.
+.wideFigure {
+  @include from($bp-desktop) {
+    display: grid;
+    grid-template-rows: subgrid;
+
+    > .frame {
+      grid-row: 1 / 3;
+      align-self: start;
+    }
+
+    > .caption {
+      grid-row: 3;
+    }
+  }
+}
+
+// Sits 18px under the captions above it (the row gap is 28px below desktop).
+.note {
+  min-width: 0;
+  margin-top: -10px;
+
+  @include from($bp-desktop) {
+    margin-top: 18px;
+  }
+}
+
+.frame {
+  @include media-frame(0.09);
+}
+
+.image {
+  @include frame-image;
+}
+
+// Same footprint as the 1400×933 shots; the frame ground and ring carry it.
+.placeholderFrame {
+  aspect-ratio: 1400 / 933;
+  display: grid;
+  place-items: center;
+}
+
+.placeholderLabel {
+  @include eyebrow(0.2em, $neutral-600);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.placeholderLine {
+  width: 18px;
+  height: 1px;
+  background: rgba($accent, 0.6);
+}
+
+.caption {
+  margin-top: 11px;
+  font-size: 12px;
+  color: $neutral-500;
+}
+
+// Covers exactly the image frame: the only zoom-in target.
+
+.openButton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: zoom-in;
+
+  // The frame clips overflow, so draw the focus ring inside its edge.
+  &:focus-visible {
+    outline-offset: -2px;
+  }
+}

@@ -1,0 +1,9 @@
+@use "../styles" as *;
+
+.shell {
+  min-height: 100vh;
+  background: $bg;
+  font-family: $font;
+  // `clip` rather than the design's `hidden`, so the sticky header keeps working.
+  overflow-x: clip;
+}

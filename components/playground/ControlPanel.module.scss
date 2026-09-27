@@ -1,0 +1,134 @@
+@use "../../styles" as *;
+
+.panel {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  width: min(880px, calc(100% - 32px));
+  padding: 16px 18px;
+  border-radius: $radius-lg;
+  background: rgba(22, 24, 38, 0.86);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    ring(0.1),
+    0 24px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+
+  // Phones: part of the stage's column instead of floating over it, so it is
+  // always fully on screen. Same look and height, same side gutters.
+  @media (max-width: #{$bp-tablet - 1px}) {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    flex: none;
+    width: auto;
+    margin: 0 16px max(16px, env(safe-area-inset-bottom));
+  }
+}
+
+// Nocturne disabled state: the control fades, its label stays readable.
+.slider input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba($text, 0.1);
+}
+
+.joints {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 14px;
+  flex: 3 1 380px;
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $neutral-500;
+
+  input {
+    width: 100%;
+  }
+}
+
+// Paw: one slider for the selected paw, and a row of four numbered radio pills (1–4) below it.
+.paws {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 140px;
+  min-width: 132px;
+}
+
+.pawName {
+  color: $neutral-300;
+  letter-spacing: 0.08em;
+}
+
+.pawPicker {
+  display: flex;
+  gap: 6px;
+}
+
+.pawOption {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  span {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 28px;
+    cursor: pointer;
+    font-size: 12px;
+    color: $neutral-300;
+    border: 1px solid rgba($text, 0.16);
+    border-radius: $radius-md;
+    transition:
+      border-color 150ms ease,
+      color 150ms ease,
+      background 150ms ease;
+  }
+
+  &:hover span {
+    background: rgba($text, 0.06);
+  }
+
+  input:checked + span {
+    border-color: $accent;
+    color: $accent-400;
+    background: rgba($accent, 0.12);
+  }
+
+  input:focus-visible + span {
+    outline: 2px solid $ds-accent;
+    outline-offset: 2px;
+  }
+
+  input:disabled + span {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}

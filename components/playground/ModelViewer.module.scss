@@ -1,0 +1,18 @@
+@use "../../styles" as *;
+
+// Fills the stage behind the labels and control panel; the stage's own
+// gradients and floor glow show through the transparent canvas.
+.viewer {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  canvas:focus-visible {
+    outline: 2px solid $ds-accent;
+    outline-offset: -4px;
+  }
+}
