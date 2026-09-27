@@ -40,6 +40,7 @@
   top: 4%;
   width: min(1060px, 68%);
   height: auto;
+  z-index: 5;
   transform-origin: 52% 54%;
   animation: zm-approach 1.9s $ease-approach both;
 
@@ -47,7 +48,6 @@
     right: 0;
     top: 0;
     width: 100%;
-    z-index: 5;
   }
 }
 
