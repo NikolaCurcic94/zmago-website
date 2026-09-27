@@ -5,8 +5,9 @@
   padding-top: 110px;
 
   // Phones: less air between sections.
+  // (uneven on purpose: evens out the visible gaps between sections at 134px, like hero → idea)
   @media (max-width: #{$bp-tablet - 1px}) {
-    padding-top: 56px;
+    padding-top: 100px;
   }
 }
 

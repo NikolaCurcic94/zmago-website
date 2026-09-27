@@ -15,8 +15,9 @@
   padding-top: 110px;
 
   // Phones: less air between sections.
+  // (sized so the visible gap above matches the others, 134px)
   @media (max-width: #{$bp-tablet - 1px}) {
-    padding-top: 56px;
+    padding-top: 31px;
   }
 }
 

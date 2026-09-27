@@ -18,6 +18,25 @@
   }
 }
 
+// Phones and iOS: the same approach without animated filters or a 3D perspective. Mobile Safari
+// flickers (white, then gone) when blur/brightness/drop-shadow filters animate together with a 3D
+// transform on a large image; opacity + a 2D transform runs cleanly on its compositor.
+@keyframes zm-approach-lite {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.86);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@mixin approach-lite {
+  animation-name: zm-approach-lite;
+  filter: none;
+}
+
 .hero {
   position: relative;
   min-height: min(88vh, 860px);
@@ -48,6 +67,11 @@
     right: 0;
     top: 0;
     width: 100%;
+    @include approach-lite;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    @include approach-lite;
   }
 }
 
@@ -82,6 +106,11 @@
     right: 0;
     top: 0;
     width: 100%;
+    @include approach-lite;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    @include approach-lite;
   }
 }
 

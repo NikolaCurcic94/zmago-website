@@ -26,12 +26,10 @@ export function SiteHeader() {
   const activeHrefRef = useRef(activeHref);
 
   /**
-   * Moves the shared highlight under the active tab, writing straight to the DOM
-   * (no React re-render). Animated moves use FLIP so only `transform` transitions,
-   * which the compositor runs even while the next page renders on the main thread:
-   * the new width is set at once, a transform puts the box back where it visually
-   * is, then that transform eases out to the identity. Without `animate` it jumps,
-   * which is what first paint, resizes and font swaps want.
+   * Moves the shared highlight under the active tab, writing straight to the DOM (no React
+   * re-render). Animated moves transition `transform` and `width` together, so the pill keeps its
+   * shape (no scale distortion) and an interrupted move continues from wherever it is. Without
+   * `animate` it jumps, which is what first paint, resizes and font swaps want.
    */
   const placeRef = useRef((animate: boolean) => {
     const nav = navRef.current;
@@ -46,26 +44,18 @@ export function SiteHeader() {
 
     const navBox = nav.getBoundingClientRect();
     const linkBox = link.getBoundingClientRect();
-    const x = linkBox.left - navBox.left;
-    const width = linkBox.width;
-    const target = `translateX(${x}px)`;
     const wasPlaced = "ready" in nav.dataset;
+    const move = () => {
+      indicator.style.width = `${linkBox.width}px`;
+      indicator.style.transform = `translateX(${linkBox.left - navBox.left}px)`;
+    };
 
     if (animate && wasPlaced) {
-      // Where the box is right now, even mid-slide, so interrupted moves don't jump.
-      const current = new DOMMatrix(getComputedStyle(indicator).transform);
-      const fromWidth = indicator.offsetWidth * current.a;
-      indicator.style.transition = "none";
-      indicator.style.width = `${width}px`;
-      indicator.style.transform = `translateX(${current.e}px) scaleX(${fromWidth / width})`;
-      void indicator.offsetWidth; // commit the start frame
-      indicator.style.transition = "";
-      indicator.style.transform = target;
+      move();
     } else {
       indicator.style.transition = "none";
-      indicator.style.width = `${width}px`;
-      indicator.style.transform = target;
-      void indicator.offsetWidth;
+      move();
+      void indicator.offsetWidth; // commit without animating
       indicator.style.transition = "";
     }
     nav.dataset.ready = "";
@@ -115,7 +105,7 @@ export function SiteHeader() {
         <Link href="/" className={styles.brand}>
           {/* Round seal on phones (keeps the header to one row), the wordmark from tablet up. */}
           <Image
-            src="/images/logo/zmago-seal-violet.svg"
+            src="/images/logo/zmago-seal-light.svg"
             width={240}
             height={240}
             alt="Zmago"

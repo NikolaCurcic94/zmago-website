@@ -152,7 +152,7 @@ const ViewerScene = memo(function ViewerScene({
         >
           <Lighting />
           <Suspense fallback={null}>
-            <Bounds fit clip observe margin={1.15}>
+            <Bounds fit clip observe margin={1.045}>
               <Center>
                 <Dragon
                   jawStore={jawStore}

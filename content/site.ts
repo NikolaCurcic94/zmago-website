@@ -4,7 +4,7 @@ export const DISCLAIMER =
   "A fan-made LEGO project, not sponsored, authorized, or endorsed by The LEGO Group. LEGO is a trademark of The LEGO Group.";
 
 // Placeholder until the real LEGO Ideas project page is live.
-export const IDEAS_URL = "https://ideas.lego.com/";
+export const IDEAS_URL = "https://ideas.lego.com/product-ideas/39d53f86-6136-4f7d-b263-efc39f4c1f16";
 
 // Static placeholder count until the live number is available.
 export const SUPPORTERS: number = 0;

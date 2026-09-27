@@ -6,9 +6,10 @@
   background: linear-gradient(180deg, $bg, #191b2e 40%, $bg);
 
   // Phones: less air between sections.
+  // (sized so the visible gaps above and below match the others, 134px)
   @media (max-width: #{$bp-tablet - 1px}) {
-    margin-top: 56px;
-    padding: 48px 0;
+    margin-top: 0;
+    padding: 24px 0 48px;
   }
 }
 

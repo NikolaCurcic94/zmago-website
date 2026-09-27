@@ -18,6 +18,12 @@
   border-radius: $radius-2xl;
   background: radial-gradient(900px 420px at 78% 50%, $section, #171930 62%);
   box-shadow: ring(0.09);
+
+  // Phones: text and button first, the dragon below them (no overlap).
+  @media (max-width: #{$bp-tablet - 1px}) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .image {
@@ -27,6 +33,16 @@
   width: min(640px, 56%);
   height: auto;
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.62)) drop-shadow(0 0 66px $accent-glow);
+
+  @media (max-width: #{$bp-tablet - 1px}) {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    order: 2;
+    align-self: center;
+    width: 100%;
+    margin: 18px 0 -4%;
+  }
 }
 
 .shade {
@@ -39,6 +55,10 @@
     rgba(23, 25, 48, 0.2) 66%,
     transparent 82%
   );
+
+  @media (max-width: #{$bp-tablet - 1px}) {
+    display: none;
+  }
 }
 
 .content {
@@ -47,7 +67,7 @@
   max-width: 600px;
 
   @media (max-width: #{$bp-tablet - 1px}) {
-    padding: 44px 22px;
+    padding: 44px 22px 0;
   }
 }
 
