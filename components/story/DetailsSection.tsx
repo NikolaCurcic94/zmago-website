@@ -11,7 +11,7 @@ export function DetailsSection() {
         <SectionKicker number="03" label="The Details" />
         <div className={styles.grid}>
           <div>
-            <h2 className={styles.heading}>Everything that moves, moves on purpose.</h2>
+            <h2 className={styles.heading}>Every joint has a purpose.</h2>
             <ol className={styles.features}>
               {FEATURES.map(({ title, body }, i) => (
                 <li key={title} className={styles.feature}>

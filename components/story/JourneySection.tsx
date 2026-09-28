@@ -10,10 +10,12 @@ export function JourneySection() {
   return (
     <section className={styles.section}>
       <SectionKicker number="04" label="The Journey" />
-      <h2 className={styles.heading}>Ten thousand supporters, then LEGO takes a look.</h2>
+      <h2 className={styles.heading}>10,000 supporters. Then comes the LEGO review.</h2>
       <p className={styles.intro}>
-        A LEGO Ideas project that reaches 10,000 supporters enters the official review stage, where the LEGO
-        Group decides whether it becomes a set. Zmago is somewhere along that road.
+        Once a LEGO Ideas project reaches 10,000 supporters, it goes into the official review process. The LEGO Group then evaluates the project and decides whether it could become an official LEGO set.
+        <br/>
+        <br/>
+        Zmago is working its way toward that 10,000-supporter milestone.
       </p>
       <div className={styles.track} style={{ "--progress": progress } as CSSProperties}>
         <div className={styles.bar} aria-hidden="true" />

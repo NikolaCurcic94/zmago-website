@@ -9,14 +9,12 @@ export function IdeaSection() {
       <div className={styles.grid}>
         <div>
           <SectionKicker number="01" label="The Idea" />
-          <h2 className={styles.heading}>It started as a head I could not stop rebuilding.</h2>
+          <h2 className={styles.heading}>Built around natural movement.</h2>
           <p className={styles.body}>
-            Zmago began with one question: could a dragon built entirely from standard bricks still move
-            like an animal? The jaw came first, then the eyes, and after that the rest of the body had to
-            earn its place around them.
-          </p>
-          <p className={styles.bodyMuted}>
-            Placeholder copy &mdash; send me the story in your own words and it goes in verbatim.
+            The idea behind Zmago was simple: to build a dragon that follows the logic of a real animal. The
+            body is shaped around a repeating skeletal structure, with joints placed where movement naturally
+            occurs. From the neck and spine to the tail and limbs, each part was designed to work together as
+            one articulated body.
           </p>
         </div>
         <figure>

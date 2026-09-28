@@ -23,13 +23,12 @@ export function BuildSection() {
   return (
     <section className={styles.section}>
       <SectionKicker number="02" label="The Build" />
-      <h2 className={styles.heading}>Built forward from the skull, one segment at a time.</h2>
+      <h2 className={styles.heading}>Built one piece at a time.</h2>
       <figure className={styles.layout}>
         <div className={styles.mainColumn}>
           <FramedImage image={images.buildMain} alt="Zmago in profile" sizes="(max-width: 860px) 100vw, 820px" />
           <figcaption className={styles.mainCaption}>
-            The spine is a repeating segment: two hinge plates, a curved slope, a gold claw. Repeat it and
-            the body finds its own curve.
+            Each spine segment uses two hinge plates, a curved slope, and a gold claw. Repeat the same structure down the body, and the spine becomes flexible enough to shape.
           </figcaption>
         </div>
         <div className={styles.sideColumn}>
@@ -40,7 +39,7 @@ export function BuildSection() {
                 alt="Head and neck seen from above"
                 sizes="(max-width: 860px) 50vw, 230px"
               />
-              <figcaption className={styles.detailCaption}>Horns and whiskers, held on friction pins.</figcaption>
+              <figcaption className={styles.detailCaption}>Horns and whiskers, held in place by friction pins.</figcaption>
             </figure>
             <figure className={styles.detail}>
               <FramedImage
@@ -49,7 +48,7 @@ export function BuildSection() {
                 sizes="(max-width: 860px) 50vw, 230px"
               />
               <figcaption className={styles.detailCaption}>
-                Tail segments &mdash; the last part to be solved.
+                The tail - the final piece to fall into place.
               </figcaption>
             </figure>
           </div>

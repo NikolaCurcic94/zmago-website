@@ -17,27 +17,29 @@ export const NAV_ITEMS = [
 ] as const;
 
 export const BUILD_NOTES = [
-  { label: "Pieces", value: "580" },
-  { label: "Length", value: "20 cm" },
-  { label: "Wingspan", value: "20 cm" },
+  { label: "Total parts", value: "575" },
+  { label: "Length", value: "42.6 cm" },
+  { label: "Width", value: "27 cm" },
+  { label: "Height", value: "13.6 cm" },
+  { label: "Weight", value: "278.8 g" },
 ];
 
 export const FEATURES = [
   {
     title: "Poseable head and jaw",
-    body: "The skull turns on a click hinge and the lower jaw opens far enough to show the red tongue.",
+    body: "The head rotates on a swivel joint, while the lower jaw opens to reveal the red tongue.",
   },
   {
-    title: "Articulated neck and tail",
-    body: "Segmented joints along the spine hold a pose without sagging, from a low stalk to a raised S-curve.",
+    title: "Articulated neck, body and tail",
+    body: "The neck, body and tail are built from repeating vertebrae. The neck and body bend up and down, while the tail’s multiple segments allow it to move more freely and curve into an S-shape.",
   },
   {
-    title: "Folding wings",
-    body: "Layered blue and gold panels fan open on a shared axle and tuck flat against the body.",
+    title: "Rotating wings",
+    body: "The wings are attached with rotating joints, allowing them to swing around and move between different positions.",
   },
   {
-    title: "Four gripping claws",
-    body: "Each foot is built from gold clips and white horns, so the weight sits on the toes rather than a plate.",
+    title: "Individually movable claws",
+    body: "Each foot has four individually movable toes, built from gold clips and white nails. Each toe can be posed separately, allowing Zmago to grip and stand on its claws.",
   },
 ];
 

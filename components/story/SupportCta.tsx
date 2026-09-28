@@ -10,9 +10,9 @@ export function SupportCta() {
     <section className={styles.section}>
       <div className={styles.panel}>
         <Image
-          src={images.z03.src}
-          width={images.z03.width}
-          height={images.z03.height}
+          src={images.supportMain.src}
+          width={images.supportMain.width}
+          height={images.supportMain.height}
           alt="Zmago with wings spread"
           className={styles.image}
           sizes="(max-width: 1143px) 56vw, 640px"
@@ -20,10 +20,9 @@ export function SupportCta() {
         <div className={styles.shade} aria-hidden="true" />
         <div className={styles.content}>
           <SectionKicker number="05" label="Support Zmago" />
-          <h2 className={styles.heading}>If you like him, say so on LEGO Ideas.</h2>
+          <h2 className={styles.heading}>Want to see Zmago become a LEGO set? Support him on LEGO Ideas!</h2>
           <p className={styles.body}>
-            Supporting takes a free account and one click. No money, no newsletter &mdash; it only tells LEGO
-            that someone wants to build this dragon.
+            Supporting takes just a few quick steps to create a free LEGO Ideas account, then one click to support the project.
           </p>
           <ButtonLink href={IDEAS_URL} external>
             Open the project

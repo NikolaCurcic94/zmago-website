@@ -85,7 +85,7 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 7px;
-  padding: 18px 20px 6px;
+  padding: 18px 20px;
   border-radius: $radius-lg;
   background: $surface;
   box-shadow: ring(0.08);
@@ -93,6 +93,7 @@
 
 .notesTitle {
   @include eyebrow(0.2em);
+  margin-bottom: 20px;
 }
 
 .notesList {

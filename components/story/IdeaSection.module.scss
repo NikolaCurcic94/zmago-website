@@ -23,22 +23,13 @@
   max-width: 22ch;
 }
 
-.body,
-.bodyMuted {
+.body {
   margin: 0;
   font-size: 15px;
   line-height: 1.75;
   color: $neutral-300;
   max-width: 52ch;
   text-wrap: pretty;
-}
-
-.body {
-  margin-bottom: 14px;
-}
-
-.bodyMuted {
-  color: $neutral-500;
 }
 
 .frame {
