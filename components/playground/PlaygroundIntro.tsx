@@ -8,19 +8,20 @@ import styles from "./PlaygroundIntro.module.scss";
 
 const SEEN_KEY = "zmago:playground-intro-seen";
 
-// Seen once, remembered in this browser (falls back to this page's lifetime if storage is blocked).
+// Shown once per visit, like the disclaimer: remembered for the browser session (falls back to this
+// page's lifetime if storage is blocked).
 let seenInMemory = false;
 const readSeen = () => {
   if (seenInMemory) return true;
   try {
-    return window.localStorage.getItem(SEEN_KEY) === "1";
+    return window.sessionStorage.getItem(SEEN_KEY) === "1";
   } catch {
     return false;
   }
 };
 const noSubscribe = () => () => {};
 
-/** How to handle the model: shown the first time a visitor opens the playground (after the disclaimer). */
+/** How to handle the model: shown the first time the playground opens in a visit (after the disclaimer). */
 export function PlaygroundIntro() {
   const { entered } = useDisclaimer();
   // Server render and hydration assume "seen", so nothing flashes; the client then reads storage.
@@ -34,7 +35,7 @@ export function PlaygroundIntro() {
   const close = () => {
     seenInMemory = true;
     try {
-      window.localStorage.setItem(SEEN_KEY, "1");
+      window.sessionStorage.setItem(SEEN_KEY, "1");
     } catch {
       // Storage blocked: seenInMemory covers this page's lifetime.
     }

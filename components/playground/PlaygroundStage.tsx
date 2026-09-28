@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DEFAULT_MODEL_STATE,
   JAW_ON_LOAD,
@@ -44,6 +44,26 @@ export function PlaygroundStage() {
   const [selectedPaw, setSelectedPaw] = useState(0);
   const [selectedFingers, setSelectedFingers] = useState(0);
 
+  // On larger screens the control panel floats over the bottom of the stage: tell the viewer how much of
+  // the canvas it covers, so the model is framed in the free part above it (phones stack the panel below).
+  const stageRef = useRef<HTMLDivElement>(null);
+  const panelSlotRef = useRef<HTMLDivElement>(null);
+  const [panelInset, setPanelInset] = useState(0);
+  useEffect(() => {
+    const stage = stageRef.current;
+    const panel = panelSlotRef.current?.firstElementChild;
+    if (!stage || !panel) return;
+    const measure = () => {
+      const overlaps = getComputedStyle(panel).position === "absolute";
+      setPanelInset(overlaps ? Math.max(0, stage.getBoundingClientRect().bottom - panel.getBoundingClientRect().top) : 0);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(stage);
+    observer.observe(panel);
+    return () => observer.disconnect();
+  }, []);
+
   // The jaw never moves on its own: the Head slider stops where the open jaw would meet the
   // neck, and the Jaw slider stops at what the head's current position leaves room for.
   const setJoint = (joint: Joint | "zoom", value: number) =>
@@ -67,7 +87,7 @@ export function PlaygroundStage() {
     });
 
   return (
-    <div className={styles.stage}>
+    <div ref={stageRef} className={styles.stage}>
       <div className={styles.floorGlow} aria-hidden="true" />
 
       <div className={styles.modelArea}>
@@ -80,6 +100,7 @@ export function PlaygroundStage() {
           tail={model.tail}
           wings={model.wings}
           wingsH={model.wingsH}
+          bottomInset={panelInset}
         />
       </div>
 
@@ -87,21 +108,23 @@ export function PlaygroundStage() {
         <div className={styles.kicker}>Playground</div>
       </div>
 
-      <ControlPanel
-        model={model}
-        onChange={setJoint}
-        paw={{
-          selected: selectedPaw,
-          onSelect: setSelectedPaw,
-          onChange: (value) => setModel((m) => ({ ...m, paws: withPaw(m.paws, selectedPaw, value) })),
-        }}
-        fingers={{
-          selected: selectedFingers,
-          onSelect: setSelectedFingers,
-          onChange: (value) => setModel((m) => ({ ...m, fingers: withPaw(m.fingers, selectedFingers, value) })),
-        }}
-        isEnabled={(key) => LIVE_CONTROLS.has(key)}
-      />
+      <div ref={panelSlotRef} className={styles.panelSlot}>
+        <ControlPanel
+          model={model}
+          onChange={setJoint}
+          paw={{
+            selected: selectedPaw,
+            onSelect: setSelectedPaw,
+            onChange: (value) => setModel((m) => ({ ...m, paws: withPaw(m.paws, selectedPaw, value) })),
+          }}
+          fingers={{
+            selected: selectedFingers,
+            onSelect: setSelectedFingers,
+            onChange: (value) => setModel((m) => ({ ...m, fingers: withPaw(m.fingers, selectedFingers, value) })),
+          }}
+          isEnabled={(key) => LIVE_CONTROLS.has(key)}
+        />
+      </div>
 
       <PlaygroundIntro />
     </div>

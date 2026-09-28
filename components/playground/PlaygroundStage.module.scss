@@ -35,6 +35,11 @@ $header: var(--zm-header-height, #{$header-height});
   }
 }
 
+// Wraps the control panel only so the stage can measure it; adds no box of its own.
+.panelSlot {
+  display: contents;
+}
+
 .floorGlow {
   position: absolute;
   left: 50%;

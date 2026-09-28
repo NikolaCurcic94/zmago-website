@@ -11,7 +11,7 @@ import {
   useProgress,
 } from "@react-three/drei";
 import { Component, Suspense, memo, useEffect, useMemo, useState, type ReactNode } from "react";
-import { Mesh, MeshStandardMaterial, NeutralToneMapping, Quaternion, Vector3, type Material } from "three";
+import { Mesh, MeshStandardMaterial, NeutralToneMapping, PerspectiveCamera, Quaternion, Vector3, type Material } from "three";
 import { MODEL_URL } from "@/content/playground";
 import { createValueStore, type ValueStore } from "@/lib/valueStore";
 import {
@@ -60,6 +60,16 @@ function plasticRoughness(materialName: string): number {
 /** The part of OrbitControls this file uses. */
 type OrbitControlsLike = { target: Vector3; update: () => void };
 
+/**
+ * Framing after load. The fit is tighter than the model's full bounds (they include the long tail and the
+ * wings' reach, so a full fit leaves the dragon small), and the picture is nudged left and up by these
+ * shares of the canvas: the head end is the visually heavy one and the paws hang low, so the bounds centre
+ * sits right of and below where the eye puts the dragon's middle.
+ */
+const FIT_MARGIN = 0.8;
+const SHIFT_LEFT = 0.06;
+const SHIFT_UP = 0.085;
+
 /** Arrow keys orbit by this much. */
 const KEY_ORBIT_STEP = Math.PI / 12;
 
@@ -82,10 +92,12 @@ type ModelViewerProps = {
   wings: number;
   /** Wings horizontal, -1 = back … 0 = as built … 1 = forward. */
   wingsH: number;
+  /** Pixels at the bottom of the canvas covered by UI (the control panel on larger screens). */
+  bottomInset?: number;
 };
 
 /** Full 3D view of the Zmago GLB: orbit, zoom and pan, plus the head and mouth joints. */
-export default function ModelViewer({ jaw, head, neck, paws, fingers, tail, wings, wingsH }: ModelViewerProps) {
+export default function ModelViewer({ jaw, head, neck, paws, fingers, tail, wings, wingsH, bottomInset = 0 }: ModelViewerProps) {
   // Joint values reach the scene through stores, not as props: re-rendering
   // <Canvas> would re-measure it and make <Bounds observe> refit (zoom) the camera.
   const [jawStore] = useState(() => createValueStore(jaw));
@@ -103,6 +115,8 @@ export default function ModelViewer({ jaw, head, neck, paws, fingers, tail, wing
   // Both wing sliders drive one shoulder rotation, so they share a store.
   const [wingsStore] = useState(() => createValueStore<readonly [number, number]>([wings, wingsH]));
   useEffect(() => wingsStore.set([wings, wingsH]), [wingsStore, wings, wingsH]);
+  const [insetStore] = useState(() => createValueStore(bottomInset));
+  useEffect(() => insetStore.set(bottomInset), [insetStore, bottomInset]);
 
   return (
     <ViewerScene
@@ -113,6 +127,7 @@ export default function ModelViewer({ jaw, head, neck, paws, fingers, tail, wing
       fingersStore={fingersStore}
       tailStore={tailStore}
       wingsStore={wingsStore}
+      insetStore={insetStore}
     />
   );
 }
@@ -126,6 +141,7 @@ const ViewerScene = memo(function ViewerScene({
   fingersStore,
   tailStore,
   wingsStore,
+  insetStore,
 }: {
   jawStore: ValueStore<number>;
   headStore: ValueStore<number>;
@@ -134,6 +150,7 @@ const ViewerScene = memo(function ViewerScene({
   fingersStore: ValueStore<readonly number[]>;
   tailStore: ValueStore<number>;
   wingsStore: ValueStore<readonly [number, number]>;
+  insetStore: ValueStore<number>;
 }) {
   return (
     <div className={styles.viewer}>
@@ -152,7 +169,7 @@ const ViewerScene = memo(function ViewerScene({
         >
           <Lighting />
           <Suspense fallback={null}>
-            <Bounds fit clip observe margin={1.045}>
+            <Bounds fit clip observe margin={FIT_MARGIN}>
               <Center>
                 <Dragon
                   jawStore={jawStore}
@@ -170,6 +187,7 @@ const ViewerScene = memo(function ViewerScene({
           </Suspense>
           <OrbitControls makeDefault enableDamping dampingFactor={0.08} />
           <KeyboardOrbit />
+          <FramingOffset insetStore={insetStore} />
         </Canvas>
         <LoadingLabel />
       </ModelErrorBoundary>
@@ -356,6 +374,34 @@ function Lighting() {
       </Environment>
     </>
   );
+}
+
+/**
+ * Shifts the rendered picture (camera view offset) so the model sits in the middle of the part of the
+ * canvas left free by the UI, nudged by SHIFT_LEFT / SHIFT_UP. Only the image moves: the orbit still turns
+ * about the model's centre, and the fit is untouched.
+ */
+function FramingOffset({ insetStore }: { insetStore: ValueStore<number> }) {
+  const camera = useThree((s) => s.camera);
+  const width = useThree((s) => s.size.width);
+  const height = useThree((s) => s.size.height);
+  const invalidate = useThree((s) => s.invalidate);
+
+  useEffect(() => {
+    if (!(camera instanceof PerspectiveCamera)) return;
+    const apply = () => {
+      camera.setViewOffset(width, height, width * SHIFT_LEFT, insetStore.get() / 2 + height * SHIFT_UP, width, height);
+      invalidate();
+    };
+    apply();
+    const off = insetStore.subscribe(apply);
+    return () => {
+      off();
+      camera.clearViewOffset();
+    };
+  }, [camera, width, height, insetStore, invalidate]);
+
+  return null;
 }
 
 /** Makes the canvas focusable and lets ←/→ orbit around the model. */
