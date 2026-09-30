@@ -1,48 +1,6 @@
 @use "../../styles" as *;
 
-// Featured frame
-
-.featured {
-  margin: 0 0 28px;
-}
-
-.featuredFrame {
-  @include media-frame(0.09, $radius-xl);
-}
-
-.featuredImage {
-  @include frame-image(0 24px 40px rgba(0, 0, 0, 0.6));
-}
-
-.featuredShade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(14, 15, 26, 0.72), transparent 55%);
-}
-
-.featuredCaption {
-  position: absolute;
-  left: 28px;
-  bottom: 24px;
-  right: 28px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 14px;
-}
-
-.featuredTitle {
-  font-size: clamp(18px, 2.4vw, 30px);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-
-.featuredSubtitle {
-  font-size: 12px;
-  color: $neutral-400;
-}
-
-// Rows below the featured frame. Mobile first:
+// Rows of the gallery. Mobile first:
 // 1 column, 2 from $bp-tablet, the design's 4 from $bp-desktop.
 
 $gap: 28px;
@@ -81,6 +39,16 @@ $gap: 28px;
       "wide wide a b"
       "wide wide note note"
       "wide wide . .";
+  }
+}
+
+// The same row mirrored on desktop: the pair and its note on the left, the wide frame on the right.
+.widePairMirrored {
+  @include from($bp-desktop) {
+    grid-template-areas:
+      "a b wide wide"
+      "note note wide wide"
+      ". . wide wide";
   }
 }
 

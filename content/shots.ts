@@ -8,27 +8,18 @@ export type Shot = {
   caption: string;
 };
 
-// Viewer order: z01 → z12.
+// Viewer order.
 export const SHOTS: Shot[] = [
-  { image: images.z01, alt: "Zmago crouched with tail raised", caption: "Crouched, tail raised" },
-  { image: images.z02, alt: "Zmago walking in profile", caption: "Walking, wings folded" },
-  { image: images.z03, alt: "Zmago with wings spread", caption: "Wings open — three-quarter high angle" },
-  { image: images.z04, alt: "Wings spread from above", caption: "Wings spread, from above" },
-  { image: images.z05, alt: "Head in profile", caption: "Head in profile" },
-  { image: images.z06, alt: "Zmago three-quarter view", caption: "Head low, ready to move" },
-  { image: images.z07, alt: "Zmago seen from directly above", caption: "Plan view — wing panels laid flat" },
-  { image: images.z08, alt: "Head close-up", caption: "Eyes and open jaw" },
-  { image: images.z09, alt: "Neck and horns", caption: "Horns, whiskers, neck joint" },
-  { image: images.z10, alt: "Zmago front three-quarter", caption: "Standing, front three-quarter" },
-  { image: images.z11, alt: "Tail detail", caption: "Tail segments" },
-  { image: images.z12, alt: "Zmago in full profile", caption: "Full profile, jaw open" },
+  { image: images.frontWings, alt: "Zmago facing forward, wings spread and tail raised", caption: "Standing, front three-quarter" },
+  { image: images.headThreeQuarter, alt: "Close-up of Zmago's head with the jaw open", caption: "Eyes and open jaw" },
+  { image: images.headProfile, alt: "Zmago's head in profile, jaw open", caption: "Head in profile" },
+  { image: images.headFront, alt: "Zmago's head seen face on", caption: "Head, face on" },
+  { image: images.aboveBack, alt: "Zmago seen from above and behind, wings spread", caption: "From above, behind the wings" },
+  { image: images.tail, alt: "The segmented tail rising above the wings", caption: "Tail segments" },
+  { image: images.headFromBehind, alt: "Head and neck seen from behind, horns and whiskers", caption: "Horns, whiskers, neck joint" },
+  { image: images.aboveSide, alt: "Zmago seen from above, head to tail", caption: "From above, head to tail" },
+  { image: images.frontThreeQuarter, alt: "Zmago standing, front three-quarter, tail curled up", caption: "Front three-quarter, tail raised" },
 ];
-
-export const FEATURED_SHOT = {
-  index: 2,
-  title: "Wings open",
-  subtitle: "Full model, three-quarter high angle",
-};
 
 export type GridNote = {
   /** Highlighted run-in label. */
@@ -49,13 +40,14 @@ export type GalleryPlaceholder = {
 };
 
 /**
- * The curated grid below the featured frame, row by row.
- * - "wide-pair": a wide frame beside two small ones, one shared note under the pair.
+ * The curated grid, row by row, from the top of the page.
+ * - "wide-pair": a wide frame beside two small ones, one shared note under the pair
+ *   (`mirrored`: the pair on the left, the wide frame on the right).
  * - "flanked": small, wide, small; each small frame can carry its own note.
  * - "grid": plain small frames.
  */
 export type GalleryRow =
-  | { layout: "wide-pair"; wide: GalleryShot; pair: [GalleryShot, GalleryShot]; note: GridNote }
+  | { layout: "wide-pair"; mirrored?: boolean; wide: GalleryShot; pair: [GalleryShot, GalleryShot]; note: GridNote }
   | {
       layout: "flanked";
       left: GalleryShot & { note?: GridNote };
@@ -74,28 +66,38 @@ const LOREM_SHORT =
 export const GALLERY_ROWS: GalleryRow[] = [
   {
     layout: "wide-pair",
-    wide: { index: 9, caption: "Standing, front three-quarter" },
+    wide: { index: 0, caption: "Standing, front three-quarter" },
     pair: [
-      { index: 7, caption: "Eyes and open jaw" },
-      { index: 4, caption: "Head in profile" },
+      { index: 3, caption: "Head, face on" },
+      { index: 1, caption: "Eyes and open jaw" },
     ],
     note: { lead: "Front poses", text: LOREM_LONG },
   },
   {
+    layout: "wide-pair",
+    mirrored: true,
+    wide: { index: 8, caption: "Front three-quarter, tail raised" },
+    pair: [
+      { index: 2, caption: "Head in profile" },
+      { index: 6, caption: "Horns, whiskers, neck joint" },
+    ],
+    note: { text: LOREM_LONG },
+  },
+  {
     layout: "flanked",
-    left: { index: 1, caption: "Walking, wings folded", note: { text: LOREM_SHORT } },
-    wide: { index: 6, caption: "Plan view — the wing panels laid out flat" },
-    right: { index: 10, caption: "Tail segments", note: { text: LOREM_SHORT } },
+    left: { index: 3, caption: "Head, face on", note: { text: LOREM_SHORT } },
+    wide: { index: 4, caption: "From above, behind the wings" },
+    right: { index: 5, caption: "Tail segments", note: { text: LOREM_SHORT } },
   },
   {
     layout: "grid",
     shots: [
-      { index: 8, caption: "Horns, whiskers, neck joint" },
-      { index: 0, caption: "Crouched, tail raised" },
-      { index: 3, caption: "Wings spread, from above" },
-      { index: 5, caption: "Head low, ready to move" },
-      { index: 11, caption: "Full profile, jaw open" },
+      { index: 6, caption: "Horns, whiskers, neck joint" },
+      { index: 7, caption: "From above, head to tail" },
       // Replace with real shots: add the image to SHOTS, then swap in { index, caption }.
+      { placeholder: true, caption: "New photo" },
+      { placeholder: true, caption: "New photo" },
+      { placeholder: true, caption: "New photo" },
       { placeholder: true, caption: "New photo" },
       { placeholder: true, caption: "New photo" },
       { placeholder: true, caption: "New photo" },

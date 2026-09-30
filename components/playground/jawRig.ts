@@ -1,11 +1,13 @@
-import { Group, MathUtils, PropertyBinding, Quaternion, Vector3, type Object3D } from "three";
+import { Group, MathUtils, Matrix4, PropertyBinding, Quaternion, Vector3, type Object3D } from "three";
 import {
+  EXPORT_POSE_FIXES,
   HEAD_MOUNT_PART_NAMES,
   HEAD_PATH,
   HEAD_PIVOT,
   HEAD_SWEEP_SIDE,
   headPathValue,
   JAW_AS_EXPORTED,
+  JAW_MIN,
   JAW_PART_NAMES,
   JAW_PIVOT,
   MAX_JAW_OPEN,
@@ -60,6 +62,26 @@ function rigPivot(
 }
 
 /**
+ * Puts the parts listed in EXPORT_POSE_FIXES back into the pose every limit was measured on (one rigid
+ * export-space transform per group). Call first, on the untouched clone, before any rig* function.
+ */
+export function applyExportPoseFixes(model: Object3D): void {
+  model.updateMatrixWorld(true);
+  const fix = new Matrix4();
+  const local = new Matrix4();
+  for (const { parts, quaternion, translation } of EXPORT_POSE_FIXES) {
+    fix.compose(new Vector3(...translation), new Quaternion(...quaternion), new Vector3(1, 1, 1));
+    for (const name of parts) {
+      const part = model.getObjectByName(PropertyBinding.sanitizeNodeName(name));
+      if (!part?.parent) continue;
+      local.multiplyMatrices(fix, part.matrixWorld).premultiply(part.parent.matrixWorld.clone().invert());
+      local.decompose(part.position, part.quaternion, part.scale);
+    }
+  }
+  model.updateMatrixWorld(true);
+}
+
+/**
  * The two mouth pivots. Both hang from the neck on their own LEGO clip hinges,
  * so they are siblings; a future `jnt_head` would become their common parent.
  */
@@ -75,12 +97,12 @@ export function rigJaws(model: Object3D): { lower: Group | null; upper: Group | 
 
 /** Lower jaw about +X: positive lowers it. jaw 0 → closed, 1 → MAX_JAW_OPEN from closed. */
 export function lowerJawAngle(jaw: number): number {
-  return MathUtils.degToRad((MathUtils.clamp(jaw, 0, 1) - JAW_AS_EXPORTED) * MAX_JAW_OPEN);
+  return MathUtils.degToRad((MathUtils.clamp(jaw, JAW_MIN, 1) - JAW_AS_EXPORTED) * MAX_JAW_OPEN);
 }
 
 /** Upper jaw about +X: negative lifts it. jaw 0 → closed, 1 → MAX_UPPER_JAW_OPEN from closed. */
 export function upperJawAngle(jaw: number): number {
-  return MathUtils.degToRad(-(MathUtils.clamp(jaw, 0, 1) * MAX_UPPER_JAW_OPEN - UPPER_JAW_AS_EXPORTED_DEG));
+  return MathUtils.degToRad(-(MathUtils.clamp(jaw, JAW_MIN, 1) * MAX_UPPER_JAW_OPEN - UPPER_JAW_AS_EXPORTED_DEG));
 }
 
 export type HeadRig = {

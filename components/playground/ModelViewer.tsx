@@ -15,6 +15,7 @@ import { Mesh, MeshStandardMaterial, NeutralToneMapping, PerspectiveCamera, Quat
 import { MODEL_URL } from "@/content/playground";
 import { createValueStore, type ValueStore } from "@/lib/valueStore";
 import {
+  applyExportPoseFixes,
   fingerQuaternion,
   headQuaternion,
   lowerJawAngle,
@@ -238,6 +239,8 @@ function Dragon({
         object.material = Array.isArray(object.material) ? object.material.map(toPlastic) : toPlastic(object.material);
       }
     });
+    // Neck, head and jaws back in the pose their limits were measured on (see EXPORT_POSE_FIXES).
+    applyExportPoseFixes(clone);
     // Mouth pivots: jnt_jaw (lower jaw) and jnt_upper_jaw (upper head), each on its own hinge,
     // then jnt_head on the neck ball joint, carrying both.
     const jaws = rigJaws(clone);

@@ -44,6 +44,8 @@ export const UPPER_JAW_PART_NAMES = [
   "4081b.dat.033", "4081b.dat.034", "4081b.dat.035", "4081b.dat.036", "4081b.dat.040", "4081b.dat.041",
   // whiskers and horns
   "bl_1578.dat", "bl_1578.dat.001", "18395.dat", "18395.dat.001", "18950.dat", "18950.dat.001",
+  // the two clips on the front of the snout (on 51739.003) and the barbs they hold
+  "4085c.dat.002", "4085c.dat.003", "53451.dat.032", "53451.dat.033",
 ] as const;
 
 /** Upper hinge axis: centre of the 60478.003/.004 handle bars (export space); the axis runs along X. */
@@ -70,6 +72,13 @@ export const JAW_AS_EXPORTED = JAW_CLOSING_FROM_EXPORT_DEG / (MAX_JAW_OPEN + MAX
  * jaw is 5° more closed than before: 4.83° − 5° ≈ −0.17° (just shut).
  */
 export const UPPER_JAW_AS_EXPORTED_DEG = JAW_AS_EXPORTED * MAX_UPPER_JAW_OPEN - 5;
+
+/**
+ * Lowest Jaw value: the mouth no longer shuts all the way. The two clips on the front of the snout
+ * (4085c.002/.003) meet the lower fangs (54200.002/.003) below jaw 0.074 (lower jaw 2.4° from closed), by
+ * penetration depth (> 0.25 LDU) on the current export; less 0.5° of lower jaw.
+ */
+export const JAW_MIN = 0.09;
 
 /** Jaw slider value the page opens with: a third of the way, mouth slightly ajar. */
 export const JAW_ON_LOAD = 0.33;
@@ -523,6 +532,25 @@ export const NECK_LOWER_PART_NAMES = [
   "3023b.dat.016", "3022.dat.014", "32803.dat.017", "4081b.dat.037", "4081b.dat.038", "4081b.dat.039",
 ] as const;
 
+/**
+ * The current export (zmago-render-final-fix) also re-posed the neck and head a little: the 1st vertebra
+ * bent 10° down on the trunk hinge and the 2nd bent 10° back up on it, the head turned 0.5° on its ball and
+ * the lower jaw shut 5° on its hinge. Every head, jaw and neck limit in this file was measured on the
+ * previous export, so on load (applyExportPoseFixes, before rigging) those parts are put back exactly where
+ * they were: one rigid transform per group, export space, new pose → previous pose. The tail's new pose is
+ * kept on purpose (see TAIL_JOINTS). Drop an entry once its limits are re-measured on a newer export.
+ */
+export const EXPORT_POSE_FIXES: readonly { parts: readonly string[]; quaternion: readonly [number, number, number, number]; translation: readonly [number, number, number] }[] = [
+  // 1st neck vertebra: 10° back up about the trunk hinge
+  { parts: NECK_LOWER_PART_NAMES.slice(0, 13), quaternion: [-0.0869849, -0.0019274, 0.0056811, 0.9961916], translation: [0.0530231, -1.2015892, 0.4113538] },
+  // 2nd neck vertebra: only shifted (its 10° cancel out)
+  { parts: NECK_LOWER_PART_NAMES.slice(13), quaternion: [0.0000045, -0.0000026, 0.0000037, 1], translation: [-0.0039693, 0.0910532, -0.0310037] },
+  // head mount and the whole upper head: 0.5° about the ball
+  { parts: [...HEAD_MOUNT_PART_NAMES, ...UPPER_JAW_PART_NAMES], quaternion: [0.0000602, -0.0044025, -0.0000639, 0.9999903], translation: [0.0666084, 0.0921552, -0.0446575] },
+  // lower jaw: with the head, and 5° open again about its hinge
+  { parts: JAW_PART_NAMES, quaternion: [0.0436676, -0.0038229, -0.0007275, 0.9990385], translation: [0.0549023, 0.8573404, -0.1978837] },
+];
+
 /** Midpoint of the two ball centres, in the model's export space. */
 export const NECK_LOWER_PIVOT: [number, number, number] = [1.5003, 1.7113, 6.9721];
 
@@ -636,67 +664,70 @@ export const PAW_FINGERS: readonly (readonly { parts: readonly string[]; pivot: 
  * (> 0.25 LDU) on both the full-detail and the compressed geometry, lowered where they met
  * (left: the tip against 5091 on the body; right: plate on plate at joints 5 and 7) — then kept at
  * 90% of that range. In all, the tail turns by up to ~108° to the left and ~99° to the right.
+ * The current export re-posed the tail (joint 0 9.04° left, joint 1 9.12° right, joint 7 9.35° left), and that
+ * pose is kept as the rest pose: pivots are where the new export puts them, and each joint's left/right is
+ * measured from its new rest so that the fully-left and fully-right poses are exactly the ones checked above.
  */
 export const TAIL_JOINTS: readonly { parts: readonly string[]; pivot: readonly number[]; axis: readonly number[]; left: number; right: number }[] = [
   {
     parts: ["14704.dat.012", "3794b.dat.008", "11477.dat.022", "3024.dat.029", "14417.dat.008"],
     pivot: [1.4999, 1.2066, 3.9371],
     axis: [-0.0436, 0.9667, 0.2523],
-    left: 12.42,
-    right: 21.69,
+    left: 3.38, // as built: 9.04° to the left of the previous export
+    right: 30.73,
   },
   {
     parts: ["14704.dat.007", "3794b.dat.007", "11477.dat.007", "3024.dat.003", "14417.dat.006"],
-    pivot: [1.5439, 1.3861, 3.5735],
+    pivot: [1.6055, 1.3856, 3.5862],
     axis: [-0.0436, 0.9667, 0.2522],
-    left: 20.61,
-    right: 19.8,
+    left: 29.73, // as built: 9.12° to the right
+    right: 10.68,
   },
   {
     parts: ["14704.dat.006", "3794b.dat.006", "11477.dat.006", "3024.dat.008", "14417.dat.005"],
-    pivot: [1.5881, 1.5656, 3.2098],
+    pivot: [1.6492, 1.5651, 3.2224],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 0,
     right: 0,
   },
   {
     parts: ["14704.dat.005", "3794b.dat.005", "11477.dat.005", "3024.dat.009", "14417.dat.004"],
-    pivot: [1.269, 1.6914, 2.9894],
+    pivot: [1.3298, 1.6907, 3.0024],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 18.18,
     right: 19.8,
   },
   {
     parts: ["14704.dat.004", "3794b.dat.004", "11477.dat.004", "3024.dat.002", "14417.dat.003"],
-    pivot: [0.9494, 1.817, 2.7693],
+    pivot: [1.0098, 1.8162, 2.7828],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 0,
     right: 0.45,
   },
   {
     parts: ["14704.dat", "3794b.dat", "11477.dat.003", "3024.dat.004", "14417.dat"],
-    pivot: [0.9296, 1.9944, 2.4028],
+    pivot: [0.9894, 1.9936, 2.4163],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 0,
     right: 0,
   },
   {
     parts: ["14704.dat.001", "3794b.dat.001", "11477.dat.002", "3024.dat.005", "14417.dat.001"],
-    pivot: [1.2221, 2.152, 2.1663],
+    pivot: [1.2815, 2.1513, 2.1794],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 13.23,
     right: 24.03,
   },
   {
     parts: ["14704.dat.002", "3794b.dat.002", "11477.dat.001", "3024.dat.006", "14417.dat.002"],
-    pivot: [1.5741, 2.2903, 2.0137],
+    pivot: [1.6333, 2.2897, 2.0263],
     axis: [-0.0436, 0.9667, 0.2522],
-    left: 21.96,
-    right: 1.35,
+    left: 12.61, // as built: 9.35° to the left
+    right: 10.7,
   },
   {
     parts: ["14704.dat.003", "3794b.dat.003", "11477.dat", "3024.dat.007", "2555.dat", "2555.dat.001", "3623.dat", "4596.dat", "48729b.dat", "53451.dat.008", "53451.dat.009", "60478.dat", "85861.dat", "85861.dat.001", "98141.dat", "98141.dat.001"],
-    pivot: [1.7576, 2.4647, 1.694],
+    pivot: [1.8711, 2.4576, 1.7407],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 21.96,
     right: 11.79,
@@ -742,6 +773,8 @@ export const WINGS = [
       "3069b.dat.010", "11477.dat.011", "5092.dat.005", "5092.dat.002", "5092.dat.003", "5092.dat",
       "3070b.dat.004", "5092.dat.001", "15209.dat", "5091.dat.013", "43723b.dat", "15209.dat.005",
       "3024.dat.018", "87747.dat.002", "4081b.dat.020",
+      // the two upright plates clipped onto the front leg
+      "35459.dat.002", "35459.dat.003",
     ],
   },
   {
@@ -774,6 +807,8 @@ export const WINGS = [
       "5091.dat.027", "11477.dat.017", "5091.dat.021", "3069b.dat.011", "5091.dat.025", "5091.dat.024",
       "15209.dat.017", "11477.dat.016", "5091.dat.022", "5091.dat.023", "3070b.dat.006", "5091.dat.026",
       "15209.dat.018", "5092.dat.027", "43722b.dat.001", "3024.dat.028", "87747.dat.003", "4081b.dat.029",
+      // the two upright plates clipped onto the front leg
+      "35459.dat", "35459.dat.001",
     ],
   },
 ] as const satisfies readonly { label: string; pivot: readonly number[]; down: readonly number[]; forward: readonly number[]; pawIndex: number; parts: readonly string[] }[];
@@ -798,7 +833,9 @@ export const WING_UP_CUT_WHEN_BACK = 0.25;
  * for both wings on the full-detail and the compressed geometry (the lowest of the four), by penetration
  * depth, with the up range already cut for the back swing; less 0.03 (≈0.75°), then re-checked on a finer
  * surface sampling (each row, half its range and every midpoint between rows) and lowered where that found
- * contact. Every 0.05 of Wings vertical.
+ * contact. Every 0.05 of Wings vertical. On the current export the re-posed tail sits a little closer to the
+ * left wing, so the back swing at Wings vertical 0 and 0.10 is cut to 0.95 and 0.93 (first contact with the
+ * tail less 0.04); every other row is clear up to its old value.
  */
 export const WING_H_ENVELOPE: readonly (readonly [number, number, number])[] = [
   [-1.00, 0.00, 0.82], [-0.95, 0.10, 0.92], [-0.90, 0.19, 0.96],
@@ -807,8 +844,8 @@ export const WING_H_ENVELOPE: readonly (readonly [number, number, number])[] = [
   [-0.55, 0.37, 1.00], [-0.50, 0.39, 1.00], [-0.45, 0.37, 1.00],
   [-0.40, 0.39, 1.00], [-0.35, 0.44, 1.00], [-0.30, 0.58, 1.00],
   [-0.25, 0.58, 1.00], [-0.20, 0.57, 1.00], [-0.15, 0.57, 1.00],
-  [-0.10, 1.00, 1.00], [-0.05, 0.96, 1.00], [0.00, 1.00, 1.00],
-  [0.05, 0.98, 0.75], [0.10, 0.98, 0.70], [0.15, 0.89, 0.65],
+  [-0.10, 1.00, 1.00], [-0.05, 0.96, 1.00], [0.00, 0.95, 1.00],
+  [0.05, 0.98, 0.75], [0.10, 0.93, 0.70], [0.15, 0.89, 0.65],
   [0.20, 0.69, 0.60], [0.25, 0.66, 0.56], [0.30, 0.63, 0.52],
   [0.35, 0.61, 0.47], [0.40, 0.57, 0.43], [0.45, 0.55, 0.40],
   [0.50, 0.53, 0.37], [0.55, 0.50, 0.35], [0.60, 0.48, 0.33],
@@ -868,7 +905,7 @@ export type ModelState = {
   wings: number;
   /** Wings horizontal: -1 = back … 0 = as built … 1 = forward (WING_RANGE_DEG). */
   wingsH: number;
-  /** 0 = mouth closed … 1 = open by MAX_JAW_OPEN. */
+  /** 0 = mouth closed … 1 = open by MAX_JAW_OPEN; never below JAW_MIN (the snout clips stop it). */
   jaw: number;
   /** Tail sway: -1 = fully to the dragon's left … 0 = as built … 1 = fully to its right. */
   tail: number;
@@ -886,7 +923,7 @@ export const DEFAULT_MODEL_STATE: ModelState = {
   armR: 0,
   wings: 0,
   wingsH: 0,
-  jaw: 0,
+  jaw: JAW_MIN,
   neck: 0,
   paws: [0, 0, 0, 0],
   fingers: [0, 0, 0, 0],
@@ -903,7 +940,7 @@ export const POSES: ({ name: string } & Omit<ModelState, "zoom" | "jaw" | "head"
 ];
 
 export const JOINT_SLIDERS: { key: Joint; label: string; min: number; max: number; step?: number }[] = [
-  { key: "jaw", label: "Jaw", min: 0, max: 1, step: 0.01 },
+  { key: "jaw", label: "Jaw", min: JAW_MIN, max: 1, step: 0.01 },
   { key: "head", label: "Head", min: -1, max: 1, step: 0.005 },
   { key: "neck", label: "Neck", min: -1, max: 1, step: 0.005 },
   { key: "wings", label: "Wings vertical", min: -1, max: 1, step: 0.01 },

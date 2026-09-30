@@ -7,7 +7,7 @@ export const DISCLAIMER =
 export const IDEAS_URL = "https://ideas.lego.com/product-ideas/39d53f86-6136-4f7d-b263-efc39f4c1f16";
 
 // Current supporter count on LEGO Ideas — update this number and the Journey bar marker moves with it.
-export const numberOfSupports: number = 366;
+export const numberOfSupports: number = 373;
 
 export const NAV_ITEMS = [
   { href: "/", label: "Story" },
