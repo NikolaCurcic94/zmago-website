@@ -4,6 +4,7 @@ import {
   HEAD_PATH,
   HEAD_PIVOT,
   HEAD_SWEEP_SIDE,
+  headPathValue,
   JAW_AS_EXPORTED,
   JAW_PART_NAMES,
   JAW_PIVOT,
@@ -111,12 +112,12 @@ export function rigHead(model: Object3D, jaws: { lower: Group | null; upper: Gro
 const swingAxis = new Vector3();
 
 /**
- * Head orientation for a slider value -1…1: looks the value up on HEAD_PATH (linear
+ * Head orientation for a slider value -1…1: maps it onto the side parts of HEAD_PATH (headPathValue), looks it up (linear
  * between points), then tilts by θ about the axis perpendicular to the neck in
  * direction φ. A handful of float ops per change — nothing runs per frame.
  */
 export function headQuaternion(head: number, rig: HeadRig, target: Quaternion): Quaternion {
-  const s = MathUtils.clamp(head, -1, 1);
+  const s = headPathValue(head);
   let i = 1;
   while (i < HEAD_PATH.length - 1 && HEAD_PATH[i][0] < s) i++;
   const [s0, phi0, th0] = HEAD_PATH[i - 1];

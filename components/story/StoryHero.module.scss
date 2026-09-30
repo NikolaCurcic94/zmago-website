@@ -32,6 +32,11 @@
   }
 }
 
+// The dragon's right edge lines up with the content grid (never closer to the screen edge than the gutter),
+// so on very wide screens it stays inside the layout instead of drifting off to the right.
+$hero-art-tablet: 70%;
+$hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
+
 @mixin approach-lite {
   animation-name: zm-approach-lite;
   filter: none;
@@ -47,27 +52,33 @@
     radial-gradient(1100px 620px at 68% 34%, #23264b 0%, rgba(35, 38, 75, 0) 64%),
     radial-gradient(900px 500px at 18% 92%, #181a2c, #0f1019 72%);
 
-  // Phones: as tall as its content — the dragon across the full width on top, the text right under it.
-  @media (max-width: #{$bp-tablet - 1px}) {
+  // Phones and tablets: as tall as its content — the dragon across the full width on top, the text right under it.
+  @media (max-width: #{$bp-desktop - 1px}) {
     min-height: 0;
   }
 }
 
 .dragon {
   position: absolute;
-  right: -5%;
-  top: 4%;
-  width: min(1060px, 68%);
+  right: $hero-art-right;
+  top: 0;
+  width: min(865px, 68%);
   height: auto;
   z-index: 5;
   transform-origin: 52% 54%;
   animation: zm-approach 1.9s $ease-approach both;
 
-  @media (max-width: #{$bp-tablet - 1px}) {
+  @media (max-width: #{$bp-desktop - 1px}) {
     right: 0;
     top: 0;
     width: 100%;
     @include approach-lite;
+  }
+
+  // Tablets: 70% of the width, kept to the right like on desktop.
+  @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+    right: $gutter;
+    width: $hero-art-tablet;
   }
 
   @supports (-webkit-touch-callout: none) {
@@ -86,27 +97,32 @@
     transparent 78%
   );
 
-  // Phones: the text sits below the dragon, so fade the image into the page at its bottom edge instead.
-  @media (max-width: #{$bp-tablet - 1px}) {
+  // Phones and tablets: the text sits below the dragon, so fade the image into the page at its bottom edge instead.
+  @media (max-width: #{$bp-desktop - 1px}) {
     background: linear-gradient(to bottom, transparent 42%, rgba(15, 16, 25, 0.9) 66%, #0f1019 78%);
   }
 }
 
 .glow {
   position: absolute;
-  right: -5%;
-  top: 4%;
-  width: min(1060px, 68%);
+  right: $hero-art-right;
+  top: 0;
+  width: min(865px, 68%);
   aspect-ratio: 3 / 2;
   pointer-events: none;
   background: radial-gradient(48% 46% at 50% 52%, $accent-glow, transparent 72%);
   animation: zm-approach 1.9s $ease-approach both;
 
-  @media (max-width: #{$bp-tablet - 1px}) {
+  @media (max-width: #{$bp-desktop - 1px}) {
     right: 0;
     top: 0;
     width: 100%;
     @include approach-lite;
+  }
+
+  @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+    right: $gutter;
+    width: $hero-art-tablet;
   }
 
   @supports (-webkit-touch-callout: none) {
@@ -129,10 +145,15 @@
   padding: 0 $gutter 88px;
   width: 100%;
 
-  // Phones: start just under the full-width dragon (3:2 → two thirds of the width tall).
-  @media (max-width: #{$bp-tablet - 1px}) {
+  // Phones and tablets: start just under the full-width dragon (3:2 → two thirds of the width tall).
+  @media (max-width: #{$bp-desktop - 1px}) {
     padding-top: calc(66.667vw - 2px);
     padding-bottom: 44px;
+  }
+
+  // Tablets: the dragon is only 70% wide, so it is 70% as tall too — pull the text up to meet it.
+  @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+    padding-top: calc(#{$hero-art-tablet} * 2 / 3 - 140px);
   }
 }
 

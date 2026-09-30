@@ -11,13 +11,13 @@ const asset = (name: string, width: number, height: number): ImageAsset => ({
 });
 
 export const images = {
-  hero: asset("hero", 1800, 1200),
-  ideaMain: asset("zmago-render-bricklink-fix-crown-from-profile", 3240, 2160),
-  buildMain: asset("zmago-render-bricklink-fix-crown-fix-side-2", 3240, 2160),
-  buildDetail1: asset("zmago-render-bricklink-fix-crown-from-the-back", 3240, 2160),
+  hero: asset("zmago-render-bricklink-fix-crown-2-head_3-front-noshadow_7", 3240, 2160),
+  ideaMain: asset("zmago-render-bricklink-fix-crown-2-head", 3240, 2160),
+  buildMain: asset("zmago-render-bricklink-fix-crown-back-right", 3240, 2160),
+  buildDetail1: asset("zmago-render-bricklink-fix-crown-2-profile", 3240, 2160),
   buildDetail2: asset("zmago-render-bricklink-fix-crown-tail", 3240, 2160),
-  detailsMain: asset("zmago-render-bricklink-fix-crown-back-right", 3240, 2160),
-  supportMain: asset("zmago-render-bricklink-fix-crown-back-left", 3240, 2160),
+  detailsMain: asset("zmago-render-bricklink-fix-crown-back-left", 3240, 2160),
+  supportMain: asset("zmago-render-bricklink-fix-crown-2-head_2", 3240, 2160),
   z01: asset("z01", 1400, 933),
   z02: asset("z02", 1400, 933),
   z03: asset("z03", 1400, 933),

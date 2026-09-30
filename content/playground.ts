@@ -468,10 +468,29 @@ export const JAW_LIMIT_ALONG_HEAD: readonly (readonly [number, number])[] = [
   [0.9801, 1.00], [0.9901, 1.00], [1.0000, 1.00],
 ];
 
+/**
+ * The Head slider only turns the head left and right: it uses just the two straight side parts of
+ * HEAD_PATH (φ 170 out to its left amplitude, φ 370 out to its right one) and skips the rounds up and
+ * down. Slider -1 … 0 … 1 is spread over path -HEAD_LEFT_END … 0 … HEAD_RIGHT_END.
+ */
+export const HEAD_LEFT_END = 0.3284; // θ 31.7° left
+export const HEAD_RIGHT_END = 0.456; // θ 24.3° right
+
+/** Head slider value → position on HEAD_PATH (and JAW_LIMIT_ALONG_HEAD). */
+export function headPathValue(head: number): number {
+  const s = Math.min(1, Math.max(-1, head));
+  return s < 0 ? s * HEAD_LEFT_END : s * HEAD_RIGHT_END;
+}
+
+/** Position on HEAD_PATH → Head slider value (inverse of headPathValue on the side parts). */
+function headSliderValue(path: number): number {
+  return path < 0 ? Math.max(-1, path / HEAD_LEFT_END) : Math.min(1, path / HEAD_RIGHT_END);
+}
+
 /** Largest safe Jaw value with the head at this Head slider value (the lower of the two samples around it). */
 export function maxJawAtHead(head: number): number {
   const table = JAW_LIMIT_ALONG_HEAD;
-  const s = Math.min(1, Math.max(-1, head));
+  const s = headPathValue(head);
   let i = 1;
   while (i < table.length - 1 && table[i][0] < s) i++;
   const [s0, j0] = table[i - 1];
@@ -486,7 +505,7 @@ export function headRangeForJaw(jaw: number): { min: number; max: number } {
   for (let i = zero; i < table.length && table[i][1] >= jaw; i++) max = table[i][0];
   let min = 0;
   for (let i = zero - 1; i >= 0 && table[i][1] >= jaw; i--) min = table[i][0];
-  return { min, max };
+  return { min: headSliderValue(min), max: headSliderValue(max) };
 }
 
 /**
@@ -833,7 +852,7 @@ export type ModelState = {
   orbit: number;
   /** 70–180, 112 is the neutral framing. */
   zoom: number;
-  /** -1 = left then up … 0 = neutral … 1 = right then down (HEAD_PATH). */
+  /** -1 = fully left … 0 = neutral … 1 = fully right (the side parts of HEAD_PATH, see headPathValue). */
   head: number;
   /** Lower neck joint: -1 = bent down by NECK_LOWER_MAX_DEG … 0 = neutral … 1 = up by NECK_LOWER_UP_MAX_DEG. */
   neck: number;

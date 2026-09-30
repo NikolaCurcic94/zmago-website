@@ -6,9 +6,8 @@ export const DISCLAIMER =
 // Placeholder until the real LEGO Ideas project page is live.
 export const IDEAS_URL = "https://ideas.lego.com/product-ideas/39d53f86-6136-4f7d-b263-efc39f4c1f16";
 
-// Static placeholder count until the live number is available.
-export const SUPPORTERS: number = 0;
-export const SUPPORTER_GOAL: number = 10000;
+// Current supporter count on LEGO Ideas — update this number and the Journey bar marker moves with it.
+export const numberOfSupports: number = 366;
 
 export const NAV_ITEMS = [
   { href: "/", label: "Story" },
@@ -44,8 +43,8 @@ export const FEATURES = [
 ];
 
 export const MILESTONES = [
-  { value: "100", label: "First hundred" },
-  { value: "1,000", label: "Second window opens" },
-  { value: "5,000", label: "Halfway" },
-  { value: "10,000", label: "Review stage", highlight: true },
+  { value: 100, label: "First hundred" },
+  { value: 1000, label: "Second window opens" },
+  { value: 5000, label: "Halfway" },
+  { value: 10000, label: "Review stage", highlight: true },
 ];

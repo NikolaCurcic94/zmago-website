@@ -22,7 +22,7 @@ export function StoryHero() {
           height={images.hero.height}
           alt="Zmago the Dragon, LEGO model, three-quarter view"
           className={styles.dragon}
-          sizes="(max-width: 1558px) 68vw, 1060px"
+          sizes="(max-width: 599px) 100vw, (max-width: 1023px) 70vw,(max-width: 1272px) 68vw, 865px"
           loading="eager"
           fetchPriority="high"
         />

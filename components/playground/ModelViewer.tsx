@@ -78,7 +78,7 @@ useGLTF.preload(MODEL_URL);
 type ModelViewerProps = {
   /** Lower jaw, 0 = closed … 1 = fully open. */
   jaw: number;
-  /** Head joint, -1 = left then up … 0 = neutral … 1 = right then down (HEAD_PATH). */
+  /** Head joint, -1 = fully left … 0 = neutral … 1 = fully right (headPathValue). */
   head: number;
   /** Lower neck joint, -1 = bent fully down … 0 = neutral … 1 = bent fully up. */
   neck: number;

@@ -15,7 +15,7 @@ export function SupportCta() {
           height={images.supportMain.height}
           alt="Zmago with wings spread"
           className={styles.image}
-          sizes="(max-width: 1143px) 56vw, 640px"
+          sizes="(max-width: 599px) 100vw, (max-width: 1153px) 52vw, 600px"
         />
         <div className={styles.shade} aria-hidden="true" />
         <div className={styles.content}>
