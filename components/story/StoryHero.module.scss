@@ -86,6 +86,35 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 }
 
+// Desktop with the live model: the approach is over, so the render holds its final frame without the
+// animation (an animation's fill would pin its opacity), and can then fade out under the live model.
+.dragonSettled {
+  animation: none;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 72px rgba(150, 138, 224, 0.22));
+  transition: opacity 1.2s ease;
+}
+
+.dragonHidden {
+  opacity: 0;
+}
+
+// The live 3D model (desktop only, see StoryHero.tsx): the render's exact box, cross-faded in once drawn.
+.live {
+  position: absolute;
+  right: $hero-art-right;
+  top: 0;
+  width: min(865px, 68%);
+  aspect-ratio: 3 / 2;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.liveReady {
+  opacity: 1;
+}
+
 .shade {
   position: absolute;
   inset: 0;

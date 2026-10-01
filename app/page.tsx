@@ -4,6 +4,7 @@ import { BuildSection } from "@/components/story/BuildSection";
 import { DetailsSection } from "@/components/story/DetailsSection";
 import { JourneySection } from "@/components/story/JourneySection";
 import { SupportCta } from "@/components/story/SupportCta";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 export default function StoryPage() {
   return (
@@ -14,6 +15,7 @@ export default function StoryPage() {
       <DetailsSection />
       <JourneySection />
       <SupportCta />
+      <RevealOnScroll />
     </main>
   );
 }

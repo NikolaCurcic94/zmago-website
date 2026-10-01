@@ -3,17 +3,18 @@ import { images } from "@/content/images";
 import { IDEAS_URL } from "@/content/site";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { SectionKicker } from "@/components/ui/SectionKicker";
+import { reveal } from "@/components/ui/reveal";
 import styles from "./SupportCta.module.scss";
 
 export function SupportCta() {
   return (
     <section className={styles.section}>
-      <div className={styles.panel}>
+      <div className={styles.panel} {...reveal()}>
         <Image
           src={images.supportMain.src}
           width={images.supportMain.width}
           height={images.supportMain.height}
-          alt="Zmago with wings spread"
+          alt="Zmago facing forward, wings spread and tail raised"
           className={styles.image}
           sizes="(max-width: 599px) 100vw, (max-width: 1153px) 52vw, 600px"
         />

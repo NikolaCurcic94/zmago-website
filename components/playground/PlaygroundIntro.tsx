@@ -21,6 +21,13 @@ const readSeen = () => {
 };
 const noSubscribe = () => () => {};
 
+/** Camera controls, side by side for mouse and touch. */
+const CONTROLS = [
+  { action: "Orbit", desktop: "Drag with the mouse, or use the ← → keys.", mobile: "Drag with one finger." },
+  { action: "Zoom", desktop: "Scroll the wheel.", mobile: "Pinch with two fingers." },
+  { action: "Pan", desktop: "Right-drag.", mobile: "Drag with two fingers." },
+];
+
 /** How to handle the model: shown the first time the playground opens in a visit (after the disclaimer). */
 export function PlaygroundIntro() {
   const { entered } = useDisclaimer();
@@ -69,30 +76,31 @@ export function PlaygroundIntro() {
         <h2 id="zm-intro-title" className={styles.title}>
           Handle the model
         </h2>
-        <ul className={styles.list}>
-          <li>
-            <span className={styles.term}>Orbit</span>
-            <span className={styles.touch}>Drag with one finger.</span>
-            <span className={styles.mouse}>Drag with the mouse, or use the ← → keys.</span>
-          </li>
-          <li>
-            <span className={styles.term}>Zoom</span>
-            <span className={styles.touch}>Pinch with two fingers.</span>
-            <span className={styles.mouse}>Scroll the wheel.</span>
-          </li>
-          <li>
-            <span className={styles.term}>Pan</span>
-            <span className={styles.touch}>Drag with two fingers.</span>
-            <span className={styles.mouse}>Right-drag.</span>
-          </li>
-          <li>
-            <span className={styles.term}>Pose</span>
-            <span>
-              The sliders move Zmago&rsquo;s joints — the middle of each is the pose as built. Pick a paw with FL, FR,
-              BL or BR.
-            </span>
-          </li>
-        </ul>
+        <table className={styles.controls}>
+          <thead>
+            <tr>
+              <td />
+              <th scope="col">Desktop</th>
+              <th scope="col">Mobile</th>
+            </tr>
+          </thead>
+          <tbody>
+            {CONTROLS.map(({ action, desktop, mobile }) => (
+              <tr key={action}>
+                <th scope="row">{action}</th>
+                <td>{desktop}</td>
+                <td>{mobile}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className={styles.both}>
+          <span className={styles.term}>Pose</span>
+          <span>
+            On both: the sliders move Zmago&rsquo;s joints — the middle of each is the pose as built. Pick a paw with
+            FL, FR, BL or BR.
+          </span>
+        </p>
         <button ref={okRef} type="button" className={styles.ok} onClick={close}>
           Got it
         </button>

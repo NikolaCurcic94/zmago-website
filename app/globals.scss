@@ -100,6 +100,20 @@ input[type="range"] {
   background: $bg;
 }
 
+// Scroll reveals (components/ui/reveal.ts + RevealOnScroll): an element still below the fold waits a few pixels
+// down and transparent, then fades up into place when it scrolls into view. Only opacity and transform move.
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+[data-reveal="shown"] {
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

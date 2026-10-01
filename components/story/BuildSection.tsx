@@ -2,6 +2,7 @@ import Image from "next/image";
 import { images, type ImageAsset } from "@/content/images";
 import { BUILD_NOTES } from "@/content/site";
 import { SectionKicker } from "@/components/ui/SectionKicker";
+import { reveal } from "@/components/ui/reveal";
 import styles from "./BuildSection.module.scss";
 
 function FramedImage({ image, alt, sizes }: { image: ImageAsset; alt: string; sizes: string }) {
@@ -25,7 +26,7 @@ export function BuildSection() {
       <SectionKicker number="02" label="The Build" />
       <h2 className={styles.heading}>Built one piece at a time.</h2>
       <figure className={styles.layout}>
-        <div className={styles.mainColumn}>
+        <div className={styles.mainColumn} {...reveal()}>
           <FramedImage image={images.buildMain} alt="Zmago in profile" sizes="(max-width: 860px) 100vw, 820px" />
           <figcaption className={styles.mainCaption}>
             Each spine segment uses two hinge plates, a curved slope, and a gold claw. Repeat the same structure down the body, and the spine becomes flexible enough to shape.
@@ -33,7 +34,7 @@ export function BuildSection() {
         </div>
         <div className={styles.sideColumn}>
           <div className={styles.details}>
-            <figure className={styles.detail}>
+            <figure className={styles.detail} {...reveal(120)}>
               <FramedImage
                 image={images.buildDetail1}
                 alt="Head and neck seen from above"
@@ -41,7 +42,7 @@ export function BuildSection() {
               />
               <figcaption className={styles.detailCaption}>Horns and whiskers, held in place by friction pins.</figcaption>
             </figure>
-            <figure className={styles.detail}>
+            <figure className={styles.detail} {...reveal(220)}>
               <FramedImage
                 image={images.buildDetail2}
                 alt="Segmented tail rising above the wings"
@@ -52,7 +53,7 @@ export function BuildSection() {
               </figcaption>
             </figure>
           </div>
-          <div className={styles.notes}>
+          <div className={styles.notes} {...reveal(320)}>
             <div className={styles.notesTitle}>Build notes</div>
             <dl className={styles.notesList}>
               {BUILD_NOTES.map(({ label, value }) => (

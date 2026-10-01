@@ -2,6 +2,7 @@ import Image from "next/image";
 import { images } from "@/content/images";
 import { FEATURES } from "@/content/site";
 import { SectionKicker } from "@/components/ui/SectionKicker";
+import { reveal } from "@/components/ui/reveal";
 import styles from "./DetailsSection.module.scss";
 
 export function DetailsSection() {
@@ -14,7 +15,7 @@ export function DetailsSection() {
             <h2 className={styles.heading}>Every joint has a purpose.</h2>
             <ol className={styles.features}>
               {FEATURES.map(({ title, body }, i) => (
-                <li key={title} className={styles.feature}>
+                <li key={title} className={styles.feature} {...reveal(i * 90)}>
                   <span className={styles.number}>{String(i + 1).padStart(2, "0")}</span>
                   <div>
                     <div className={styles.featureTitle}>{title}</div>
@@ -24,7 +25,7 @@ export function DetailsSection() {
               ))}
             </ol>
           </div>
-          <div className={styles.media}>
+          <div className={styles.media} {...reveal(150)}>
             <Image
               src={images.detailsMain.src}
               width={images.detailsMain.width}

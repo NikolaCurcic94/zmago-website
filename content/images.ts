@@ -17,7 +17,7 @@ export const images = {
   buildDetail1: asset("zmago-render-bricklink-fix-crown-2-profile", 3240, 2160),
   buildDetail2: asset("zmago-render-bricklink-fix-crown-tail", 3240, 2160),
   detailsMain: asset("zmago-render-final-fix-back_3", 3240, 2160),
-  supportMain: asset("zmago-render-bricklink-fix-crown-2-head_2", 3240, 2160),
+  supportMain: asset("zmago-render-bricklink-fix-crown-2-head_3-front-noshadow_6", 3240, 2160),
   // Gallery renders
   frontWings: asset("zmago-render-bricklink-fix-crown-2-head_3-front-noshadow_6", 3240, 2160),
   frontThreeQuarter: asset("zmago-render-bricklink-fix-crown-2-head_3-front-noshadow_7", 3240, 2160),
