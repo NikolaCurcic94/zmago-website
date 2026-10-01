@@ -1,15 +1,5 @@
 @use "../../styles" as *;
 
-@keyframes zm-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -7px;
-  }
-}
-
 .section {
   @include container;
   padding-top: 110px;
@@ -47,14 +37,6 @@
   // Above the shade (the dragon is never dimmed by the gradient), below the text.
   z-index: 2;
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.62)) drop-shadow(0 0 66px $accent-glow);
-  // A slow float. `translate` composes with the centring transform above, and only moves the layer:
-  // the shadowed image is drawn once, never redrawn while it floats.
-  animation: zm-float 7s ease-in-out infinite;
-  will-change: translate;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
 
   @media (max-width: #{$bp-tablet - 1px}) {
     position: relative;
