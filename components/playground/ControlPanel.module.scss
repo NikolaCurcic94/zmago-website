@@ -1,6 +1,6 @@
 @use "../../styles" as *;
 
-.panel {
+.control-panel {
   position: absolute;
   left: 50%;
   bottom: 22px;
@@ -34,18 +34,18 @@
 }
 
 // Nocturne disabled state: the control fades, its label stays readable.
-.slider input:disabled {
+.control-panel__slider input:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.divider {
+.control-panel__divider {
   width: 1px;
   align-self: stretch;
   background: rgba($text, 0.1);
 }
 
-.joints {
+.control-panel__joints {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
   gap: 14px;
@@ -56,7 +56,7 @@
   }
 }
 
-.slider {
+.control-panel__slider {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -71,7 +71,7 @@
 }
 
 // Paw: one slider for the selected paw, and a row of four numbered radio pills (1–4) below it.
-.paws {
+.control-panel__paws {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -83,17 +83,17 @@
   }
 }
 
-.pawName {
+.control-panel__paw-name {
   color: $neutral-300;
   letter-spacing: 0.08em;
 }
 
-.pawPicker {
+.control-panel__paw-picker {
   display: flex;
   gap: 6px;
 }
 
-.pawOption {
+.control-panel__paw-option {
   position: relative;
   flex: 1 1 0;
   display: flex;

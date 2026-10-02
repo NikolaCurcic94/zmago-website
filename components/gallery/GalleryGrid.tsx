@@ -21,7 +21,7 @@ export function GalleryGrid() {
 
   return (
     <>
-      <div className={styles.rows}>
+      <div className={styles["gallery-grid"]}>
         {GALLERY_ROWS.map((row, i) => (
           <Row key={i} row={row} onOpen={setOpenIndex} />
         ))}
@@ -36,7 +36,7 @@ function Row({ row, onOpen }: { row: GalleryRow; onOpen: (index: number) => void
   switch (row.layout) {
     case "wide-pair":
       return (
-        <div className={row.mirrored ? `${styles.widePair} ${styles.widePairMirrored}` : styles.widePair}>
+        <div className={row.mirrored ? `${styles["gallery-grid__wide-pair"]} ${styles["gallery-grid__wide-pair--mirrored"]}` : styles["gallery-grid__wide-pair"]}>
           <Shot shot={row.wide} wide area="wide" onOpen={onOpen} />
           <Shot shot={row.pair[0]} area="a" onOpen={onOpen} />
           <Shot shot={row.pair[1]} area="b" onOpen={onOpen} />
@@ -45,7 +45,7 @@ function Row({ row, onOpen }: { row: GalleryRow; onOpen: (index: number) => void
       );
     case "flanked":
       return (
-        <div className={styles.flanked}>
+        <div className={styles["gallery-grid__flanked"]}>
           <Shot shot={row.left} area="a" onOpen={onOpen} />
           {row.left.note && <Note note={row.left.note} area="na" />}
           <Shot shot={row.wide} wide area="wide" onOpen={onOpen} />
@@ -55,7 +55,7 @@ function Row({ row, onOpen }: { row: GalleryRow; onOpen: (index: number) => void
       );
     case "grid":
       return (
-        <div className={styles.plainGrid}>
+        <div className={styles["gallery-grid__plain-grid"]}>
           {row.shots.map((shot, i) =>
             "placeholder" in shot ? (
               <PlaceholderShot key={`placeholder-${i}`} slot={shot} />
@@ -79,19 +79,19 @@ type ShotProps = {
 function Shot({ shot: { index, caption }, wide = false, area, onOpen }: ShotProps) {
   const { image, alt } = SHOTS[index];
   return (
-    <figure className={wide ? styles.wideFigure : styles.figure} style={area ? { gridArea: area } : undefined}>
-      <div className={styles.frame}>
+    <figure className={wide ? styles["gallery-grid__wide-figure"] : styles["gallery-grid__figure"]} style={area ? { gridArea: area } : undefined}>
+      <div className={styles["gallery-grid__frame"]}>
         <Image
           src={image.src}
           width={image.width}
           height={image.height}
           alt={alt}
-          className={styles.image}
+          className={styles["gallery-grid__image"]}
           sizes={wide ? WIDE_SIZES : SMALL_SIZES}
         />
         <OpenButton label={caption} onOpen={() => onOpen(index)} />
       </div>
-      <figcaption className={styles.caption}>{caption}</figcaption>
+      <figcaption className={styles["gallery-grid__caption"]}>{caption}</figcaption>
     </figure>
   );
 }
@@ -99,21 +99,21 @@ function Shot({ shot: { index, caption }, wide = false, area, onOpen }: ShotProp
 /** Reserved frame for a photo still to come: same size as a small shot, not clickable. */
 function PlaceholderShot({ slot }: { slot: GalleryPlaceholder }) {
   return (
-    <figure className={styles.figure}>
-      <div className={`${styles.frame} ${styles.placeholderFrame}`}>
-        <span className={styles.placeholderLabel}>
-          <span className={styles.placeholderLine} aria-hidden="true" />
+    <figure className={styles["gallery-grid__figure"]}>
+      <div className={`${styles["gallery-grid__frame"]} ${styles["gallery-grid__frame--placeholder"]}`}>
+        <span className={styles["gallery-grid__placeholder-label"]}>
+          <span className={styles["gallery-grid__placeholder-line"]} aria-hidden="true" />
           Coming soon
         </span>
       </div>
-      <figcaption className={styles.caption}>{slot.caption}</figcaption>
+      <figcaption className={styles["gallery-grid__caption"]}>{slot.caption}</figcaption>
     </figure>
   );
 }
 
 function Note({ note, area }: { note: { lead?: string; text: string }; area: string }) {
   return (
-    <FillText lead={note.lead} fill="desktop" className={styles.note} style={{ gridArea: area }}>
+    <FillText lead={note.lead} fill="desktop" className={styles["gallery-grid__note"]} style={{ gridArea: area }}>
       {note.text}
     </FillText>
   );
@@ -124,7 +124,7 @@ function OpenButton({ label, onOpen }: { label: string; onOpen: () => void }) {
   return (
     <button
       type="button"
-      className={styles.openButton}
+      className={styles["gallery-grid__open-button"]}
       aria-label={`Open “${label}” full screen`}
       aria-haspopup="dialog"
       onClick={onOpen}

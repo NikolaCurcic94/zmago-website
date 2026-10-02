@@ -46,17 +46,17 @@ export function FillText({ lead, fill = "always", children, className, style }: 
     return () => observer.disconnect();
   }, []);
 
-  const classes = [styles.box, fill === "desktop" ? styles.fillDesktop : styles.fillAlways, className]
+  const classes = [styles["fill-text"], fill === "desktop" ? styles["fill-text--fill-desktop"] : styles["fill-text--fill-always"], className]
     .filter(Boolean)
     .join(" ");
 
   return (
     <div ref={boxRef} className={classes} style={style} data-visible={lines >= MIN_LINES || undefined}>
       {/* The clamp only takes effect in fill mode, where the text is a -webkit-box. */}
-      <p ref={textRef} className={styles.text} style={{ WebkitLineClamp: Math.max(lines, 1) }}>
+      <p ref={textRef} className={styles["fill-text__text"]} style={{ WebkitLineClamp: Math.max(lines, 1) }}>
         {lead && (
-          <span className={styles.lead}>
-            <span className={styles.leadLine} aria-hidden="true" />
+          <span className={styles["fill-text__lead"]}>
+            <span className={styles["fill-text__lead-line"]} aria-hidden="true" />
             {lead}
           </span>
         )}

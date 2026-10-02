@@ -5,19 +5,19 @@ import styles from "./SiteFooter.module.scss";
 
 export function SiteFooter() {
   return (
-    <footer className={styles.footer}>
-      <div className={styles.inner}>
+    <footer className={styles["site-footer"]}>
+      <div className={styles["site-footer__inner"]}>
         <div>
-          <div className={styles.wordmark}>Zmago</div>
-          <p className={styles.disclaimer}>{DISCLAIMER}</p>
+          <div className={styles["site-footer__wordmark"]}>Zmago</div>
+          <p className={styles["site-footer__disclaimer"]}>{DISCLAIMER}</p>
         </div>
-        <nav className={styles.links} aria-label="Footer">
+        <nav className={styles["site-footer__links"]} aria-label="Footer">
           {NAV_ITEMS.map(({ href, label }) => (
-            <Link key={href} href={href} className={styles.link}>
+            <Link key={href} href={href} className={styles["site-footer__link"]}>
               {label}
             </Link>
           ))}
-          <DisclaimerButton className={styles.disclaimerButton} />
+          <DisclaimerButton className={styles["site-footer__disclaimer-button"]} />
         </nav>
       </div>
     </footer>

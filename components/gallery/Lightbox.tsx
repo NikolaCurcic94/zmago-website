@@ -41,25 +41,25 @@ export function Lightbox({ index, onChange, onClose }: LightboxProps) {
   return createPortal(
     <div
       ref={dialogRef}
-      className={styles.overlay}
+      className={styles["lightbox"]}
       role="dialog"
       aria-modal="true"
       aria-label="Gallery viewer"
     >
-      <div className={styles.topBar}>
-        <span className={styles.counter}>{counter}</span>
-        <button ref={closeRef} type="button" className={styles.close} onClick={onClose}>
+      <div className={styles["lightbox__top-bar"]}>
+        <span className={styles["lightbox__counter"]}>{counter}</span>
+        <button ref={closeRef} type="button" className={styles["lightbox__close"]} onClick={onClose}>
           Close
         </button>
       </div>
-      <div className={styles.stage}>
-        <button type="button" className={styles.arrow} onClick={() => step(-1)} aria-label="Previous image">
+      <div className={styles["lightbox__stage"]}>
+        <button type="button" className={styles["lightbox__arrow"]} onClick={() => step(-1)} aria-label="Previous image">
           <span aria-hidden="true">&#8592;</span>
         </button>
         {/* Same frame the shot sits in on the page, sized to the image's own proportions. */}
         <div
           key={shot.image.src}
-          className={styles.frame}
+          className={styles["lightbox__frame"]}
           style={{ "--frame-ratio": shot.image.width / shot.image.height } as CSSProperties}
         >
           <Image
@@ -67,15 +67,15 @@ export function Lightbox({ index, onChange, onClose }: LightboxProps) {
             width={shot.image.width}
             height={shot.image.height}
             alt={shot.caption}
-            className={styles.image}
+            className={styles["lightbox__image"]}
             sizes="(max-width: 1200px) 100vw, 1200px"
           />
         </div>
-        <button type="button" className={styles.arrow} onClick={() => step(1)} aria-label="Next image">
+        <button type="button" className={styles["lightbox__arrow"]} onClick={() => step(1)} aria-label="Next image">
           <span aria-hidden="true">&#8594;</span>
         </button>
       </div>
-      <div className={styles.caption} aria-live="polite">
+      <div className={styles["lightbox__caption"]} aria-live="polite">
         {shot.caption}
       </div>
     </div>,

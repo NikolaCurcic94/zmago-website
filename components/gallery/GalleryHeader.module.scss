@@ -1,6 +1,6 @@
 @use "../../styles" as *;
 
-.header {
+.gallery-header {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -9,12 +9,12 @@
   margin-bottom: 44px;
 }
 
-.kicker {
+.gallery-header__kicker {
   @include eyebrow;
   margin-bottom: 16px;
 }
 
-.title {
+.gallery-header__title {
   margin: 0;
   font-size: clamp(34px, 5.4vw, 68px);
   font-weight: 500;
@@ -22,7 +22,7 @@
   line-height: 1;
 }
 
-.hint {
+.gallery-header__hint {
   margin: 0;
   font-size: 13px;
   line-height: 1.7;

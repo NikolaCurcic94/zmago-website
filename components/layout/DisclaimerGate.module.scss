@@ -11,7 +11,7 @@
   }
 }
 
-.overlay {
+.disclaimer-gate {
   position: fixed;
   inset: 0;
   z-index: 90;
@@ -23,11 +23,11 @@
 }
 
 // Accepted earlier this session: hidden before hydration (see DISCLAIMER_BOOT_SCRIPT).
-:global(html[data-zm-entered]) .overlay {
+:global(html[data-zm-entered]) .disclaimer-gate {
   display: none;
 }
 
-.dialog {
+.disclaimer-gate__dialog {
   width: min(520px, 100%);
   padding: 34px 34px 28px;
   border-radius: $radius-lg;
@@ -38,24 +38,24 @@
   animation: zm-rise 0.5s ease both;
 }
 
-.kicker {
+.disclaimer-gate__kicker {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 22px;
 }
 
-.kickerLine {
+.disclaimer-gate__kicker-line {
   width: 26px;
   height: 1px;
   background: $accent;
 }
 
-.kickerText {
+.disclaimer-gate__kicker-text {
   @include eyebrow(0.24em);
 }
 
-.title {
+.disclaimer-gate__title {
   margin: 0 0 14px;
   font-size: 27px;
   font-weight: 500;
@@ -63,39 +63,39 @@
   line-height: 1.15;
 }
 
-.lead {
+.disclaimer-gate__lead {
   margin: 0 0 10px;
   font-size: 14px;
   line-height: 1.65;
   color: $neutral-300;
 }
 
-.body {
+.disclaimer-gate__body {
   margin: 0 0 26px;
   font-size: 13px;
   line-height: 1.65;
   color: $neutral-500;
 }
 
-.actions {
+.disclaimer-gate__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
 }
 
-.enter {
+.disclaimer-gate__enter {
   @include button-primary;
   gap: 8px;
   padding: 11px 20px;
 }
 
-.arrow {
+.disclaimer-gate__arrow {
   font-size: 15px;
   line-height: 1;
 }
 
-.note {
+.disclaimer-gate__note {
   font-size: 11px;
   color: $neutral-600;
 }

@@ -3,11 +3,33 @@
 // Real header height from SiteHeader (wraps to two rows on phones); design value until measured.
 $header: var(--zm-header-height, #{$header-height});
 
-.stage {
+// The title row above the stage: placed like the gallery's header (same container, 64px under the site
+// header), at a fixed height so the stage below can take exactly the rest of the screen.
+$title-top: 64px;
+$title-line: 16px;
+$title-bottom: 24px;
+$title-row: $title-top + $title-line + $title-bottom;
+
+.playground-stage__header {
+  box-sizing: border-box;
+  height: $title-row;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: $title-top $gutter 0;
+}
+
+.playground-stage__kicker {
+  @include eyebrow;
+  line-height: $title-line;
+}
+
+.playground-stage {
   position: relative;
-  min-height: calc(100vh - #{$header-height});
+  min-height: calc(100vh - #{$header-height} - #{$title-row});
   overflow: hidden;
   background:
+    // Top edge fades from the page ground, so the title row above flows into the stage without a seam.
+    linear-gradient(to bottom, $bg, rgba($bg, 0) 140px),
     radial-gradient(900px 620px at 50% 44%, #23264d 0%, rgba(35, 38, 77, 0) 66%),
     radial-gradient(600px 400px at 50% 96%, #1c1e33, #0f101c 72%);
 
@@ -17,13 +39,13 @@ $header: var(--zm-header-height, #{$header-height});
     display: flex;
     flex-direction: column;
     min-height: 0;
-    height: calc(100vh - #{$header});
-    height: calc(100svh - #{$header});
+    height: calc(100vh - #{$header} - #{$title-row});
+    height: calc(100svh - #{$header} - #{$title-row});
   }
 }
 
 // Holds the 3D viewer: the whole stage on larger screens, the space above the panel on phones.
-.modelArea {
+.playground-stage__model-area {
   position: absolute;
   inset: 0;
 
@@ -36,11 +58,11 @@ $header: var(--zm-header-height, #{$header-height});
 }
 
 // Wraps the control panel only so the stage can measure it; adds no box of its own.
-.panelSlot {
+.playground-stage__panel-slot {
   display: contents;
 }
 
-.floorGlow {
+.playground-stage__floor-glow {
   position: absolute;
   left: 50%;
   bottom: 8%;
@@ -51,19 +73,4 @@ $header: var(--zm-header-height, #{$header-height});
   filter: blur(4px);
 }
 
-.intro {
-  position: absolute;
-  left: 24px;
-  top: 24px;
-  pointer-events: none;
-
-  @media (max-width: #{$bp-tablet - 1px}) {
-    left: 16px;
-    top: 14px;
-  }
-}
-
-.kicker {
-  @include eyebrow;
-}
 

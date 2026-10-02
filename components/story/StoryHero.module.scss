@@ -42,7 +42,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   filter: none;
 }
 
-.hero {
+.story-hero {
   position: relative;
   min-height: min(88vh, 860px);
   display: flex;
@@ -58,7 +58,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 }
 
-.dragon {
+.story-hero__dragon {
   position: absolute;
   right: $hero-art-right;
   top: 0;
@@ -88,18 +88,18 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
 
 // Desktop with the live model: the approach is over, so the render holds its final frame without the
 // animation (an animation's fill would pin its opacity), and can then fade out under the live model.
-.dragonSettled {
+.story-hero__dragon--settled {
   animation: none;
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 72px rgba(150, 138, 224, 0.22));
   transition: opacity 1.2s ease;
 }
 
-.dragonHidden {
+.story-hero__dragon--hidden {
   opacity: 0;
 }
 
 // The live 3D model (desktop only, see StoryHero.tsx): the render's exact box, cross-faded in once drawn.
-.live {
+.story-hero__live {
   position: absolute;
   right: $hero-art-right;
   top: 0;
@@ -111,11 +111,11 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   transition: opacity 1.2s ease;
 }
 
-.liveReady {
+.story-hero__live--ready {
   opacity: 1;
 }
 
-.shade {
+.story-hero__shade {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -132,7 +132,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 }
 
-.glow {
+.story-hero__glow {
   position: absolute;
   right: $hero-art-right;
   top: 0;
@@ -161,12 +161,12 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
 
 // As in the design, reduced motion stills the dragon itself.
 @media (prefers-reduced-motion: reduce) {
-  .dragon {
+  .story-hero__dragon {
     animation: none !important;
   }
 }
 
-.content {
+.story-hero__content {
   position: relative;
   z-index: 2;
   max-width: $max-width;
@@ -186,24 +186,24 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 }
 
-.kicker {
+.story-hero__kicker {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
 }
 
-.kickerLine {
+.story-hero__kicker-line {
   width: 40px;
   height: 1px;
   background: $accent;
 }
 
-.kickerText {
+.story-hero__kicker-text {
   @include eyebrow;
 }
 
-.title {
+.story-hero__title {
   margin: 0;
   font-size: clamp(48px, 9vw, 132px);
   font-weight: 500;
@@ -211,11 +211,11 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   letter-spacing: -0.045em;
 }
 
-.titleMuted {
+.story-hero__title-muted {
   color: $neutral-400;
 }
 
-.lead {
+.story-hero__lead {
   margin: 26px 0 0;
   max-width: 38ch;
   font-size: clamp(15px, 1.6vw, 19px);
@@ -224,7 +224,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   text-wrap: pretty;
 }
 
-.actions {
+.story-hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;

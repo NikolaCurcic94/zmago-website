@@ -73,12 +73,12 @@ export function StoryHero() {
   }, [live]);
 
   const showLive = entered && live;
-  const dragonClass = [styles.dragon, showLive && styles.dragonSettled, showLive && ready && styles.dragonHidden]
+  const dragonClass = [styles["story-hero__dragon"], showLive && styles["story-hero__dragon--settled"], showLive && ready && styles["story-hero__dragon--hidden"]]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <section ref={sectionRef} className={styles.hero}>
+    <section ref={sectionRef} className={styles["story-hero"]}>
       <HeroParticles />
       {entered && (
         <Image
@@ -93,26 +93,26 @@ export function StoryHero() {
         />
       )}
       {showLive && (
-        <div className={ready ? `${styles.live} ${styles.liveReady}` : styles.live} aria-hidden="true">
+        <div className={ready ? `${styles["story-hero__live"]} ${styles["story-hero__live--ready"]}` : styles["story-hero__live"]} aria-hidden="true">
           <LiveModelBoundary>
             <HeroModel active={visible} onReady={onReady} />
           </LiveModelBoundary>
         </div>
       )}
-      <div className={styles.shade} aria-hidden="true" />
-      {entered && <div className={styles.glow} aria-hidden="true" />}
-      <div className={styles.content}>
-        <div className={styles.kicker}>
-          <span className={styles.kickerLine} aria-hidden="true" />
-          <span className={styles.kickerText}>LEGO Ideas submission</span>
+      <div className={styles["story-hero__shade"]} aria-hidden="true" />
+      {entered && <div className={styles["story-hero__glow"]} aria-hidden="true" />}
+      <div className={styles["story-hero__content"]}>
+        <div className={styles["story-hero__kicker"]}>
+          <span className={styles["story-hero__kicker-line"]} aria-hidden="true" />
+          <span className={styles["story-hero__kicker-text"]}>LEGO Ideas submission</span>
         </div>
-        <h1 className={styles.title}>
+        <h1 className={styles["story-hero__title"]}>
           Zmago
           <br />
-          <span className={styles.titleMuted}>the Dragon</span>
+          <span className={styles["story-hero__title-muted"]}>the Dragon</span>
         </h1>
-        <p className={styles.lead}>A LEGO creation brought to life.</p>
-        <div className={styles.actions}>
+        <p className={styles["story-hero__lead"]}>A LEGO creation brought to life.</p>
+        <div className={styles["story-hero__actions"]}>
           <ButtonLink href={IDEAS_URL} external>
             Support on LEGO Ideas
           </ButtonLink>

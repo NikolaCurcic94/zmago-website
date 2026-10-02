@@ -19,7 +19,8 @@ const AO_RADIUS_FRACTION = 0.015;
  * resolution. SMAA replaces the hardware antialiasing AO can't use, and OutputPass
  * applies the renderer's existing tone mapping, exposure and sRGB output, so
  * colours and materials stay as they were. With frameloop="demand" all of this
- * only runs while the camera moves; a still view costs nothing.
+ * only runs when a frame is drawn: on the Playground, while the camera or a joint
+ * moves (a still view costs nothing); in the hero, at its capped idle frame rate.
  *
  * Mount it inside the model's Suspense: it is built after commit, when the model
  * is in the scene, so the AO radius can be sized from the model's own bounds.

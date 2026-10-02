@@ -23,10 +23,10 @@ type ControlPanelProps = {
 
 export function ControlPanel({ model, onChange, paw, fingers, isEnabled = () => true }: ControlPanelProps) {
   return (
-    <div className={styles.panel}>
-      <div className={styles.joints}>
+    <div className={styles["control-panel"]}>
+      <div className={styles["control-panel__joints"]}>
         {JOINT_SLIDERS.map(({ key, label, min, max, step }) => (
-          <label key={key} className={styles.slider}>
+          <label key={key} className={styles["control-panel__slider"]}>
             {label}
             <input
               type="range"
@@ -41,11 +41,11 @@ export function ControlPanel({ model, onChange, paw, fingers, isEnabled = () => 
         ))}
       </div>
 
-      <div className={styles.divider} aria-hidden="true" />
+      <div className={styles["control-panel__divider"]} aria-hidden="true" />
 
       <LimbBox title="Paw" name="zm-paw" values={model.paws} control={paw} disabled={!isEnabled("paws")} />
 
-      <div className={styles.divider} aria-hidden="true" />
+      <div className={styles["control-panel__divider"]} aria-hidden="true" />
 
       <LimbBox
         title="Fingers"
@@ -58,10 +58,10 @@ export function ControlPanel({ model, onChange, paw, fingers, isEnabled = () => 
   );
 }
 
-/** Pill labels, in PAWS order: front left, front right, back left, back right. */
-const PAW_SHORT = ["FL", "FR", "BL", "BR"] as const;
+/** Pill labels, in PAWS order: front left, front right, rear left, rear right. */
+const PAW_SHORT = ["FL", "FR", "RL", "RR"] as const;
 
-/** One slider for the selected paw, and four radio pills (FL, FR, BL, BR — the paws) below it. */
+/** One slider for the selected paw, and four radio pills (FL, FR, RL, RR — the paws) below it. */
 function LimbBox({
   title,
   name,
@@ -77,10 +77,10 @@ function LimbBox({
 }) {
   const { selected, onSelect, onChange } = control;
   return (
-    <div className={styles.paws}>
-      <label className={styles.slider}>
+    <div className={styles["control-panel__paws"]}>
+      <label className={styles["control-panel__slider"]}>
         <span>
-          {title} <span className={styles.pawName}>· {PAWS[selected].label}</span>
+          {title} <span className={styles["control-panel__paw-name"]}>· {PAWS[selected].label}</span>
         </span>
         <input
           type="range"
@@ -92,9 +92,9 @@ function LimbBox({
           onChange={(e) => onChange(Number(e.target.value))}
         />
       </label>
-      <div className={styles.pawPicker} role="radiogroup" aria-label={`${title}: paw to move`}>
+      <div className={styles["control-panel__paw-picker"]} role="radiogroup" aria-label={`${title}: paw to move`}>
         {PAWS.map(({ label }, i) => (
-          <label key={label} className={styles.pawOption} title={label}>
+          <label key={label} className={styles["control-panel__paw-option"]} title={label}>
             <input
               type="radio"
               name={name}

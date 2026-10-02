@@ -1,10 +1,10 @@
 @use "../../styles" as *;
 
-.footer {
+.site-footer {
   border-top: 1px solid rgba($text, 0.1);
 }
 
-.inner {
+.site-footer__inner {
   max-width: $max-width;
   margin: 0 auto;
   padding: 44px 24px 56px;
@@ -15,14 +15,14 @@
   align-items: flex-start;
 }
 
-.wordmark {
+.site-footer__wordmark {
   font-size: 13px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
 
-.disclaimer {
+.site-footer__disclaimer {
   margin: 0;
   max-width: 52ch;
   font-size: 12px;
@@ -30,21 +30,21 @@
   color: $neutral-600;
 }
 
-.links {
+.site-footer__links {
   display: flex;
   flex-wrap: wrap;
   gap: 22px;
   align-items: center;
 }
 
-.link,
-.link:hover {
+.site-footer__link,
+.site-footer__link:hover {
   font-size: 12px;
   color: $neutral-400;
   text-decoration: none;
 }
 
-.disclaimerButton {
+.site-footer__disclaimer-button {
   cursor: pointer;
   font-family: inherit;
   font-size: 12px;

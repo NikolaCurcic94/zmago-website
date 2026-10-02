@@ -21,7 +21,8 @@ export const JAW_PART_NAMES = [
 
 /**
  * Hinge axis: centre of the 60478.001/.002 handle bars, in the model's own (export) space; the axis runs
- * along X (the head's 5° lift in the current export tilts it by 0.085°, which is ignored).
+ * along X (the head's 5° lift in the export these limits were measured on — see EXPORT_POSE_FIXES — tilts it
+ * by 0.085°, which is ignored).
  */
 export const JAW_PIVOT: [number, number, number] = [1.5594, 2.2515, 8.6453];
 
@@ -67,8 +68,8 @@ const JAW_CLOSING_FROM_EXPORT_DEG = 22;
 export const JAW_AS_EXPORTED = JAW_CLOSING_FROM_EXPORT_DEG / (MAX_JAW_OPEN + MAX_UPPER_JAW_OPEN);
 
 /**
- * Upper jaw opening in the export, degrees from closed. The current export lifts the head mount and lower
- * jaw by 5° about the neck ball but leaves the upper head where it was, so relative to its hinge the upper
+ * Upper jaw opening in the export, degrees from closed. The export these limits were measured on (see
+ * EXPORT_POSE_FIXES) lifts the head mount and lower jaw by 5° about the neck ball but leaves the upper head where it was, so relative to its hinge the upper
  * jaw is 5° more closed than before: 4.83° − 5° ≈ −0.17° (just shut).
  */
 export const UPPER_JAW_AS_EXPORTED_DEG = JAW_AS_EXPORTED * MAX_UPPER_JAW_OPEN - 5;
@@ -113,7 +114,8 @@ export const HEAD_SWEEP_SIDE = -1;
  * Each round part is a true elliptical arc (the side and end swings as conjugate semi-diameters), so the
  * nose sweeps a curve rather than cutting the corner. The slider is spread evenly over the head's actual
  * turn. Safe envelope: the head's surface against the neck and body by penetration depth (> 0.25 LDU,
- * both directions), mouth closed, on the current export (head lifted 5°), less 0.5°; the whole path stays
+ * both directions), mouth closed, on the export these limits were measured on (head lifted 5°; see
+ * EXPORT_POSE_FIXES), less 0.5°; the whole path stays
  * under it. Neutral appears twice (φ 170 and 370) so each half starts straight.
  * Recompute (with JAW_LIMIT_ALONG_HEAD) if the GLB is re-exported.
  */
@@ -385,7 +387,7 @@ export const HEAD_PATH: readonly (readonly [number, number, number])[] = [
  * way from neutral, before the first sample where the current jaw exceeds this (headRangeForJaw), and
  * the Jaw slider stops at this value for the current head (maxJawAtHead).
  * Measured offline by penetration depth (the same test as HEAD_PATH's envelope, head tested at θ + 0.5°):
- * the jaws' surface against the neck and body, Jaw scanned up and refined to 0.01, on the current export,
+ * the jaws' surface against the neck and body, Jaw scanned up and refined to 0.01, on the same export,
  * less 0.02 (≈0.6° of lower jaw); 1 = the jaw can open fully there. Nothing is checked at runtime.
  */
 export const JAW_LIMIT_ALONG_HEAD: readonly (readonly [number, number])[] = [
@@ -734,6 +736,46 @@ export const TAIL_JOINTS: readonly { parts: readonly string[]; pivot: readonly n
   },
 ];
 
+/** The lower tail: joints 0 … TAIL_BASE_JOINTS-1 (body ball to the 4th segment). The rest is the upper tail. */
+export const TAIL_BASE_JOINTS = 4;
+
+/**
+ * How much of the lower tail's sway is left with the wings swung: [Wings horizontal, left share, right share].
+ * A wing swung back sweeps past the lower tail segments (2–4), so there the lower joints turn by only this share
+ * of their range; the upper tail always sways fully, so the tail still curls at its top (cutting the lower tail
+ * is enough everywhere: it carries the upper tail clear too, also with the wings swung forward and raised).
+ * Measured offline by penetration depth (> 0.3 LDU over the rest pose): the whole sway, every 0.1 of the Tail
+ * slider, at every 0.1 of Wings vertical the sliders allow at that swing, in steps of 0.05; then made never to
+ * grow as the wings swing further out, less 0.05 wherever it is cut, and re-checked every 0.025 of Wings
+ * horizontal and 0.05 of Tail between the rows. 1 = the lower tail sways fully.
+ */
+export const TAIL_BASE_ENVELOPE: readonly (readonly [number, number, number])[] = [
+  [-1.0, 0.2, 0.05], [-0.95, 0.2, 0.05], [-0.9, 0.45, 0.1], [-0.85, 0.65, 0.2],
+  [-0.8, 0.8, 0.2], [-0.75, 0.8, 0.2], [-0.7, 0.8, 0.3], [-0.65, 0.8, 0.35],
+  [-0.6, 0.8, 0.45], [-0.55, 0.8, 0.5], [-0.5, 0.8, 0.55], [-0.45, 0.8, 0.6],
+  [-0.4, 0.8, 0.7], [-0.35, 0.8, 0.7], [-0.3, 0.8, 0.7], [-0.25, 0.8, 0.8],
+  [-0.2, 0.8, 0.9], [-0.15, 0.8, 1.0], [-0.1, 0.8, 1.0], [-0.05, 0.8, 1.0],
+  [0.0, 0.85, 1.0], [0.05, 0.85, 1.0], [0.1, 0.85, 1.0], [0.15, 0.85, 1.0],
+  [0.2, 0.8, 1.0], [0.25, 0.75, 1.0], [0.3, 0.75, 1.0], [0.35, 0.75, 1.0],
+  [0.4, 0.75, 1.0], [0.45, 0.75, 1.0], [0.5, 0.75, 1.0], [0.55, 0.75, 1.0],
+  [0.6, 0.75, 1.0], [0.65, 0.75, 1.0], [0.7, 0.75, 1.0], [0.75, 0.75, 1.0],
+  [0.8, 0.75, 1.0], [0.85, 0.75, 1.0], [0.9, 0.75, 1.0], [0.95, 0.75, 1.0],
+  [1.0, 0.75, 1.0],
+];
+
+/** Share of the lower tail's sway left at this Wings horizontal value, to the left (tail < 0) or right; eased between rows. */
+export function tailBaseShare(wingsHorizontal: number, tail: number): number {
+  const table = TAIL_BASE_ENVELOPE;
+  const h = Math.min(1, Math.max(-1, wingsHorizontal));
+  const column = tail < 0 ? 1 : 2;
+  let i = 1;
+  while (i < table.length - 1 && table[i][0] < h) i++;
+  const [h0, a0] = [table[i - 1][0], table[i - 1][column]];
+  const [h1, a1] = [table[i][0], table[i][column]];
+  const t = h1 > h0 ? Math.min(1, Math.max(0, (h - h0) / (h1 - h0))) : 0;
+  return a0 + (a1 - a0) * t;
+}
+
 /**
  * Wings: each wing hangs from the body on a Ball Joint-8 at the shoulder (22890 ball on the body, 14418
  * socket under the wing's 3933/3934 root) — and the front leg hangs from that wing root on its own ball,
@@ -880,14 +922,12 @@ export function wingsVerticalRange(horizontal: number): { min: number; max: numb
 }
 
 /**
- * Model state shared by the playground controls and whatever renders the model.
- * Today the 2D placeholder reads it; later the React Three Fiber scene will
- * bind the same values to the camera and the rig's head, arm and wing nodes.
+ * Model state shared by the playground controls and the 3D viewer.
  */
 export type ModelState = {
-  /** Unbounded orbit step; drag / arrow keys move it by ±1. */
+  /** Not used by the 3D viewer (left over from the 2D placeholder; the camera orbits in ModelViewer). */
   orbit: number;
-  /** 70–180, 112 is the neutral framing. */
+  /** Not used by the 3D viewer (left over from the 2D placeholder). */
   zoom: number;
   /** -1 = fully left … 0 = neutral … 1 = fully right (the side parts of HEAD_PATH, see headPathValue). */
   head: number;
@@ -897,9 +937,9 @@ export type ModelState = {
   paws: readonly [number, number, number, number];
   /** Finger curl per paw (order of PAWS): 0 = neutral … 1 = each finger at its maxDeg. */
   fingers: readonly [number, number, number, number];
-  /** -100–100 */
+  /** Not used by the 3D viewer (left over from the 2D placeholder). */
   armL: number;
-  /** -100–100 */
+  /** Not used by the 3D viewer (left over from the 2D placeholder). */
   armR: number;
   /** Wings vertical: -1 = down by WING_RANGE_DEG.down … 0 = as built … 1 = up by WING_RANGE_DEG.up. */
   wings: number;
@@ -930,8 +970,7 @@ export const DEFAULT_MODEL_STATE: ModelState = {
   tail: 0,
 };
 
-// Poses don't set the jaw or the head yet (their old head values were on a different
-// scale); applying one leaves both where they are.
+// Not used by the 3D viewer (left over from the 2D placeholder).
 export const POSES: ({ name: string } & Omit<ModelState, "zoom" | "jaw" | "head" | "neck" | "paws" | "fingers" | "tail" | "wingsH">)[] = [
   { name: "Perched", orbit: 3, armL: 0, armR: 0, wings: 10 },
   { name: "Wings", orbit: 5, armL: 30, armR: 30, wings: 100 },

@@ -1,14 +1,14 @@
 @use "../../styles" as *;
 
-.primary {
+.button-link--primary {
   @include button-primary;
 }
 
-.secondary {
+.button-link--secondary {
   @include button-secondary;
 }
 
-.arrow {
+.button-link__arrow {
   font-size: 15px;
   line-height: 1;
 }

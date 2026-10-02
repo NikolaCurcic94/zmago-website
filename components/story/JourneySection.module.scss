@@ -16,24 +16,23 @@
   }
 }
 
-.section {
+.journey {
   @include container;
   padding-top: 110px;
 
-  // Phones: less air between sections.
-  // (sized so the visible gap above matches the others, 134px)
+  // Phones: less air between sections (the same 100px as the others).
   @media (max-width: #{$bp-tablet - 1px}) {
-    padding-top: 31px;
+    padding-top: 100px;
   }
 }
 
-.heading {
+.journey__heading {
   @include section-heading;
   margin-bottom: 14px;
   max-width: 24ch;
 }
 
-.intro {
+.journey__intro {
   margin: 0 0 54px;
   font-size: 15px;
   line-height: 1.75;
@@ -42,12 +41,12 @@
   text-wrap: pretty;
 }
 
-.track {
+.journey__track {
   position: relative;
   padding: 34px 0 0;
 }
 
-.bar {
+.journey__bar {
   height: 2px;
   background: linear-gradient(
     to right,
@@ -58,7 +57,7 @@
   );
 }
 
-.marker {
+.journey__marker {
   position: absolute;
   // Centred on the 2px bar: track padding (34px) + half the bar (1px) − half the marker (6px).
   top: 29px;
@@ -72,7 +71,7 @@
 }
 
 // Small notch on the bar where each milestone sits.
-.tick {
+.journey__tick {
   position: absolute;
   top: 31px;
   width: 1px;
@@ -85,7 +84,7 @@
   }
 }
 
-.milestones {
+.journey__milestones {
   list-style: none;
   margin: 28px 0 0;
   padding: 0;
@@ -115,12 +114,12 @@
   }
 }
 
-.milestoneValue {
+.journey__milestone-value {
   font-size: 19px;
   font-weight: 500;
 }
 
-.milestoneLabel {
+.journey__milestone-label {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -128,12 +127,12 @@
   margin-top: 5px;
 }
 
-.milestoneHighlight .milestoneValue,
-.milestoneHighlight .milestoneLabel {
+.journey__milestone--highlight .journey__milestone-value,
+.journey__milestone--highlight .journey__milestone-label {
   color: $accent-400;
 }
 
-.count {
+.journey__count {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -141,14 +140,14 @@
   margin-top: 44px;
 }
 
-.countValue {
+.journey__count-value {
   font-size: clamp(34px, 5vw, 58px);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
 }
 
-.countNote {
+.journey__count-note {
   font-size: 13px;
   color: $neutral-500;
 }

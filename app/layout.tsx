@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { DISCLAIMER, SITE_NAME } from "@/content/site";
+import { MAIN_ID, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/content/site";
+import { PREVIEW_IMAGE } from "@/lib/metadata";
 import { DISCLAIMER_BOOT_SCRIPT } from "@/lib/disclaimer";
 import { SITE_CONTENT_ID } from "@/lib/useModalFocus";
 import { DisclaimerProvider } from "@/components/layout/DisclaimerProvider";
@@ -15,26 +16,29 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const description = `Zmago the Dragon — a LEGO creation brought to life. ${DISCLAIMER}`;
-
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_NAME,
     template: `%s — ${SITE_NAME}`,
   },
-  description,
+  description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
     title: SITE_NAME,
-    description,
+    description: SITE_DESCRIPTION,
     locale: "en",
+    url: "/",
+    images: [PREVIEW_IMAGE],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: SITE_NAME,
-    description,
+    description: SITE_DESCRIPTION,
+    images: [PREVIEW_IMAGE],
   },
 };
 
@@ -52,8 +56,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body>
         <DisclaimerProvider>
-          <div className={styles.shell}>
+          <div className={styles["shell"]}>
             <div id={SITE_CONTENT_ID}>
+              {/* First stop for keyboard users: straight past the header to the page's content. */}
+              <a href={`#${MAIN_ID}`} className="skip-link">
+                Skip to content
+              </a>
               <SiteHeader />
               <HeaderHeightScript />
               {children}

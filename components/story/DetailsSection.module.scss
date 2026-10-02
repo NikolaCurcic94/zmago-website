@@ -1,36 +1,35 @@
 @use "../../styles" as *;
 
-.band {
-  margin-top: 120px;
-  padding: 96px 0;
+.details-section {
+  // The same gap above as every other section (110px, phones 100px) and nothing below its last content:
+  // the next section's own top padding makes the gap after it. The background fades to the page at both
+  // edges, so the band itself needs no extra air.
+  padding: 110px 0 0;
   background: linear-gradient(180deg, $bg, #191b2e 40%, $bg);
 
-  // Phones: less air between sections.
-  // (sized so the visible gaps above and below match the others, 134px)
   @media (max-width: #{$bp-tablet - 1px}) {
-    margin-top: 0;
-    padding: 24px 0 48px;
+    padding-top: 100px;
   }
 }
 
-.inner {
+.details-section__inner {
   @include container;
 }
 
-.grid {
+.details-section__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 56px;
   align-items: start;
 }
 
-.heading {
+.details-section__heading {
   @include section-heading;
   margin-bottom: 34px;
   max-width: 20ch;
 }
 
-.features {
+.details-section__features {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -39,7 +38,7 @@
   gap: 2px;
 }
 
-.feature {
+.details-section__feature {
   display: grid;
   grid-template-columns: 34px 1fr;
   gap: 16px;
@@ -51,19 +50,19 @@
   }
 }
 
-.number {
+.details-section__number {
   font-size: 11px;
   color: $neutral-600;
   padding-top: 3px;
 }
 
-.featureTitle {
+.details-section__feature-title {
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 5px;
 }
 
-.featureBody {
+.details-section__feature-body {
   margin: 0;
   font-size: 13px;
   line-height: 1.65;
@@ -71,18 +70,18 @@
   max-width: 44ch;
 }
 
-.media {
+.details-section__media {
   position: relative;
   min-width: 0;
 }
 
-.image {
+.details-section__image {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.caption {
+.details-section__caption {
   font-size: 11px;
   letter-spacing: 0.06em;
   color: $neutral-600;

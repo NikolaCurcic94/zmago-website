@@ -1,6 +1,6 @@
 @use "../../styles" as *;
 
-.status {
+.viewer-status {
   @include eyebrow(0.2em, $neutral-600);
   position: absolute;
   left: 50%;
@@ -13,7 +13,7 @@
   pointer-events: none;
 }
 
-.statusLine {
+.viewer-status__line {
   width: 18px;
   height: 1px;
   background: rgba($accent, 0.6);

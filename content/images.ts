@@ -5,7 +5,8 @@ export type ImageAsset = {
 };
 
 const asset = (name: string, width: number, height: number): ImageAsset => ({
-  src: `/images/${name}.png`,
+  // Encoded, so file names with spaces or brackets (e.g. "… (1)") still load.
+  src: `/images/${encodeURIComponent(name)}.png`,
   width,
   height,
 });
@@ -13,7 +14,7 @@ const asset = (name: string, width: number, height: number): ImageAsset => ({
 export const images = {
   hero: asset("zmago-render-bricklink-fix-crown-2-head_3-front-noshadow_7", 3240, 2160),
   ideaMain: asset("zmago-render-bricklink-fix-crown-2-head", 3240, 2160),
-  buildMain: asset("zmago-render-final-fix-back", 3240, 2160),
+  buildMain: asset("zmago-render-final-fix-back-7", 3240, 2160),
   buildDetail1: asset("zmago-render-bricklink-fix-crown-2-profile", 3240, 2160),
   buildDetail2: asset("zmago-render-bricklink-fix-crown-tail", 3240, 2160),
   detailsMain: asset("zmago-render-final-fix-back_3", 3240, 2160),
@@ -28,4 +29,6 @@ export const images = {
   tail: asset("zmago-render-bricklink-fix-crown-tail", 3240, 2160),
   aboveBack: asset("zmago-render-final-fix-back", 3240, 2160),
   aboveSide: asset("zmago-render-final-fix-back_3", 3240, 2160),
+  aboveFromTail: asset("zmago-render-final-fix-back-7", 3240, 2160),
+  planView: asset("zmago-render-final-fix-back_8 (1)", 3240, 2160),
 } satisfies Record<string, ImageAsset>;

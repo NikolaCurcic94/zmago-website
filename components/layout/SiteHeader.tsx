@@ -100,16 +100,16 @@ export function SiteHeader() {
   };
 
   return (
-    <header ref={headerRef} className={styles.header}>
-      <div className={styles.inner}>
-        <Link href="/" className={styles.brand}>
+    <header ref={headerRef} className={styles["site-header"]}>
+      <div className={styles["site-header__inner"]}>
+        <Link href="/" className={styles["site-header__brand"]}>
           {/* Round seal on phones (keeps the header to one row), the wordmark from tablet up. */}
           <Image
             src="/images/logo/zmago-seal-light.svg"
             width={240}
             height={240}
             alt="Zmago"
-            className={styles.seal}
+            className={styles["site-header__seal"]}
             loading="eager"
           />
           <Image
@@ -117,12 +117,12 @@ export function SiteHeader() {
             width={784}
             height={204}
             alt="Zmago"
-            className={styles.logo}
+            className={styles["site-header__logo"]}
             loading="eager"
           />
         </Link>
-        <nav ref={navRef} className={styles.nav} aria-label="Main">
-          <span ref={indicatorRef} className={styles.indicator} aria-hidden="true" />
+        <nav ref={navRef} className={styles["site-header__nav"]} aria-label="Main">
+          <span ref={indicatorRef} className={styles["site-header__indicator"]} aria-hidden="true" />
           {NAV_ITEMS.map(({ href, label }) => (
             <Link
               key={href}
@@ -131,7 +131,7 @@ export function SiteHeader() {
                 if (el) linkRefs.current.set(href, el);
                 else linkRefs.current.delete(href);
               }}
-              className={href === activeHref ? `${styles.tab} ${styles.tabActive}` : styles.tab}
+              className={href === activeHref ? `${styles["site-header__tab"]} ${styles["site-header__tab--active"]}` : styles["site-header__tab"]}
               aria-current={href === pathname ? "page" : undefined}
               onClick={onTabClick(href)}
             >
@@ -140,7 +140,7 @@ export function SiteHeader() {
           ))}
         </nav>
       </div>
-      <div className={styles.glowLine} aria-hidden="true" />
+      <div className={styles["site-header__glow-line"]} aria-hidden="true" />
     </header>
   );
 }

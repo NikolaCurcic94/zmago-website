@@ -12,13 +12,13 @@
   }
 }
 
-.field {
+.hero-particles {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.particle {
+.hero-particles__particle {
   position: absolute;
   border-radius: 50%;
   animation-name: zm-drift;

@@ -4,7 +4,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { Bounds, Center, OrbitControls, useGLTF, useProgress } from "@react-three/drei";
 import { Component, Suspense, memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { NeutralToneMapping, PerspectiveCamera, Quaternion, Vector3 } from "three";
-import { MODEL_URL } from "@/content/playground";
+import { MODEL_URL, tailBaseShare } from "@/content/playground";
 import { createValueStore, type ValueStore } from "@/lib/valueStore";
 import {
   fingerQuaternion,
@@ -63,7 +63,7 @@ type ModelViewerProps = {
   bottomInset?: number;
 };
 
-/** Full 3D view of the Zmago GLB: orbit, zoom and pan, plus the head and mouth joints. */
+/** Full 3D view of the Zmago GLB: orbit, zoom and pan, plus every rigged joint. */
 export default function ModelViewer({ jaw, head, neck, paws, fingers, tail, wings, wingsH, bottomInset = 0 }: ModelViewerProps) {
   // Joint values reach the scene through stores, not as props: re-rendering
   // <Canvas> would re-measure it and make <Bounds observe> refit (zoom) the camera.
@@ -120,7 +120,7 @@ const ViewerScene = memo(function ViewerScene({
   insetStore: ValueStore<number>;
 }) {
   return (
-    <div className={styles.viewer}>
+    <div className={styles["model-viewer"]}>
       <ModelErrorBoundary>
         <Canvas
           frameloop="demand"
@@ -252,17 +252,25 @@ function Dragon({
     return fingersStore.subscribe(apply);
   }, [fingers, fingersStore, invalidate]);
 
-  // The tail sways as one curve: every joint turns by its own share of the slider.
+  // The tail sways as one curve: every joint turns by its own share of the slider. With the wings swung, the
+  // lower tail sways only as far as clears them (tailBaseShare) — it follows the Wings horizontal slider
+  // smoothly — while the upper tail keeps its full sway.
   useEffect(() => {
     const orientation = new Quaternion();
     const apply = () => {
       const value = tailStore.get();
-      tail.forEach((joint) => joint.pivot.quaternion.copy(tailJointQuaternion(value, joint, orientation)));
+      const share = tailBaseShare(wingsStore.get()[1], value);
+      tail.forEach((joint) => joint.pivot.quaternion.copy(tailJointQuaternion(value, joint, orientation, share)));
       invalidate();
     };
     apply();
-    return tailStore.subscribe(apply);
-  }, [tail, tailStore, invalidate]);
+    const offTail = tailStore.subscribe(apply);
+    const offWings = wingsStore.subscribe(apply);
+    return () => {
+      offTail();
+      offWings();
+    };
+  }, [tail, tailStore, wingsStore, invalidate]);
 
   // Both wings turn at the shoulder by the same vertical / horizontal amounts (mirrored axes).
   useEffect(() => {

@@ -60,23 +60,23 @@ export function PlaygroundIntro() {
 
   // Portalled to <body>: while open, the site content (where this component lives) is made inert.
   return createPortal(
-    <div className={styles.overlay} onClick={(event) => event.target === event.currentTarget && close()}>
+    <div className={styles["playground-intro"]} onClick={(event) => event.target === event.currentTarget && close()}>
       <div
         ref={dialogRef}
-        className={styles.dialog}
+        className={styles["playground-intro__dialog"]}
         role="dialog"
         aria-modal="true"
         aria-labelledby="zm-intro-title"
         tabIndex={-1}
       >
-        <div className={styles.kicker}>
-          <span className={styles.kickerLine} aria-hidden="true" />
-          <span className={styles.kickerText}>Playground</span>
+        <div className={styles["playground-intro__kicker"]}>
+          <span className={styles["playground-intro__kicker-line"]} aria-hidden="true" />
+          <span className={styles["playground-intro__kicker-text"]}>Playground</span>
         </div>
-        <h2 id="zm-intro-title" className={styles.title}>
+        <h2 id="zm-intro-title" className={styles["playground-intro__title"]}>
           Handle the model
         </h2>
-        <table className={styles.controls}>
+        <table className={styles["playground-intro__controls"]}>
           <thead>
             <tr>
               <td />
@@ -94,14 +94,18 @@ export function PlaygroundIntro() {
             ))}
           </tbody>
         </table>
-        <p className={styles.both}>
-          <span className={styles.term}>Pose</span>
+        <p className={styles["playground-intro__both"]}>
+          <span className={styles["playground-intro__term"]}>Pose</span>
           <span>
-            On both: the sliders move Zmago&rsquo;s joints — the middle of each is the pose as built. Pick a paw with
-            FL, FR, BL or BR.
+            On both: the sliders move Zmago&rsquo;s joints - the middle of each is the pose as built. Pick a paw with
+            FL, FR, RL or RR.
           </span>
         </p>
-        <button ref={okRef} type="button" className={styles.ok} onClick={close}>
+        <p className={styles["playground-intro__note"]}>
+          Zmago moves like the real build: when a pose would make parts collide, the joint stops short - or moves a
+          little less - so no brick ever passes through another.
+        </p>
+        <button ref={okRef} type="button" className={styles["playground-intro__ok"]} onClick={close}>
           Got it
         </button>
       </div>

@@ -114,6 +114,27 @@ input[type="range"] {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
+// "Skip to content": out of sight until a keyboard user tabs onto it, then a small pill over the header.
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: $surface;
+  color: $text;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 0 0 1px $neutral-800, 0 12px 30px rgba(0, 0, 0, 0.5);
+  transform: translateY(-200%);
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

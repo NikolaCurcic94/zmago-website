@@ -20,6 +20,7 @@ import {
   PAW_FINGERS,
   PAW_MAX_DEG,
   PAWS,
+  TAIL_BASE_JOINTS,
   TAIL_JOINTS,
   WING_RANGE_DEG,
   WING_UP_CUT_WHEN_BACK,
@@ -32,7 +33,7 @@ import {
 /**
  * Builds a pivot Group on a hinge and moves the given parts under it.
  * `attach()` keeps each part exactly where it was, so the geometry is untouched;
- * only the pivot turns (about its local X, the hinge axis). Call on the model
+ * only the pivot turns. Call on the model
  * (a fresh clone) before it is added to the scene, while it still sits in its
  * own export space.
  *
@@ -83,7 +84,7 @@ export function applyExportPoseFixes(model: Object3D): void {
 
 /**
  * The two mouth pivots. Both hang from the neck on their own LEGO clip hinges,
- * so they are siblings; a future `jnt_head` would become their common parent.
+ * so they are siblings; rigHead then puts both under `jnt_head`.
  */
 export function rigJaws(model: Object3D): { lower: Group | null; upper: Group | null } {
   return {
@@ -136,7 +137,7 @@ const swingAxis = new Vector3();
 /**
  * Head orientation for a slider value -1…1: maps it onto the side parts of HEAD_PATH (headPathValue), looks it up (linear
  * between points), then tilts by θ about the axis perpendicular to the neck in
- * direction φ. A handful of float ops per change — nothing runs per frame.
+ * direction φ. A handful of float ops per call.
  */
 export function headQuaternion(head: number, rig: HeadRig, target: Quaternion): Quaternion {
   const s = headPathValue(head);
@@ -227,7 +228,8 @@ export function fingerQuaternion(value: number, rig: FingerRig, target: Quaterni
   return target.setFromAxisAngle(rig.axis, MathUtils.degToRad(MathUtils.clamp(value, 0, 1) * rig.maxDeg));
 }
 
-export type TailJointRig = { pivot: Group; axis: Vector3; left: number; right: number };
+/** `base`: one of the lower tail's joints (TAIL_BASE_JOINTS), whose sway the wings' swing can cut short. */
+export type TailJointRig = { pivot: Group; axis: Vector3; left: number; right: number; base: boolean };
 
 /**
  * One `jnt_tail_<n>` per tail ball joint, each nested under the one before it
@@ -245,13 +247,17 @@ export function rigTail(model: Object3D): TailJointRig[] {
   return pivots.map((pivot, i) => {
     const { axis, left, right } = TAIL_JOINTS[i];
     const toParent = pivot.parent!.getWorldQuaternion(new Quaternion()).invert();
-    return { pivot, axis: new Vector3(axis[0], axis[1], axis[2]).normalize().applyQuaternion(toParent), left, right };
+    const axisInParent = new Vector3(axis[0], axis[1], axis[2]).normalize().applyQuaternion(toParent);
+    return { pivot, axis: axisInParent, left, right, base: i < TAIL_BASE_JOINTS };
   });
 }
 
-/** One tail joint for a slider value -1 (left) … 0 … 1 (right): that joint's share of the sway. */
-export function tailJointQuaternion(value: number, rig: TailJointRig, target: Quaternion): Quaternion {
-  const v = MathUtils.clamp(value, -1, 1);
+/**
+ * One tail joint for a slider value -1 (left) … 0 … 1 (right): that joint's share of the sway. A lower-tail joint
+ * turns by only `baseShare` of it (tailBaseShare: what the wings' swing leaves room for); the upper tail sways fully.
+ */
+export function tailJointQuaternion(value: number, rig: TailJointRig, target: Quaternion, baseShare = 1): Quaternion {
+  const v = MathUtils.clamp(value, -1, 1) * (rig.base ? baseShare : 1);
   return target.setFromAxisAngle(rig.axis, MathUtils.degToRad(v < 0 ? v * rig.left : v * rig.right));
 }
 

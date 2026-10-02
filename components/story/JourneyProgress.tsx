@@ -60,18 +60,18 @@ export function JourneyProgress({ supports }: { supports: number }) {
 
   return (
     <>
-      <div ref={trackRef} className={styles.track} style={{ "--progress": percentOf(supports) } as CSSProperties}>
-        <div className={styles.bar} aria-hidden="true" />
+      <div ref={trackRef} className={styles["journey__track"]} style={{ "--progress": percentOf(supports) } as CSSProperties}>
+        <div className={styles["journey__bar"]} aria-hidden="true" />
         {/* No notch for the first milestone (100): at 1% it just reads as a stray mark at the start of the bar. */}
         {MILESTONES.slice(1).map(({ value }) => (
-          <span key={value} className={styles.tick} style={{ left: percentOf(value) }} aria-hidden="true" />
+          <span key={value} className={styles["journey__tick"]} style={{ left: percentOf(value) }} aria-hidden="true" />
         ))}
-        <div className={styles.marker} aria-hidden="true" />
-        <ol className={styles.milestones}>
+        <div className={styles["journey__marker"]} aria-hidden="true" />
+        <ol className={styles["journey__milestones"]}>
           {MILESTONES.map(({ value, label, highlight }, i) => (
             <li
               key={value}
-              className={highlight ? styles.milestoneHighlight : undefined}
+              className={highlight ? styles["journey__milestone--highlight"] : undefined}
               style={
                 {
                   "--at": percentOf(value),
@@ -80,19 +80,19 @@ export function JourneyProgress({ supports }: { supports: number }) {
                 } as CSSProperties
               }
             >
-              <div className={styles.milestoneValue}>{value.toLocaleString("en-US")}</div>
-              <div className={styles.milestoneLabel}>{label}</div>
+              <div className={styles["journey__milestone-value"]}>{value.toLocaleString("en-US")}</div>
+              <div className={styles["journey__milestone-label"]}>{label}</div>
             </li>
           ))}
         </ol>
       </div>
-      <div className={styles.count}>
+      <div className={styles["journey__count"]}>
         {/* Screen readers get the real number at once, not the count-up. */}
-        <span ref={countRef} className={styles.countValue} aria-hidden="true">
+        <span ref={countRef} className={styles["journey__count-value"]} aria-hidden="true">
           {format(supports)}
         </span>
         <span className="sr-only">{format(supports)}</span>
-        <span className={styles.countNote}>supporters so far</span>
+        <span className={styles["journey__count-note"]}>supporters so far</span>
       </div>
     </>
   );

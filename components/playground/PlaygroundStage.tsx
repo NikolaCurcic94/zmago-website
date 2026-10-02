@@ -23,7 +23,7 @@ const ModelViewer = dynamic(() => import("./ModelViewer"), {
   loading: () => <ViewerStatus>Loading viewer</ViewerStatus>,
 });
 
-/** Controls wired to the 3D model so far; the rest stay visible but disabled. */
+/** Controls wired to the 3D model (all of the panel's); any other would be shown but disabled. */
 const LIVE_CONTROLS: ReadonlySet<ControlKey> = new Set<ControlKey>(["head", "neck", "jaw", "paws", "fingers", "tail", "wings", "wingsH"]);
 
 type PerPaw = readonly [number, number, number, number];
@@ -35,8 +35,8 @@ const withPaw = (values: PerPaw, index: number, value: number): PerPaw => {
 
 /**
  * Owns the stage and the controls. The 3D viewer handles the camera (orbit,
- * zoom, pan) and the rigged joints; the remaining controls keep their
- * state here until the model's rig is wired to them.
+ * zoom, pan) and the rigged joints; the joint values live here, and the sliders
+ * that limit each other (head / jaw, wings vertical / horizontal) are clamped here.
  */
 export function PlaygroundStage() {
   // Opens with the mouth slightly ajar (a third of the Jaw slider).
@@ -87,10 +87,15 @@ export function PlaygroundStage() {
     });
 
   return (
-    <div ref={stageRef} className={styles.stage}>
-      <div className={styles.floorGlow} aria-hidden="true" />
+    <>
+    {/* The page's label, in the content grid above the stage like the other pages' headers. */}
+    <div className={styles["playground-stage__header"]}>
+      <div className={styles["playground-stage__kicker"]}>Playground</div>
+    </div>
+    <div ref={stageRef} className={styles["playground-stage"]}>
+      <div className={styles["playground-stage__floor-glow"]} aria-hidden="true" />
 
-      <div className={styles.modelArea}>
+      <div className={styles["playground-stage__model-area"]}>
         <ModelViewer
           jaw={model.jaw}
           head={model.head}
@@ -104,11 +109,7 @@ export function PlaygroundStage() {
         />
       </div>
 
-      <div className={styles.intro}>
-        <div className={styles.kicker}>Playground</div>
-      </div>
-
-      <div ref={panelSlotRef} className={styles.panelSlot}>
+      <div ref={panelSlotRef} className={styles["playground-stage__panel-slot"]}>
         <ControlPanel
           model={model}
           onChange={setJoint}
@@ -128,5 +129,6 @@ export function PlaygroundStage() {
 
       <PlaygroundIntro />
     </div>
+    </>
   );
 }

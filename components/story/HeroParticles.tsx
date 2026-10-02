@@ -29,11 +29,11 @@ const PARTICLES: [number, number, number, string, number, number][] = [
 
 export function HeroParticles() {
   return (
-    <div className={styles.field} aria-hidden="true">
+    <div className={styles["hero-particles"]} aria-hidden="true">
       {PARTICLES.map(([left, bottom, size, color, duration, delay], i) => (
         <span
           key={i}
-          className={styles.particle}
+          className={styles["hero-particles__particle"]}
           style={{
             left: `${left}%`,
             bottom: `${bottom}%`,

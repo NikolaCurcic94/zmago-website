@@ -15,40 +15,40 @@ export function DisclaimerGate() {
   if (!gateOpen) return null;
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles["disclaimer-gate"]}>
       <div
         ref={dialogRef}
-        className={styles.dialog}
+        className={styles["disclaimer-gate__dialog"]}
         role="dialog"
         aria-modal="true"
         aria-labelledby="zm-gate-title"
         aria-describedby="zm-gate-body"
         tabIndex={-1}
       >
-        <div className={styles.kicker}>
-          <span className={styles.kickerLine} aria-hidden="true" />
-          <span className={styles.kickerText}>Fan project</span>
+        <div className={styles["disclaimer-gate__kicker"]}>
+          <span className={styles["disclaimer-gate__kicker-line"]} aria-hidden="true" />
+          <span className={styles["disclaimer-gate__kicker-text"]}>Fan project</span>
         </div>
-        <h2 id="zm-gate-title" className={styles.title}>
+        <h2 id="zm-gate-title" className={styles["disclaimer-gate__title"]}>
           Before you enter
         </h2>
         <div id="zm-gate-body">
-          <p className={styles.lead}>
+          <p className={styles["disclaimer-gate__lead"]}>
             This is a fan-made project and is not sponsored, authorized, or endorsed by The LEGO Group.
           </p>
-          <p className={styles.body}>
+          <p className={styles["disclaimer-gate__body"]}>
             LEGO is a trademark of The LEGO Group. Zmago is an independent creation, presented here as a
             personal build log and portfolio piece.
           </p>
         </div>
-        <div className={styles.actions}>
-          <button ref={enterRef} type="button" className={styles.enter} onClick={enter}>
+        <div className={styles["disclaimer-gate__actions"]}>
+          <button ref={enterRef} type="button" className={styles["disclaimer-gate__enter"]} onClick={enter}>
             Enter Zmago
-            <span className={styles.arrow} aria-hidden="true">
+            <span className={styles["disclaimer-gate__arrow"]} aria-hidden="true">
               &#8594;
             </span>
           </button>
-          <span className={styles.note}>You can read this notice again from the footer.</span>
+          <span className={styles["disclaimer-gate__note"]}>You can read this notice again from the footer.</span>
         </div>
       </div>
     </div>

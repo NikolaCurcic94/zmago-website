@@ -1,12 +1,12 @@
 @use "../../styles" as *;
 
-.box {
+.fill-text {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
 }
 
-.text {
+.fill-text__text {
   margin: 0;
   font-size: 13px;
   line-height: 1.7;
@@ -24,7 +24,7 @@
     visibility: visible;
   }
 
-  .text {
+  .fill-text__text {
     position: absolute;
     inset: auto 0 0;
     display: -webkit-box;
@@ -33,25 +33,25 @@
   }
 }
 
-.fillAlways {
+.fill-text--fill-always {
   @include fill;
 }
 
-.fillDesktop {
+.fill-text--fill-desktop {
   @include from($bp-desktop) {
     @include fill;
   }
 }
 
 // Run-in kicker, in the site's eyebrow voice.
-.lead {
+.fill-text__lead {
   @include eyebrow(0.2em);
   font-weight: 500;
   margin-right: 10px;
   white-space: nowrap;
 }
 
-.leadLine {
+.fill-text__lead-line {
   display: inline-block;
   width: 18px;
   height: 1px;

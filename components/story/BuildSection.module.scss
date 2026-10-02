@@ -1,23 +1,22 @@
 @use "../../styles" as *;
 
-.section {
+.build-section {
   @include container;
   padding-top: 110px;
 
   // Phones: less air between sections.
-  // (uneven on purpose: evens out the visible gaps between sections at 134px, like hero → idea)
   @media (max-width: #{$bp-tablet - 1px}) {
     padding-top: 100px;
   }
 }
 
-.heading {
+.build-section__heading {
   @include section-heading;
   margin-bottom: 46px;
   max-width: 24ch;
 }
 
-.layout {
+.build-section__layout {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
@@ -25,7 +24,8 @@
   align-items: stretch;
 }
 
-.mainColumn {
+.build-section__main-column {
+  margin: 0;
   flex: 1.78 1 390px;
   min-width: 0;
   display: flex;
@@ -33,7 +33,7 @@
   gap: 12px;
 }
 
-.sideColumn {
+.build-section__side-column {
   flex: 1 1 355px;
   min-width: 0;
   display: flex;
@@ -41,46 +41,48 @@
   gap: 12px;
 }
 
-.frame {
+.build-section__frame {
   @include media-frame(0.09);
 }
 
-.image {
+.build-section__image {
   @include frame-image;
 }
 
-.mainCaption {
+.build-section__main-caption {
   font-size: 12px;
   line-height: 1.6;
   color: $neutral-500;
-  max-width: 48ch;
+  // As wide as the image it describes.
+  text-wrap: pretty;
 }
 
-.details {
+.build-section__details {
   display: flex;
   flex-wrap: wrap;
   gap: 26px;
 }
 
-.detail {
+.build-section__detail {
   margin: 0;
   flex: 1 1 130px;
   min-width: 0;
 }
 
-.detailCaption {
+.build-section__detail-caption {
   margin-top: 12px;
   font-size: 12px;
   line-height: 1.6;
   color: $neutral-500;
 }
 
-.notes {
-  flex: 1;
+.build-section__notes {
+  // As tall as its content, and nothing under it: the section ends with its last content, like the others,
+  // so the gap to the next section is the standard one.
+  flex: none;
   min-width: 0;
-  // More air under the detail shots; since the card fills the column, this also makes it shorter.
+  // More air under the detail shots.
   margin-top: 28px;
-  margin-bottom: 70px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -91,19 +93,19 @@
   box-shadow: ring(0.08);
 }
 
-.notesTitle {
+.build-section__notes-title {
   @include eyebrow(0.2em);
   margin-bottom: 20px;
 }
 
-.notesList {
+.build-section__notes-list {
   margin: 0;
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
 
-.noteRow {
+.build-section__note-row {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
@@ -117,10 +119,10 @@
   }
 }
 
-.noteLabel {
+.build-section__note-label {
   color: $neutral-500;
 }
 
-.noteValue {
+.build-section__note-value {
   margin: 0;
 }

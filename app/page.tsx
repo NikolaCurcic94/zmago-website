@@ -5,10 +5,11 @@ import { DetailsSection } from "@/components/story/DetailsSection";
 import { JourneySection } from "@/components/story/JourneySection";
 import { SupportCta } from "@/components/story/SupportCta";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { MAIN_ID } from "@/content/site";
 
 export default function StoryPage() {
   return (
-    <main>
+    <main id={MAIN_ID}>
       <StoryHero />
       <IdeaSection />
       <BuildSection />

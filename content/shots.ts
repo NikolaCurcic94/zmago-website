@@ -19,6 +19,8 @@ export const SHOTS: Shot[] = [
   { image: images.headFromBehind, alt: "Head and neck seen from behind, horns and whiskers", caption: "Horns, whiskers, neck joint" },
   { image: images.aboveSide, alt: "Zmago seen from above, head to tail", caption: "From above, head to tail" },
   { image: images.frontThreeQuarter, alt: "Zmago standing, front three-quarter, tail curled up", caption: "Front three-quarter, tail raised" },
+  { image: images.aboveFromTail, alt: "Zmago seen from above and behind, wings spread, tail towards the viewer", caption: "From above, wings spread" },
+  { image: images.planView, alt: "Zmago seen from directly above, head on the left, tail on the right", caption: "Plan view, straight down" },
 ];
 
 export type GridNote = {
@@ -85,14 +87,14 @@ export const GALLERY_ROWS: GalleryRow[] = [
   },
   {
     layout: "flanked",
-    left: { index: 3, caption: "Head, face on", note: { text: LOREM_SHORT } },
-    wide: { index: 4, caption: "From above, behind the wings" },
+    left: { index: 9, caption: "From above, wings spread", note: { text: LOREM_SHORT } },
+    wide: { index: 10, caption: "Plan view, straight down" },
     right: { index: 5, caption: "Tail segments", note: { text: LOREM_SHORT } },
   },
   {
     layout: "grid",
     shots: [
-      { index: 6, caption: "Horns, whiskers, neck joint" },
+      { index: 4, caption: "From above, behind the wings" },
       { index: 7, caption: "From above, head to tail" },
       // Replace with real shots: add the image to SHOTS, then swap in { index, caption }.
       { placeholder: true, caption: "New photo" },

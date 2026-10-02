@@ -8,21 +8,21 @@ import styles from "./SupportCta.module.scss";
 
 export function SupportCta() {
   return (
-    <section className={styles.section}>
-      <div className={styles.panel} {...reveal()}>
+    <section className={styles["support-cta"]}>
+      <div className={styles["support-cta__panel"]} {...reveal()}>
         <Image
           src={images.supportMain.src}
           width={images.supportMain.width}
           height={images.supportMain.height}
           alt="Zmago facing forward, wings spread and tail raised"
-          className={styles.image}
+          className={styles["support-cta__image"]}
           sizes="(max-width: 599px) 100vw, (max-width: 1153px) 52vw, 600px"
         />
-        <div className={styles.shade} aria-hidden="true" />
-        <div className={styles.content}>
+        <div className={styles["support-cta__shade"]} aria-hidden="true" />
+        <div className={styles["support-cta__content"]}>
           <SectionKicker number="05" label="Support Zmago" />
-          <h2 className={styles.heading}>Want to see Zmago become a LEGO set? Support him on LEGO Ideas!</h2>
-          <p className={styles.body}>
+          <h2 className={styles["support-cta__heading"]}>Want to see Zmago become a LEGO set? Support him on LEGO Ideas!</h2>
+          <p className={styles["support-cta__body"]}>
             Supporting takes just a few quick steps to create a free LEGO Ideas account, then one click to support the project.
           </p>
           <ButtonLink href={IDEAS_URL} external>

@@ -7,34 +7,34 @@ import styles from "./DetailsSection.module.scss";
 
 export function DetailsSection() {
   return (
-    <section className={styles.band}>
-      <div className={styles.inner}>
+    <section className={styles["details-section"]}>
+      <div className={styles["details-section__inner"]}>
         <SectionKicker number="03" label="The Details" />
-        <div className={styles.grid}>
+        <div className={styles["details-section__grid"]}>
           <div>
-            <h2 className={styles.heading}>Every joint has a purpose.</h2>
-            <ol className={styles.features}>
+            <h2 className={styles["details-section__heading"]}>Every joint has a purpose.</h2>
+            <ol className={styles["details-section__features"]}>
               {FEATURES.map(({ title, body }, i) => (
-                <li key={title} className={styles.feature} {...reveal(i * 90)}>
-                  <span className={styles.number}>{String(i + 1).padStart(2, "0")}</span>
+                <li key={title} className={styles["details-section__feature"]} {...reveal(i * 90)}>
+                  <span className={styles["details-section__number"]}>{String(i + 1).padStart(2, "0")}</span>
                   <div>
-                    <div className={styles.featureTitle}>{title}</div>
-                    <p className={styles.featureBody}>{body}</p>
+                    <div className={styles["details-section__feature-title"]}>{title}</div>
+                    <p className={styles["details-section__feature-body"]}>{body}</p>
                   </div>
                 </li>
               ))}
             </ol>
           </div>
-          <div className={styles.media} {...reveal(150)}>
+          <div className={styles["details-section__media"]} {...reveal(150)}>
             <Image
               src={images.detailsMain.src}
               width={images.detailsMain.width}
               height={images.detailsMain.height}
               alt="Zmago from above with wings spread"
-              className={styles.image}
+              className={styles["details-section__image"]}
               sizes="(max-width: 700px) 100vw, 640px"
             />
-            <div className={styles.caption}>Wings at full span, seen from above</div>
+            <div className={styles["details-section__caption"]}>Wings at full span, seen from above</div>
           </div>
         </div>
       </div>

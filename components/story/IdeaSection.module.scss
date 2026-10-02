@@ -1,6 +1,6 @@
 @use "../../styles" as *;
 
-.section {
+.idea-section {
   @include container;
   padding-top: 110px;
 
@@ -10,20 +10,20 @@
   }
 }
 
-.grid {
+.idea-section__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 64px;
   align-items: center;
 }
 
-.heading {
+.idea-section__heading {
   @include section-heading;
   margin-bottom: 20px;
   max-width: 22ch;
 }
 
-.body {
+.idea-section__body {
   margin: 0;
   font-size: 15px;
   line-height: 1.75;
@@ -32,18 +32,18 @@
   text-wrap: pretty;
 }
 
-.frame {
+.idea-section__frame {
   @include media-frame(0.1);
   box-shadow:
     ring(0.1),
     0 30px 70px rgba(0, 0, 0, 0.55);
 }
 
-.image {
+.idea-section__image {
   @include frame-image(0 18px 34px rgba(0, 0, 0, 0.55));
 }
 
-.caption {
+.idea-section__caption {
   margin-top: 12px;
   font-size: 11px;
   letter-spacing: 0.06em;

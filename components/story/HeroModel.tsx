@@ -51,8 +51,14 @@ const SHOULDER_ROLL_DEG = 2.8;
  */
 const FINGER_LIFT_DEG = 5;
 const FINGER_PERIOD = 4.6;
-const TAIL_SWAY = 0.22;
+/**
+ * Tail: a slow wave running from the body to the tip, like a snake's — each joint follows the one before it
+ * TAIL_WAVE_LAG (radians of the cycle) later, so the tail bends in a travelling S rather than swinging as one
+ * piece. Checked for contact with the body, the wings and its own segments over the whole cycle, up to 0.35 / 0.7.
+ */
+const TAIL_SWAY = 0.24;
 const TAIL_PERIOD = 11;
+const TAIL_WAVE_LAG = 0.55;
 const JAW_REST = 0.18;
 const JAW_OPEN = 0.45;
 const JAW_PERIOD = 9;
@@ -181,8 +187,10 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
     jaws.upper?.rotation.set(upperJawAngle(jaw), 0, 0);
     if (headRig) headRig.pivot.quaternion.copy(headQuaternion(headValue, headRig, q));
     if (neck) neck.pivot.quaternion.copy(neckQuaternion(breath * NECK_BREATH, neck, q));
-    const sway = Math.sin((t / TAIL_PERIOD) * Math.PI * 2) * TAIL_SWAY;
-    tail.forEach((joint) => joint.pivot.quaternion.copy(tailJointQuaternion(sway, joint, q)));
+    const tailPhase = (t / TAIL_PERIOD) * Math.PI * 2;
+    tail.forEach((joint, k) =>
+      joint.pivot.quaternion.copy(tailJointQuaternion(Math.sin(tailPhase - k * TAIL_WAVE_LAG) * TAIL_SWAY, joint, q)),
+    );
     // Toes: a soft lift and settle per finger, each paw and each finger on its own phase.
     rig.fingers.forEach((pawFingers, p) =>
       pawFingers.forEach((finger, f) => {

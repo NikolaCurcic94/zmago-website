@@ -12,7 +12,7 @@
 }
 
 // Same look as the disclaimer gate.
-.overlay {
+.playground-intro {
   position: fixed;
   inset: 0;
   z-index: 90;
@@ -23,7 +23,7 @@
   backdrop-filter: blur(6px);
 }
 
-.dialog {
+.playground-intro__dialog {
   width: min(520px, 100%);
   // Short phone screens: the dialog scrolls instead of running off the screen.
   max-height: calc(100dvh - 32px);
@@ -41,24 +41,24 @@
   }
 }
 
-.kicker {
+.playground-intro__kicker {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 18px;
 }
 
-.kickerLine {
+.playground-intro__kicker-line {
   width: 26px;
   height: 1px;
   background: $accent;
 }
 
-.kickerText {
+.playground-intro__kicker-text {
   @include eyebrow(0.24em);
 }
 
-.title {
+.playground-intro__title {
   margin: 0 0 16px;
   font-size: 24px;
   font-weight: 500;
@@ -75,7 +75,7 @@
 }
 
 // Camera controls: Desktop and Mobile side by side, one row per action.
-.controls {
+.playground-intro__controls {
   width: 100%;
   margin: 0 0 16px;
   border-collapse: collapse;
@@ -119,7 +119,7 @@
 }
 
 // What works the same on both, under the table.
-.both {
+.playground-intro__both {
   display: grid;
   // Text lines up with the table's Desktop column (label column 56px, as in the table).
   grid-template-columns: 56px 1fr;
@@ -131,12 +131,22 @@
   color: $neutral-300;
 }
 
-.term {
+.playground-intro__term {
   @include term;
   padding-top: 3px;
 }
 
-.ok {
+// Collision note under the rules: quieter than the rules themselves.
+.playground-intro__note {
+  margin: -12px 0 24px;
+  padding-left: 56px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: $neutral-500;
+  text-wrap: pretty;
+}
+
+.playground-intro__ok {
   @include button-primary;
   padding: 11px 22px;
 }

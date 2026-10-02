@@ -1,6 +1,6 @@
 @use "../../styles" as *;
 
-.section {
+.support-cta {
   @include container;
   padding-top: 110px;
   padding-bottom: 120px;
@@ -12,7 +12,7 @@
   }
 }
 
-.panel {
+.support-cta__panel {
   position: relative;
   overflow: hidden;
   border-radius: $radius-2xl;
@@ -26,7 +26,7 @@
   }
 }
 
-.image {
+.support-cta__image {
   // Inset from the panel's right edge by the same 40px as the text on the left, and centred vertically.
   position: absolute;
   right: 40px;
@@ -51,7 +51,7 @@
   }
 }
 
-.shade {
+.support-cta__shade {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -67,7 +67,7 @@
   }
 }
 
-.content {
+.support-cta__content {
   position: relative;
   z-index: 3;
   padding: 72px 40px;
@@ -78,7 +78,7 @@
   }
 }
 
-.heading {
+.support-cta__heading {
   margin: 0 0 18px;
   font-size: clamp(26px, 3.2vw, 40px);
   font-weight: 500;
@@ -86,7 +86,7 @@
   line-height: 1.1;
 }
 
-.body {
+.support-cta__body {
   margin: 0 0 30px;
   font-size: 15px;
   line-height: 1.75;

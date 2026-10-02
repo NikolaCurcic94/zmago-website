@@ -1,6 +1,6 @@
 @use "../../styles" as *;
 
-.header {
+.site-header {
   position: sticky;
   top: 0;
   z-index: 60;
@@ -9,7 +9,7 @@
   border-bottom: 1px solid rgba($text, 0.08);
 }
 
-.inner {
+.site-header__inner {
   max-width: $max-width;
   margin: 0 auto;
   padding: 14px 20px;
@@ -26,7 +26,7 @@
   }
 }
 
-.brand {
+.site-header__brand {
   -webkit-tap-highlight-color: transparent;
   display: flex;
   align-items: center;
@@ -40,7 +40,7 @@
 }
 
 // Wordmark SVG (784×204) from tablet up, at the design's 26px height.
-.logo {
+.site-header__logo {
   display: none;
   height: 26px;
   width: auto;
@@ -51,7 +51,7 @@
 }
 
 // Round seal (no text) on phones: narrow enough for logo and tabs to share one row.
-.seal {
+.site-header__seal {
   display: block;
   width: 33px;
   height: 33px;
@@ -63,7 +63,7 @@
 
 $slide: 260ms cubic-bezier(0.25, 0.8, 0.25, 1);
 
-.nav {
+.site-header__nav {
   position: relative;
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@ $slide: 260ms cubic-bezier(0.25, 0.8, 0.25, 1);
 
 // One shared highlight that slides between tabs (placed by SiteHeader.tsx).
 // Position and width animate together, so the pill keeps its rounded shape.
-.indicator {
+.site-header__indicator {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -91,11 +91,11 @@ $slide: 260ms cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 }
 
-.nav[data-ready] .indicator {
+.site-header__nav[data-ready] .site-header__indicator {
   opacity: 1;
 }
 
-.tab {
+.site-header__tab {
   // Positioned so the label paints above the indicator.
   position: relative;
   // No grey tap box on iOS: the sliding indicator is the feedback.
@@ -121,18 +121,18 @@ $slide: 260ms cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 }
 
-.tabActive,
-.tabActive:hover {
+.site-header__tab--active,
+.site-header__tab--active:hover {
   color: $accent-400;
   // Server render / pre-hydration fallback; the indicator takes over once placed.
   background: $accent-tint;
 }
 
-.nav[data-ready] .tabActive {
+.site-header__nav[data-ready] .site-header__tab--active {
   background: transparent;
 }
 
-.glowLine {
+.site-header__glow-line {
   height: 1px;
   background: linear-gradient(to right, transparent, rgba($accent, 0.5) 20%, rgba($accent, 0.5) 80%, transparent);
   opacity: 0.5;

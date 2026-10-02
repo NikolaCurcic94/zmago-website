@@ -1,5 +1,21 @@
 export const SITE_NAME = "Zmago the Dragon";
 
+/**
+ * The site's public address, for absolute links (canonical URLs, social previews, the sitemap). Set
+ * NEXT_PUBLIC_SITE_URL to the real domain when the site goes live; on Vercel the production address is
+ * picked up on its own; locally it falls back to the dev server.
+ */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+
+/** Search-result and social-preview summary of the site (the disclaimer stays in the footer and the gate). */
+export const SITE_DESCRIPTION =
+  "Zmago the Dragon, a fan-made LEGO Ideas creation: the story of the build, a gallery of renders and a 3D model you can pose.";
+
+/** id of each page's <main>, the target of the "Skip to content" link. */
+export const MAIN_ID = "main";
+
 export const DISCLAIMER =
   "A fan-made LEGO project, not sponsored, authorized, or endorsed by The LEGO Group. LEGO is a trademark of The LEGO Group.";
 
