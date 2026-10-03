@@ -27,7 +27,7 @@ export function IdeaSection() {
             />
           </div>
           <figcaption className={styles["idea-section__caption"]}>
-            The head - first assembly, still the anchor of the build
+            The head - the first assembly, and still the anchor of the build.
           </figcaption>
         </figure>
       </div>
