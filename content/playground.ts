@@ -740,49 +740,58 @@ export const TAIL_JOINTS: readonly { parts: readonly string[]; pivot: readonly n
  * The tail is carried a little lower than built: the whole tail tilts down at the body ball by this many degrees
  * (about a horizontal line across it, see rigTail) and sways sideways in that lowered plane — never up or down.
  * Lower, it clears the wings swung back by far more; lowering alone would need 35°+ to clear them everywhere,
- * so the lower tail is still cut short there (TAIL_BASE_ENVELOPE, measured with this droop).
+ * so the Tail and Wings horizontal sliders still stop each other there (TAIL_WINGS_ENVELOPE).
  */
 export const TAIL_DROOP_DEG = 12;
 
-/** The lower tail: joints 0 … TAIL_BASE_JOINTS-1 (body ball to the 4th segment). The rest is the upper tail. */
-export const TAIL_BASE_JOINTS = 4;
-
 /**
- * How much of the lower tail's sway is left with the wings swung: [Wings horizontal, left share, right share].
- * A wing swung back sweeps past the lower tail segments (2–4), so there the lower joints turn by only this share
- * of their range; the upper tail always sways fully, so the tail still curls at its top (cutting the lower tail
- * is enough everywhere: it carries the upper tail clear too, also with the wings swung forward and raised).
- * Measured offline with the tail lowered by TAIL_DROOP_DEG, by penetration depth (> 0.3 LDU over the tail as
- * built): the whole sway, every 0.1 of the Tail
- * slider, at every 0.1 of Wings vertical the sliders allow at that swing, in steps of 0.05; then made never to
- * grow as the wings swing further out, less 0.05 wherever it is cut, and re-checked every 0.025 of Wings
- * horizontal and 0.05 of Tail between the rows. 1 = the lower tail sways fully.
+ * How far the tail may sway with the wings swung: [Wings horizontal, max left, max right], as shares of the Tail
+ * slider (1 = all the way). A wing swung back sweeps past the lower tail segments, so there the tail has less
+ * room. The Tail and Wings horizontal sliders stop each other at these limits (tailRangeForWings /
+ * wingsHorizontalRangeForTail): the tail never moves on its own when the wings swing, and the wings stop where
+ * the tail, as it is, would be in their way. The tail's rest pose is clear at every swing, so the middle never
+ * stops anything. Measured offline with the tail lowered by TAIL_DROOP_DEG and every joint at its full share,
+ * by penetration depth (> 0.3 LDU over the tail as built): the sway out from the middle every 0.05 of the Tail
+ * slider, at every 0.1 of Wings vertical the sliders allow at that swing; then made never to grow as the wings
+ * swing further out, less 0.05 wherever it is cut. Every 0.05 of Wings horizontal.
  */
-export const TAIL_BASE_ENVELOPE: readonly (readonly [number, number, number])[] = [
+export const TAIL_WINGS_ENVELOPE: readonly (readonly [number, number, number])[] = [
   [-1.0, 0.1, 0.35], [-0.95, 0.1, 0.35], [-0.9, 0.45, 0.35], [-0.85, 0.8, 0.4],
   [-0.8, 0.9, 0.4], [-0.75, 0.9, 0.4], [-0.7, 0.9, 0.45], [-0.65, 0.9, 0.5],
   [-0.6, 0.9, 0.55], [-0.55, 0.9, 0.55], [-0.5, 0.9, 0.65], [-0.45, 0.9, 0.7],
   [-0.4, 0.9, 0.75], [-0.35, 0.9, 0.8], [-0.3, 0.9, 0.85], [-0.25, 0.9, 1.0],
   [-0.2, 0.9, 1.0], [-0.15, 0.9, 1.0], [-0.1, 0.9, 1.0], [-0.05, 0.9, 1.0],
   [0.0, 1.0, 1.0], [0.05, 0.9, 1.0], [0.1, 0.9, 1.0], [0.15, 0.9, 1.0],
-  [0.2, 0.85, 1.0], [0.25, 0.85, 1.0], [0.3, 0.85, 1.0], [0.35, 0.85, 1.0],
+  [0.2, 0.9, 1.0], [0.25, 0.85, 1.0], [0.3, 0.85, 1.0], [0.35, 0.85, 1.0],
   [0.4, 0.85, 1.0], [0.45, 0.85, 1.0], [0.5, 0.85, 1.0], [0.55, 0.85, 1.0],
   [0.6, 0.85, 1.0], [0.65, 0.85, 1.0], [0.7, 0.85, 1.0], [0.75, 0.85, 1.0],
   [0.8, 0.85, 1.0], [0.85, 0.85, 1.0], [0.9, 0.85, 1.0], [0.95, 0.85, 1.0],
   [1.0, 0.85, 1.0],
 ];
 
-/** Share of the lower tail's sway left at this Wings horizontal value, to the left (tail < 0) or right; eased between rows. */
-export function tailBaseShare(wingsHorizontal: number, tail: number): number {
-  const table = TAIL_BASE_ENVELOPE;
+/** Tail slider range left at this Wings horizontal value: the tighter of the two rows around it. */
+export function tailRangeForWings(wingsHorizontal: number): { min: number; max: number } {
+  const table = TAIL_WINGS_ENVELOPE;
   const h = Math.min(1, Math.max(-1, wingsHorizontal));
-  const column = tail < 0 ? 1 : 2;
   let i = 1;
   while (i < table.length - 1 && table[i][0] < h) i++;
-  const [h0, a0] = [table[i - 1][0], table[i - 1][column]];
-  const [h1, a1] = [table[i][0], table[i][column]];
-  const t = h1 > h0 ? Math.min(1, Math.max(0, (h - h0) / (h1 - h0))) : 0;
-  return a0 + (a1 - a0) * t;
+  const [h1, l1, r1] = table[i];
+  if (h === h1) return { min: -l1, max: r1 };
+  const [h0, l0, r0] = table[i - 1];
+  if (h <= h0) return { min: -l0, max: r0 };
+  return { min: -Math.min(l0, l1), max: Math.min(r0, r1) };
+}
+
+/** Wings horizontal range the wings can swing through, from neutral, with the tail at this Tail slider value. */
+export function wingsHorizontalRangeForTail(tail: number): { back: number; forward: number } {
+  const table = TAIL_WINGS_ENVELOPE;
+  const fits = (row: readonly [number, number, number]) => (tail < 0 ? -tail <= row[1] : tail <= row[2]);
+  const zero = table.findIndex((row) => row[0] === 0);
+  let forward = 0;
+  for (let i = zero + 1; i < table.length && fits(table[i]); i++) forward = table[i][0];
+  let back = 0;
+  for (let i = zero - 1; i >= 0 && fits(table[i]); i--) back = -table[i][0];
+  return { back, forward };
 }
 
 /**

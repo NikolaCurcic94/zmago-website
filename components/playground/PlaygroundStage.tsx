@@ -7,7 +7,9 @@ import {
   JAW_ON_LOAD,
   headRangeForJaw,
   maxJawAtHead,
+  tailRangeForWings,
   wingsHorizontalRange,
+  wingsHorizontalRangeForTail,
   wingsVerticalRange,
   type Joint,
   type ModelState,
@@ -36,7 +38,8 @@ const withPaw = (values: PerPaw, index: number, value: number): PerPaw => {
 /**
  * Owns the stage and the controls. The 3D viewer handles the camera (orbit,
  * zoom, pan) and the rigged joints; the joint values live here, and the sliders
- * that limit each other (head / jaw, wings vertical / horizontal) are clamped here.
+ * that limit each other (head / jaw, wings vertical / horizontal, tail / wings horizontal) are
+ * clamped here — nothing ever moves on its own.
  */
 export function PlaygroundStage() {
   // Opens with the mouth slightly ajar (a third of the Jaw slider).
@@ -76,8 +79,17 @@ export function PlaygroundStage() {
       // Same for the wings: a raised or lowered wing has less room to swing, so each slider stops
       // where the other's position leaves no more room.
       if (joint === "wingsH") {
-        const { back, forward } = wingsHorizontalRange(m.wings);
+        // Swung back, the wings also pass the tail: they stop where the tail, as it is, would be in their way.
+        const wings = wingsHorizontalRange(m.wings);
+        const tail = wingsHorizontalRangeForTail(m.tail);
+        const back = Math.min(wings.back, tail.back);
+        const forward = Math.min(wings.forward, tail.forward);
         return { ...m, wingsH: Math.min(forward, Math.max(-back, value)) };
+      }
+      // The tail stops where the wings, as they are, leave it no more room — it never moves on its own.
+      if (joint === "tail") {
+        const { min, max } = tailRangeForWings(m.wingsH);
+        return { ...m, tail: Math.min(max, Math.max(min, value)) };
       }
       if (joint === "wings") {
         const { min, max } = wingsVerticalRange(m.wingsH);

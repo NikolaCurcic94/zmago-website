@@ -4,7 +4,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { Bounds, Center, OrbitControls, useGLTF, useProgress } from "@react-three/drei";
 import { Component, Suspense, memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { NeutralToneMapping, PerspectiveCamera, Quaternion, Vector3 } from "three";
-import { MODEL_URL, tailBaseShare } from "@/content/playground";
+import { MODEL_URL } from "@/content/playground";
 import { createValueStore, type ValueStore } from "@/lib/valueStore";
 import {
   fingerQuaternion,
@@ -252,25 +252,18 @@ function Dragon({
     return fingersStore.subscribe(apply);
   }, [fingers, fingersStore, invalidate]);
 
-  // The tail sways as one curve: every joint turns by its own share of the slider. With the wings swung, the
-  // lower tail sways only as far as clears them (tailBaseShare) — it follows the Wings horizontal slider
-  // smoothly — while the upper tail keeps its full sway.
+  // The tail sways as one curve: every joint turns by its own share of the slider. It never moves on its own:
+  // the Tail and Wings horizontal sliders stop each other where they would collide (PlaygroundStage).
   useEffect(() => {
     const orientation = new Quaternion();
     const apply = () => {
       const value = tailStore.get();
-      const share = tailBaseShare(wingsStore.get()[1], value);
-      tail.forEach((joint) => joint.pivot.quaternion.copy(tailJointQuaternion(value, joint, orientation, share)));
+      tail.forEach((joint) => joint.pivot.quaternion.copy(tailJointQuaternion(value, joint, orientation)));
       invalidate();
     };
     apply();
-    const offTail = tailStore.subscribe(apply);
-    const offWings = wingsStore.subscribe(apply);
-    return () => {
-      offTail();
-      offWings();
-    };
-  }, [tail, tailStore, wingsStore, invalidate]);
+    return tailStore.subscribe(apply);
+  }, [tail, tailStore, invalidate]);
 
   // Both wings turn at the shoulder by the same vertical / horizontal amounts (mirrored axes).
   useEffect(() => {

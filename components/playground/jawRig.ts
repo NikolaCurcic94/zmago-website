@@ -20,7 +20,6 @@ import {
   PAW_FINGERS,
   PAW_MAX_DEG,
   PAWS,
-  TAIL_BASE_JOINTS,
   TAIL_DROOP_DEG,
   TAIL_JOINTS,
   WING_RANGE_DEG,
@@ -230,10 +229,9 @@ export function fingerQuaternion(value: number, rig: FingerRig, target: Quaterni
 }
 
 /**
- * `base`: one of the lower tail's joints (TAIL_BASE_JOINTS), whose sway the wings' swing can cut short.
  * `droop`: on the first joint only, the fixed tilt that lowers the whole tail (TAIL_DROOP_DEG), in its parent's space.
  */
-export type TailJointRig = { pivot: Group; axis: Vector3; left: number; right: number; base: boolean; droop: Quaternion | null };
+export type TailJointRig = { pivot: Group; axis: Vector3; left: number; right: number; droop: Quaternion | null };
 
 /**
  * One `jnt_tail_<n>` per tail ball joint, each nested under the one before it
@@ -259,17 +257,16 @@ export function rigTail(model: Object3D): TailJointRig[] {
     const axisInParent = new Vector3(axis[0], axis[1], axis[2]).normalize().applyQuaternion(toParent);
     const droop =
       i === 0 ? new Quaternion().setFromAxisAngle(across.clone().applyQuaternion(toParent), -MathUtils.degToRad(TAIL_DROOP_DEG)) : null;
-    return { pivot, axis: axisInParent, left, right, base: i < TAIL_BASE_JOINTS, droop };
+    return { pivot, axis: axisInParent, left, right, droop };
   });
 }
 
 /**
- * One tail joint for a slider value -1 (left) … 0 … 1 (right): that joint's share of the sway. A lower-tail joint
- * turns by only `baseShare` of it (tailBaseShare: what the wings' swing leaves room for); the upper tail sways fully.
+ * One tail joint for a slider value -1 (left) … 0 … 1 (right): that joint's share of the sway.
  * The first joint also carries the droop, applied after the sway: the tail sways in the lowered plane.
  */
-export function tailJointQuaternion(value: number, rig: TailJointRig, target: Quaternion, baseShare = 1): Quaternion {
-  const v = MathUtils.clamp(value, -1, 1) * (rig.base ? baseShare : 1);
+export function tailJointQuaternion(value: number, rig: TailJointRig, target: Quaternion): Quaternion {
+  const v = MathUtils.clamp(value, -1, 1);
   target.setFromAxisAngle(rig.axis, MathUtils.degToRad(v < 0 ? v * rig.left : v * rig.right));
   return rig.droop ? target.premultiply(rig.droop) : target;
 }
