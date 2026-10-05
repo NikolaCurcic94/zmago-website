@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bounds, Center, useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { MathUtils, NeutralToneMapping, PerspectiveCamera, Quaternion, Vector3 } from "three";
-import { JAW_MIN, MODEL_URL, WINGS, headRangeForJaw, maxJawAtHead } from "@/content/playground";
+import { JAW_AS_EXPORTED, JAW_MIN, MODEL_URL, WINGS, headRangeForJaw, maxJawAtHead } from "@/content/playground";
 import {
   headQuaternion,
   lowerJawAngle,
@@ -59,7 +59,23 @@ const FINGER_PERIOD = 4.6;
 const TAIL_SWAY = 0.24;
 const TAIL_PERIOD = 11;
 const TAIL_WAVE_LAG = 0.55;
-const JAW_REST = 0.18;
+/**
+ * The hero model rests in the pose of the hero render it cross-fades from — the previous export (see
+ * EXPORT_POSE_FIXES): the tail as it was then, so neither lowered (TAIL_DROOP_DEG is the Playground's) nor
+ * re-posed. Degrees per tail joint that undo the re-pose (+ = to the dragon's right; see TAIL_JOINTS).
+ * Checked for contact at rest and through the whole wave around it, up to 0.35.
+ */
+const TAIL_RENDER_POSE_DEG = [9.036, -9.12, 0, 0, 0, 0, 0, 9.35, 0];
+/**
+ * The mouth: open as in the render when the model appears (the jaw as exported), held for JAW_HOLD seconds,
+ * then closing softly over JAW_CLOSE seconds to JAW_REST. From then on it opens a little now and then (to
+ * JAW_OPEN), the first time JAW_FIRST_OPEN seconds after it has closed.
+ */
+const JAW_RENDER = JAW_AS_EXPORTED;
+const JAW_HOLD = 3.5;
+const JAW_CLOSE = 1.6;
+const JAW_FIRST_OPEN = 4;
+const JAW_REST = 0.2;
 const JAW_OPEN = 0.45;
 const JAW_PERIOD = 9;
 /** Share of each JAW_PERIOD the mouth spends opening and closing again. */
@@ -131,7 +147,17 @@ function Ticker({ active }: { active: boolean }) {
 
 function IdleDragon({ onReady }: { onReady: () => void }) {
   const { scene } = useGLTF(MODEL_URL);
-  const rig = useMemo(() => buildZmago(scene), [scene]);
+  const rig = useMemo(() => {
+    const built = buildZmago(scene);
+    // The render's tail is not lowered: drop the Playground's droop on this (hero-only) rig.
+    for (const joint of built.tail) joint.droop = null;
+    return built;
+  }, [scene]);
+  // Each tail joint's turn into the render's pose, applied under the wave.
+  const tailRenderPose = useMemo(
+    () => rig.tail.map((joint, k) => new Quaternion().setFromAxisAngle(joint.axis, MathUtils.degToRad(TAIL_RENDER_POSE_DEG[k] ?? 0))),
+    [rig],
+  );
   useEffect(() => () => rig.materials.forEach((material) => material.dispose()), [rig]);
   const shoulders = useMemo(() => shoulderRolls(rig), [rig]);
 
@@ -167,10 +193,14 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
     const { jaws, head: headRig, neck, tail } = rig;
     const breath = Math.sin((t / BREATH_PERIOD) * Math.PI * 2);
 
-    // Jaw: a soft opening at the start of each JAW_PERIOD (eased in and out), shut to JAW_REST otherwise.
-    const phase = (t % JAW_PERIOD) / JAW_PERIOD;
+    // Jaw: open as in the render, closing softly (smoothstep) after the hold; then a soft opening at the start
+    // of each JAW_PERIOD (eased in and out), shut to JAW_REST otherwise.
+    const closing = Math.min(1, Math.max(0, (t - JAW_HOLD) / JAW_CLOSE));
+    const settled = JAW_RENDER + (JAW_REST - JAW_RENDER) * closing * closing * (3 - 2 * closing);
+    const idle = t - (JAW_HOLD + JAW_CLOSE + JAW_FIRST_OPEN);
+    const phase = idle > 0 ? (idle % JAW_PERIOD) / JAW_PERIOD : 1;
     const bump = phase < JAW_OPEN_SHARE ? Math.sin((phase / JAW_OPEN_SHARE) * Math.PI) ** 2 : 0;
-    let jaw = JAW_REST + (JAW_OPEN - JAW_REST) * bump;
+    let jaw = settled + (JAW_OPEN - JAW_REST) * bump;
 
     // Head: towards the cursor while it moves, otherwise looking around; eased, never snapping.
     const following = performance.now() / 1000 - pointer.current.movedAt < FOLLOW_HOLD;
@@ -189,7 +219,9 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
     if (neck) neck.pivot.quaternion.copy(neckQuaternion(breath * NECK_BREATH, neck, q));
     const tailPhase = (t / TAIL_PERIOD) * Math.PI * 2;
     tail.forEach((joint, k) =>
-      joint.pivot.quaternion.copy(tailJointQuaternion(Math.sin(tailPhase - k * TAIL_WAVE_LAG) * TAIL_SWAY, joint, q)),
+      joint.pivot.quaternion.copy(
+        tailJointQuaternion(Math.sin(tailPhase - k * TAIL_WAVE_LAG) * TAIL_SWAY, joint, q).multiply(tailRenderPose[k]),
+      ),
     );
     // Toes: a soft lift and settle per finger, each paw and each finger on its own phase.
     rig.fingers.forEach((pawFingers, p) =>
