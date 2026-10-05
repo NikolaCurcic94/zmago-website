@@ -736,6 +736,14 @@ export const TAIL_JOINTS: readonly { parts: readonly string[]; pivot: readonly n
   },
 ];
 
+/**
+ * The tail is carried a little lower than built: the whole tail tilts down at the body ball by this many degrees
+ * (about a horizontal line across it, see rigTail) and sways sideways in that lowered plane — never up or down.
+ * Lower, it clears the wings swung back by far more; lowering alone would need 35°+ to clear them everywhere,
+ * so the lower tail is still cut short there (TAIL_BASE_ENVELOPE, measured with this droop).
+ */
+export const TAIL_DROOP_DEG = 12;
+
 /** The lower tail: joints 0 … TAIL_BASE_JOINTS-1 (body ball to the 4th segment). The rest is the upper tail. */
 export const TAIL_BASE_JOINTS = 4;
 
@@ -744,23 +752,24 @@ export const TAIL_BASE_JOINTS = 4;
  * A wing swung back sweeps past the lower tail segments (2–4), so there the lower joints turn by only this share
  * of their range; the upper tail always sways fully, so the tail still curls at its top (cutting the lower tail
  * is enough everywhere: it carries the upper tail clear too, also with the wings swung forward and raised).
- * Measured offline by penetration depth (> 0.3 LDU over the rest pose): the whole sway, every 0.1 of the Tail
+ * Measured offline with the tail lowered by TAIL_DROOP_DEG, by penetration depth (> 0.3 LDU over the tail as
+ * built): the whole sway, every 0.1 of the Tail
  * slider, at every 0.1 of Wings vertical the sliders allow at that swing, in steps of 0.05; then made never to
  * grow as the wings swing further out, less 0.05 wherever it is cut, and re-checked every 0.025 of Wings
  * horizontal and 0.05 of Tail between the rows. 1 = the lower tail sways fully.
  */
 export const TAIL_BASE_ENVELOPE: readonly (readonly [number, number, number])[] = [
-  [-1.0, 0.2, 0.05], [-0.95, 0.2, 0.05], [-0.9, 0.45, 0.1], [-0.85, 0.65, 0.2],
-  [-0.8, 0.8, 0.2], [-0.75, 0.8, 0.2], [-0.7, 0.8, 0.3], [-0.65, 0.8, 0.35],
-  [-0.6, 0.8, 0.45], [-0.55, 0.8, 0.5], [-0.5, 0.8, 0.55], [-0.45, 0.8, 0.6],
-  [-0.4, 0.8, 0.7], [-0.35, 0.8, 0.7], [-0.3, 0.8, 0.7], [-0.25, 0.8, 0.8],
-  [-0.2, 0.8, 0.9], [-0.15, 0.8, 1.0], [-0.1, 0.8, 1.0], [-0.05, 0.8, 1.0],
-  [0.0, 0.85, 1.0], [0.05, 0.85, 1.0], [0.1, 0.85, 1.0], [0.15, 0.85, 1.0],
-  [0.2, 0.8, 1.0], [0.25, 0.75, 1.0], [0.3, 0.75, 1.0], [0.35, 0.75, 1.0],
-  [0.4, 0.75, 1.0], [0.45, 0.75, 1.0], [0.5, 0.75, 1.0], [0.55, 0.75, 1.0],
-  [0.6, 0.75, 1.0], [0.65, 0.75, 1.0], [0.7, 0.75, 1.0], [0.75, 0.75, 1.0],
-  [0.8, 0.75, 1.0], [0.85, 0.75, 1.0], [0.9, 0.75, 1.0], [0.95, 0.75, 1.0],
-  [1.0, 0.75, 1.0],
+  [-1.0, 0.1, 0.35], [-0.95, 0.1, 0.35], [-0.9, 0.45, 0.35], [-0.85, 0.8, 0.4],
+  [-0.8, 0.9, 0.4], [-0.75, 0.9, 0.4], [-0.7, 0.9, 0.45], [-0.65, 0.9, 0.5],
+  [-0.6, 0.9, 0.55], [-0.55, 0.9, 0.55], [-0.5, 0.9, 0.65], [-0.45, 0.9, 0.7],
+  [-0.4, 0.9, 0.75], [-0.35, 0.9, 0.8], [-0.3, 0.9, 0.85], [-0.25, 0.9, 1.0],
+  [-0.2, 0.9, 1.0], [-0.15, 0.9, 1.0], [-0.1, 0.9, 1.0], [-0.05, 0.9, 1.0],
+  [0.0, 1.0, 1.0], [0.05, 0.9, 1.0], [0.1, 0.9, 1.0], [0.15, 0.9, 1.0],
+  [0.2, 0.85, 1.0], [0.25, 0.85, 1.0], [0.3, 0.85, 1.0], [0.35, 0.85, 1.0],
+  [0.4, 0.85, 1.0], [0.45, 0.85, 1.0], [0.5, 0.85, 1.0], [0.55, 0.85, 1.0],
+  [0.6, 0.85, 1.0], [0.65, 0.85, 1.0], [0.7, 0.85, 1.0], [0.75, 0.85, 1.0],
+  [0.8, 0.85, 1.0], [0.85, 0.85, 1.0], [0.9, 0.85, 1.0], [0.95, 0.85, 1.0],
+  [1.0, 0.85, 1.0],
 ];
 
 /** Share of the lower tail's sway left at this Wings horizontal value, to the left (tail < 0) or right; eased between rows. */

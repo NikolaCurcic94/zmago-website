@@ -21,6 +21,7 @@ import {
   PAW_MAX_DEG,
   PAWS,
   TAIL_BASE_JOINTS,
+  TAIL_DROOP_DEG,
   TAIL_JOINTS,
   WING_RANGE_DEG,
   WING_UP_CUT_WHEN_BACK,
@@ -228,8 +229,11 @@ export function fingerQuaternion(value: number, rig: FingerRig, target: Quaterni
   return target.setFromAxisAngle(rig.axis, MathUtils.degToRad(MathUtils.clamp(value, 0, 1) * rig.maxDeg));
 }
 
-/** `base`: one of the lower tail's joints (TAIL_BASE_JOINTS), whose sway the wings' swing can cut short. */
-export type TailJointRig = { pivot: Group; axis: Vector3; left: number; right: number; base: boolean };
+/**
+ * `base`: one of the lower tail's joints (TAIL_BASE_JOINTS), whose sway the wings' swing can cut short.
+ * `droop`: on the first joint only, the fixed tilt that lowers the whole tail (TAIL_DROOP_DEG), in its parent's space.
+ */
+export type TailJointRig = { pivot: Group; axis: Vector3; left: number; right: number; base: boolean; droop: Quaternion | null };
 
 /**
  * One `jnt_tail_<n>` per tail ball joint, each nested under the one before it
@@ -244,21 +248,30 @@ export function rigTail(model: Object3D): TailJointRig[] {
     pivots.push(pivot);
   }
   for (let i = 1; i < pivots.length; i++) pivots[i - 1].attach(pivots[i]);
+  // The droop turns the tail down at the body ball about a horizontal line across it: perpendicular to where the
+  // tail runs (body ball → last joint, seen from above), so the tail lowers straight down without swinging aside.
+  const first = new Vector3(...TAIL_JOINTS[0].pivot);
+  const last = new Vector3(...TAIL_JOINTS[TAIL_JOINTS.length - 1].pivot);
+  const across = new Vector3().crossVectors(last.sub(first).setY(0).normalize(), new Vector3(0, 1, 0)).normalize();
   return pivots.map((pivot, i) => {
     const { axis, left, right } = TAIL_JOINTS[i];
     const toParent = pivot.parent!.getWorldQuaternion(new Quaternion()).invert();
     const axisInParent = new Vector3(axis[0], axis[1], axis[2]).normalize().applyQuaternion(toParent);
-    return { pivot, axis: axisInParent, left, right, base: i < TAIL_BASE_JOINTS };
+    const droop =
+      i === 0 ? new Quaternion().setFromAxisAngle(across.clone().applyQuaternion(toParent), -MathUtils.degToRad(TAIL_DROOP_DEG)) : null;
+    return { pivot, axis: axisInParent, left, right, base: i < TAIL_BASE_JOINTS, droop };
   });
 }
 
 /**
  * One tail joint for a slider value -1 (left) … 0 … 1 (right): that joint's share of the sway. A lower-tail joint
  * turns by only `baseShare` of it (tailBaseShare: what the wings' swing leaves room for); the upper tail sways fully.
+ * The first joint also carries the droop, applied after the sway: the tail sways in the lowered plane.
  */
 export function tailJointQuaternion(value: number, rig: TailJointRig, target: Quaternion, baseShare = 1): Quaternion {
   const v = MathUtils.clamp(value, -1, 1) * (rig.base ? baseShare : 1);
-  return target.setFromAxisAngle(rig.axis, MathUtils.degToRad(v < 0 ? v * rig.left : v * rig.right));
+  target.setFromAxisAngle(rig.axis, MathUtils.degToRad(v < 0 ? v * rig.left : v * rig.right));
+  return rig.droop ? target.premultiply(rig.droop) : target;
 }
 
 export type WingRig = { pivot: Group; down: Vector3; forward: Vector3 };
