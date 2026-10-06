@@ -74,7 +74,7 @@ const LOREM_SHORT =
 export const GALLERY_ROWS: GalleryRow[] = [
   {
     layout: "wide-pair",
-    wide: { index: 0, caption: "Standing, front three-quarter" },
+    wide: { index: 13, caption: "Wings spread, tail in an S" },
     pair: [
       { index: 3, caption: "Head, face on" },
       { index: 1, caption: "Eyes and open jaw" },
@@ -84,7 +84,7 @@ export const GALLERY_ROWS: GalleryRow[] = [
   {
     layout: "wide-pair",
     mirrored: true,
-    wide: { index: 8, caption: "Front three-quarter, tail raised" },
+    wide: { index: 14, caption: "Side on, head turned" },
     pair: [
       { index: 2, caption: "Head in profile" },
       { index: 6, caption: "Horns, whiskers, neck joint" },
@@ -104,8 +104,8 @@ export const GALLERY_ROWS: GalleryRow[] = [
       { index: 7, caption: "From above, head to tail" },
       { index: 11, caption: "Crouching, face on" },
       { index: 12, caption: "From behind, head raised" },
-      { index: 13, caption: "Wings spread, tail in an S" },
-      { index: 14, caption: "Side on, head turned" },
+      { index: 0, caption: "Standing, front three-quarter" },
+      { index: 8, caption: "Front three-quarter, tail raised" },
       { index: 15, caption: "Head low, wings arched" },
       { index: 16, caption: "From above, along the spine" },
       // To hold a spot for an image still to come: { placeholder: true, caption: "New photo" }.

@@ -30,7 +30,7 @@ export function DetailsSection() {
               src={images.detailsMain.src}
               width={images.detailsMain.width}
               height={images.detailsMain.height}
-              alt="Zmago from above with wings spread"
+              alt="Zmago from above, looking down the spine from the head to the tail, wings spread"
               className={styles["details-section__image"]}
               sizes="(max-width: 700px) 100vw, 640px"
             />
