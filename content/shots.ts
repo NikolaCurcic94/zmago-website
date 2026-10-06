@@ -21,6 +21,12 @@ export const SHOTS: Shot[] = [
   { image: images.frontThreeQuarter, alt: "Zmago standing, front three-quarter, tail curled up", caption: "Front three-quarter, tail raised" },
   { image: images.aboveFromTail, alt: "Zmago seen from above and behind, wings spread, tail towards the viewer", caption: "From above, wings spread" },
   { image: images.planView, alt: "Zmago seen from directly above, head on the left, tail on the right", caption: "Plan view, straight down" },
+  { image: images.crouchFaceOn, alt: "Zmago crouching, head facing the viewer, tail curling up behind", caption: "Crouching, face on" },
+  { image: images.behindHeadRaised, alt: "Zmago from behind and above, head raised, tail trailing towards the viewer", caption: "From behind, head raised" },
+  { image: images.frontTailS, alt: "Zmago from the front, wings spread, tail rising in an S-curve", caption: "Wings spread, tail in an S" },
+  { image: images.sideHeadTurned, alt: "Zmago from the side, head turned to the viewer, mouth open", caption: "Side on, head turned" },
+  { image: images.frontHeadLow, alt: "Zmago from the front, head low between the arched wings", caption: "Head low, wings arched" },
+  { image: images.aboveAlongSpine, alt: "Zmago from above, looking down the spine from the head to the tail", caption: "From above, along the spine" },
 ];
 
 export type GridNote = {
@@ -96,13 +102,13 @@ export const GALLERY_ROWS: GalleryRow[] = [
     shots: [
       { index: 4, caption: "From above, behind the wings" },
       { index: 7, caption: "From above, head to tail" },
-      // Replace with real shots: add the image to SHOTS, then swap in { index, caption }.
-      { placeholder: true, caption: "New photo" },
-      { placeholder: true, caption: "New photo" },
-      { placeholder: true, caption: "New photo" },
-      { placeholder: true, caption: "New photo" },
-      { placeholder: true, caption: "New photo" },
-      { placeholder: true, caption: "New photo" },
+      { index: 11, caption: "Crouching, face on" },
+      { index: 12, caption: "From behind, head raised" },
+      { index: 13, caption: "Wings spread, tail in an S" },
+      { index: 14, caption: "Side on, head turned" },
+      { index: 15, caption: "Head low, wings arched" },
+      { index: 16, caption: "From above, along the spine" },
+      // To hold a spot for an image still to come: { placeholder: true, caption: "New photo" }.
     ],
   },
 ];

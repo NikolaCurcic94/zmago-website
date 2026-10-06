@@ -31,4 +31,10 @@ export const images = {
   aboveSide: asset("zmago-render-final-fix-back_3", 3240, 2160),
   aboveFromTail: asset("zmago-render-final-fix-back-7", 3240, 2160),
   planView: asset("zmago-render-final-fix-back_8 (1)", 3240, 2160),
+  crouchFaceOn: asset("zmago-render-final-fix-side-3", 3240, 2160),
+  behindHeadRaised: asset("zmago-render-final-fix-side-3_2", 3240, 2160),
+  frontTailS: asset("zmago-render-final-fix-side-3_3", 3240, 2160),
+  sideHeadTurned: asset("zmago-render-final-fix-side-3_4", 3240, 2160),
+  frontHeadLow: asset("zmago-render-final-fix-side-3_5", 3240, 2160),
+  aboveAlongSpine: asset("zmago-render-final-fix-side-3_6", 3240, 2160),
 } satisfies Record<string, ImageAsset>;
