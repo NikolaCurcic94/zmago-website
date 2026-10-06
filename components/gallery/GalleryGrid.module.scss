@@ -42,8 +42,18 @@ $gap: 28px;
   }
 }
 
-// The same row mirrored on desktop: the pair and its note on the left, the wide frame on the right.
+// The same row mirrored: on desktop the pair and its note on the left, the wide frame on the right. Narrower
+// screens keep that reading order — the pair (and its note) first, the wide frame after it.
 .gallery-grid__wide-pair--mirrored {
+  grid-template-areas: "a" "b" "note" "wide";
+
+  @include from($bp-tablet) {
+    grid-template-areas:
+      "a b"
+      "note note"
+      "wide wide";
+  }
+
   @include from($bp-desktop) {
     grid-template-areas:
       "a b wide wide"

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
-import { SHOTS } from "@/content/shots";
+import { GALLERY_ORDER, SHOTS } from "@/content/shots";
 import { useModalFocus } from "@/lib/useModalFocus";
 import styles from "./Lightbox.module.scss";
 
@@ -18,10 +18,12 @@ export function Lightbox({ index, onChange, onClose }: LightboxProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const open = index !== null;
-  const count = SHOTS.length;
+  // Steps through the images in the order the gallery reads (left to right, row by row), not SHOTS order.
+  const count = GALLERY_ORDER.length;
+  const position = index === null ? -1 : GALLERY_ORDER.indexOf(index);
 
   const step = (delta: number) => {
-    if (index !== null) onChange((index + delta + count) % count);
+    if (position >= 0) onChange(GALLERY_ORDER[(position + delta + count) % count]);
   };
 
   useModalFocus(open, dialogRef, {
@@ -36,7 +38,7 @@ export function Lightbox({ index, onChange, onClose }: LightboxProps) {
   if (index === null) return null;
 
   const shot = SHOTS[index];
-  const counter = `${String(index + 1).padStart(2, "0")} / ${count}`;
+  const counter = `${String(position + 1).padStart(2, "0")} / ${count}`;
 
   return createPortal(
     <div

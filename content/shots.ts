@@ -64,6 +64,24 @@ export type GalleryRow =
     }
   | { layout: "grid"; shots: (GalleryShot | GalleryPlaceholder)[] };
 
+/**
+ * SHOTS indices in the order the gallery reads on desktop — left to right along each row, row after row
+ * (placeholders skipped). The full-screen viewer steps through them in this order, and narrow screens stack
+ * each row's frames in it too.
+ */
+export function galleryOrder(rows: readonly GalleryRow[]): number[] {
+  return rows.flatMap((row) => {
+    switch (row.layout) {
+      case "wide-pair":
+        return row.mirrored ? [row.pair[0].index, row.pair[1].index, row.wide.index] : [row.wide.index, row.pair[0].index, row.pair[1].index];
+      case "flanked":
+        return [row.left.index, row.wide.index, row.right.index];
+      case "grid":
+        return row.shots.flatMap((shot) => ("placeholder" in shot ? [] : [shot.index]));
+    }
+  });
+}
+
 // Placeholder copy until the real descriptions arrive.
 const LOREM_LONG =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, nulla gravida orci a odio.";
@@ -112,3 +130,6 @@ export const GALLERY_ROWS: GalleryRow[] = [
     ],
   },
 ];
+
+/** The viewer order: every image on the gallery page, as it reads on desktop. */
+export const GALLERY_ORDER = galleryOrder(GALLERY_ROWS);
