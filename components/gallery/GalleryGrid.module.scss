@@ -81,10 +81,11 @@ $gap: 28px;
     @include columns(4);
     row-gap: 0;
     grid-template-rows: auto 1fr auto;
+    // The notes run on beside the wide frame's caption row too: one more line of room, nothing moves.
     grid-template-areas:
       "a wide wide b"
       "na wide wide nb"
-      ". wide wide .";
+      "na wide wide nb";
   }
 }
 

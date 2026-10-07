@@ -33,8 +33,7 @@ export function BuildSection() {
             sizes="(max-width: 860px) 100vw, 820px"
           />
           <figcaption className={styles["build-section__main-caption"]}>
-            Each spine segment is built from two hinge plates, a curved slope, and a gold claw. Repeating this structure along the body creates a flexible spine that can bend and extend, allowing the dragon to take on different poses.
-          </figcaption>
+Each spine segment is built around a double joint, with a curved slope and a gold claw attached to it. The double joint allows the segment to bend and extend while also providing extra stability. Repeating the same structure along the body creates a flexible spine that can hold different poses.          </figcaption>
         </figure>
         <div className={styles["build-section__side-column"]}>
           <div className={styles["build-section__details"]}>

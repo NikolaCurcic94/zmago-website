@@ -102,8 +102,7 @@ export function PlaygroundIntro() {
           </span>
         </p>
         <p className={styles["playground-intro__note"]}>
-          Zmago moves like the real build: when a pose would make parts collide, the joint stops short - or moves a
-          little less - so no brick ever passes through another.
+          The model follows the same movement limits as the real build. If two parts would collide, the joint stops before they pass through each other.
         </p>
         <button ref={okRef} type="button" className={styles["playground-intro__ok"]} onClick={close}>
           Got it

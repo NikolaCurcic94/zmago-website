@@ -82,45 +82,57 @@ export function galleryOrder(rows: readonly GalleryRow[]): number[] {
   });
 }
 
-// Placeholder copy until the real descriptions arrive.
-const LOREM_LONG =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, nulla gravida orci a odio.";
-
-const LOREM_SHORT =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.";
 
 export const GALLERY_ROWS: GalleryRow[] = [
   {
     layout: "wide-pair",
-    wide: { index: 13, caption: "Wings spread, tail in an S" },
+    wide: { index: 1, caption: "Eyes and open jaw" },
     pair: [
       { index: 3, caption: "Head, face on" },
-      { index: 1, caption: "Eyes and open jaw" },
+      { index: 2, caption: "Head in profile" },
     ],
-    note: { lead: "Front poses", text: LOREM_LONG },
+    note: {
+      lead: "The head",
+      text: "The head is built around small details that give Zmago his character — curved horns, long whiskers, sharp teeth and a red tongue inside the opening jaw. The face is shaped with layered contours around the cheeks and eyes, while the nostrils add another small detail to the front of the head. Together, these details give the head its own shape and expression.",
+    },
   },
   {
     layout: "wide-pair",
     mirrored: true,
     wide: { index: 14, caption: "Side on, head turned" },
     pair: [
-      { index: 2, caption: "Head in profile" },
-      { index: 6, caption: "Horns, whiskers, neck joint" },
+      { index: 11, caption: "Crouching, face on" },
+      { index: 13, caption: "Wings spread, tail in an S" },
     ],
-    note: { text: LOREM_LONG },
+    note: {
+      lead: "Front poses",
+      text: "The front of Zmago can be lowered into a more crouched position by moving the wings upward and dropping the front corners of the body. The corners can be lowered to roughly a right angle against the wings, changing the way the front of the dragon sits. Combined with the movement of the head and neck, this creates a lower, more compact stance that can make Zmago look like he is sneaking or stalking forward.",
+    },
   },
   {
     layout: "flanked",
-    left: { index: 9, caption: "From above, wings spread", note: { text: LOREM_SHORT } },
+    left: {
+      index: 9,
+      caption: "From above, wings spread",
+      note: {
+        text: "Zmago’s joints are built with different types of movement depending on where they are placed. The head, wings, hands and tail use curved joints that allow them to rotate and move freely in different directions. The neck, spine and toes are built to move mainly along a single vertical plane, keeping their movement controlled and predictable.",
+      },
+    },
     wide: { index: 10, caption: "Plan view, straight down" },
-    right: { index: 5, caption: "Tail segments", note: { text: LOREM_SHORT } },
+    right: {
+      index: 5,
+      caption: "Tail segments",
+      note: {
+        text: "The goal was to find the right balance between movement and stability. Zmago has enough articulation to create different poses, while each part remains strong enough to hold its position. The joints and their range of movement keep the body flexible without becoming too loose, allowing the build to move naturally while staying stable.",
+      },
+    },
   },
   {
     layout: "grid",
     shots: [
       { index: 4, caption: "From above, behind the wings" },
       { index: 7, caption: "From above, head to tail" },
-      { index: 11, caption: "Crouching, face on" },
+      { index: 6, caption: "Horns, whiskers, neck joint" },
       { index: 12, caption: "From behind, head raised" },
       { index: 0, caption: "Standing, front three-quarter" },
       { index: 8, caption: "Front three-quarter, tail raised" },
