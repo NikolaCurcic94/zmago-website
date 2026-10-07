@@ -93,7 +93,7 @@ export const GALLERY_ROWS: GalleryRow[] = [
     ],
     note: {
       lead: "The head",
-      text: "The head is built around small details that give Zmago his character — curved horns, long whiskers, sharp teeth and a red tongue inside the opening jaw. The face is shaped with layered contours around the cheeks and eyes, while the nostrils add another small detail to the front of the head. Together, these details give the head its own shape and expression.",
+      text: "The head is built around small details that give Zmago his character - curved horns, long whiskers, sharp teeth and a red tongue inside the opening jaw. The face is shaped with layered contours around the cheeks and eyes, while the nostrils add another small detail to the front of the head. Together, these details give the head its own shape and expression.",
     },
   },
   {

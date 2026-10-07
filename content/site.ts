@@ -1,13 +1,20 @@
 export const SITE_NAME = "Zmago the Dragon";
 
 /**
- * The site's public address, for absolute links (canonical URLs, social previews, the sitemap). Set
- * NEXT_PUBLIC_SITE_URL to the real domain when the site goes live; on Vercel the production address is
- * picked up on its own; locally it falls back to the dev server.
+ * The site's primary domain. zmagothedragon.com (no www) redirects here, so every absolute link points
+ * straight at this one. (Not VERCEL_PROJECT_PRODUCTION_URL: Vercel fills that with the shortest production
+ * domain — the redirecting one.)
+ */
+export const PRODUCTION_URL = "https://www.zmagothedragon.com";
+
+/**
+ * The site's public address, for absolute links (canonical URLs, social previews, the sitemap, robots.txt):
+ * NEXT_PUBLIC_SITE_URL if it is set, otherwise the primary domain in a production build and the dev server
+ * locally.
  */
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+  (process.env.NODE_ENV === "production" ? PRODUCTION_URL : "http://localhost:3000");
 
 /** Search-result and social-preview summary of the site (the disclaimer stays in the footer and the gate). */
 export const SITE_DESCRIPTION =
