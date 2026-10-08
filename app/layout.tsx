@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { MAIN_ID, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/content/site";
-import { PREVIEW_IMAGE } from "@/lib/metadata";
+import { PREVIEW_IMAGE, ROBOTS, SITE_JSON_LD } from "@/lib/metadata";
 import { DISCLAIMER_BOOT_SCRIPT } from "@/lib/disclaimer";
 import { SITE_CONTENT_ID } from "@/lib/useModalFocus";
 import { DisclaimerProvider } from "@/components/layout/DisclaimerProvider";
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   alternates: { canonical: "/" },
+  robots: ROBOTS,
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
@@ -53,6 +54,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: DISCLAIMER_BOOT_SCRIPT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSON_LD).replace(/</g, "\\u003c") }}
+        />
       </head>
       <body>
         <DisclaimerProvider>
