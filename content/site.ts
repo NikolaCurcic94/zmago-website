@@ -39,11 +39,11 @@ export const NAV_ITEMS = [
 ] as const;
 
 export const BUILD_NOTES = [
-  { label: "Total parts", value: "575" },
+  { label: "Total parts", value: "583" },
   { label: "Length", value: "42.6 cm" },
   { label: "Width", value: "27 cm" },
   { label: "Height", value: "13.6 cm" },
-  { label: "Weight", value: "278.8 g" },
+  { label: "Weight", value: "281.4 g" },
 ];
 
 export const FEATURES = [
