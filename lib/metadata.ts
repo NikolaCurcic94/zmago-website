@@ -3,14 +3,14 @@ import { SITE_NAME } from "@/content/site";
 
 /**
  * Social preview for every page (link cards in chats and feeds): a 1200×630 JPG, the standard 1.91:1 card,
- * light enough (~60 KB) for apps that drop heavy previews. Made from zmago-render-final-fix-link-preview.png —
+ * light enough (~60 KB) for apps that drop heavy previews. Made from zmago-render-final-fix-preview-link.png —
  * the whole render scaled to the card's height, its backdrop carried out to the sides.
  */
 export const PREVIEW_IMAGE = {
   url: "/images/og-preview.jpg",
   width: 1200,
   height: 630,
-  alt: "The head of Zmago the Dragon, a LEGO model, with its jaw open",
+  alt: "Zmago the Dragon, a LEGO model, crouching face on with its jaw open, wings spread and tail curling up behind",
 };
 
 /**
