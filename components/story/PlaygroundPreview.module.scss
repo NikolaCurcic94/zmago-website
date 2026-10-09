@@ -1,0 +1,82 @@
+@use "../../styles" as *;
+
+// The kicker above everything, then the orbit video on the left and the text and button on the right
+// (stacked on narrow screens, text first).
+.playground-preview {
+  @include container;
+  padding-top: 110px;
+
+  // Phones: less air between sections (the same 100px as Details and Journey).
+  @media (max-width: #{$bp-tablet - 1px}) {
+    padding-top: 100px;
+  }
+}
+
+// Two columns from where two 320px columns and the gap fit (the width Idea's auto-fit grid splits at).
+.playground-preview__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+
+  @media (min-width: 752px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.playground-preview__heading {
+  @include section-heading;
+  margin-bottom: 20px;
+  max-width: 22ch;
+}
+
+.playground-preview__body {
+  margin: 0 0 30px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: $neutral-300;
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+// The video's own backdrop is the frame ground, so the clip sits in the frame without a seam.
+.playground-preview__frame {
+  @include media-frame(0.1);
+
+  @media (min-width: 752px) {
+    order: -1;
+  }
+
+  box-shadow:
+    ring(0.1),
+    0 30px 70px rgba(0, 0, 0, 0.55);
+}
+
+.playground-preview__video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.playground-preview__toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba($text, 0.14);
+  border-radius: 50%;
+  color: $neutral-300;
+  background: rgba($bg, 0.6);
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+}

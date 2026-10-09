@@ -14,7 +14,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 64px;
-  align-items: center;
+  align-items: start;
 }
 
 .idea-section__heading {

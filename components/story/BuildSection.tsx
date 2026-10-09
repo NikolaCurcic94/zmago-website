@@ -43,7 +43,7 @@ Each spine segment is built around a double joint, with a curved slope and a gol
                 alt="Zmago's head in profile, the horns and whiskers clipped on"
                 sizes="(max-width: 860px) 50vw, 230px"
               />
-              <figcaption className={styles["build-section__detail-caption"]}>Horns and whiskers, held in place by friction pins.</figcaption>
+              <figcaption className={styles["build-section__detail-caption"]}>Head in profile</figcaption>
             </figure>
             <figure className={styles["build-section__detail"]} {...reveal(220)}>
               <FramedImage

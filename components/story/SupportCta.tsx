@@ -20,7 +20,7 @@ export function SupportCta() {
         />
         <div className={styles["support-cta__shade"]} aria-hidden="true" />
         <div className={styles["support-cta__content"]}>
-          <SectionKicker number="05" label="Support Zmago" />
+          <SectionKicker number="06" label="Support Zmago" />
           <h2 className={styles["support-cta__heading"]}>Want to see Zmago become a LEGO set? Support him on LEGO Ideas!</h2>
           <p className={styles["support-cta__body"]}>
             Supporting takes just a few quick steps to create a free LEGO Ideas account, then one click to support the project.

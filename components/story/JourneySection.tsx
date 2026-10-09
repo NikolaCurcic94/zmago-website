@@ -6,7 +6,7 @@ import styles from "./JourneySection.module.scss";
 export function JourneySection({ supports = numberOfSupports }: { supports?: number }) {
   return (
     <section className={styles["journey"]}>
-      <SectionKicker number="04" label="The Journey" />
+      <SectionKicker number="05" label="The Journey" />
       <h2 className={styles["journey__heading"]}>10,000 supporters. Then comes the LEGO review.</h2>
       <p className={styles["journey__intro"]}>
         Once a LEGO Ideas project reaches 10,000 supporters, it goes into the official review process. The LEGO Group then evaluates the project and decides whether it could become an official LEGO set.
