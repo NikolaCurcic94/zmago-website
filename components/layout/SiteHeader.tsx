@@ -105,7 +105,7 @@ export function SiteHeader() {
         <Link href="/" className={styles["site-header__brand"]}>
           {/* Round seal on phones (keeps the header to one row), the wordmark from tablet up. */}
           <Image
-            src="/images/logo/zmago-seal-light.svg"
+            src="/images/logo/zmago-seal-violet.svg"
             width={240}
             height={240}
             alt="Zmago"
