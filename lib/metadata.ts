@@ -3,7 +3,7 @@ import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/content/site";
 
 /**
  * Social preview for every page (link cards in chats and feeds): a 1200×630 JPG, the standard 1.91:1 card,
- * light enough (~60 KB) for apps that drop heavy previews. Made from zmago-render-final-fix-preview-link_3.png —
+ * light enough (~60 KB) for apps that drop heavy previews. Made from zmago-render-preview-link_3.png —
  * the whole render scaled to the card's height, its backdrop carried out to the sides. Also offered to Google
  * as the site's image (SITE_JSON_LD); Google still picks the search-result thumbnail itself.
  */

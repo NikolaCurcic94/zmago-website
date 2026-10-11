@@ -48,12 +48,10 @@ Each spine segment is built around a double joint, with a curved slope and a gol
             <figure className={styles["build-section__detail"]} {...reveal(220)}>
               <FramedImage
                 image={images.buildDetail2}
-                alt="Segmented tail rising above the wings"
+                alt="Close-up from the side of a front leg and the wing above it, the paw's claws spread below"
                 sizes="(max-width: 860px) 50vw, 230px"
               />
-              <figcaption className={styles["build-section__detail-caption"]}>
-                The tail - the final piece to fall into place.
-              </figcaption>
+              <figcaption className={styles["build-section__detail-caption"]}>Side view, arm and wing joint</figcaption>
             </figure>
           </div>
           <div className={styles["build-section__notes"]} {...reveal(320)}>
