@@ -97,13 +97,11 @@ export function PlaygroundIntro() {
         <p className={styles["playground-intro__both"]}>
           <span className={styles["playground-intro__term"]}>Pose</span>
           <span>
-            On both: the sliders move Zmago&rsquo;s joints - the middle of each is the pose as built. Pick a paw with
-            FL, FR, RL or RR.
+            The sliders move Zmago&rsquo;s joints. The middle position is how the original build is put together. Use FL, FR, RL or RR to select a paw.
           </span>
         </p>
         <p className={styles["playground-intro__note"]}>
-          The model follows the same movement limits as the real build. If two parts would collide, the joint stops before they pass through each other.
-        </p>
+The joints have movement limits that match the real build. When two parts would collide, the joint stops them from passing through each other.        </p>
         <button ref={okRef} type="button" className={styles["playground-intro__ok"]} onClick={close}>
           Got it
         </button>
