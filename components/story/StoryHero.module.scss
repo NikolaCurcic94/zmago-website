@@ -35,6 +35,9 @@
 // The dragon's right edge lines up with the content grid (never closer to the screen edge than the gutter),
 // so on very wide screens it stays inside the layout instead of drifting off to the right.
 $hero-art-tablet: 70%;
+// The tablet layout (dragon 70% wide on the right, text pulled up to meet it) starts here; below it, as on phones,
+// the dragon spans the width above the text, so on narrow tablets it never overlaps the kicker.
+$hero-tablet-from: 700px;
 $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
 
 @mixin approach-lite {
@@ -76,7 +79,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 
   // Tablets: 70% of the width, kept to the right like on desktop.
-  @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+  @media (min-width: $hero-tablet-from) and (max-width: #{$bp-desktop - 1px}) {
     right: $gutter;
     width: $hero-art-tablet;
   }
@@ -86,19 +89,28 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 }
 
-// Desktop with the live model: the approach is over, so the render holds its final frame without the
-// animation (an animation's fill would pin its opacity), and can then fade out under the live model.
+// With the animation on: the approach is over, so the render holds its final frame without the animation
+// (an animation's fill would pin its opacity), and can then fade out under the video.
 .story-hero__dragon--settled {
   animation: none;
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 72px rgba(150, 138, 224, 0.22));
   transition: opacity 1.2s ease;
+
+  // Phones, tablets and iOS end their (lite) approach without filters; keep it that way.
+  @media (max-width: #{$bp-desktop - 1px}) {
+    filter: none;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    filter: none;
+  }
 }
 
 .story-hero__dragon--hidden {
   opacity: 0;
 }
 
-// The live 3D model (desktop only, see StoryHero.tsx): the render's exact box, cross-faded in once drawn.
+// The animation (HeroVideo): the render's exact box on every screen, cross-faded in once its first frame is drawn.
 .story-hero__live {
   position: absolute;
   right: $hero-art-right;
@@ -109,6 +121,16 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   pointer-events: none;
   opacity: 0;
   transition: opacity 1.2s ease;
+
+  @media (max-width: #{$bp-desktop - 1px}) {
+    right: 0;
+    width: 100%;
+  }
+
+  @media (min-width: $hero-tablet-from) and (max-width: #{$bp-desktop - 1px}) {
+    right: $gutter;
+    width: $hero-art-tablet;
+  }
 }
 
 .story-hero__live--ready {
@@ -149,7 +171,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
     @include approach-lite;
   }
 
-  @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+  @media (min-width: $hero-tablet-from) and (max-width: #{$bp-desktop - 1px}) {
     right: $gutter;
     width: $hero-art-tablet;
   }
@@ -181,7 +203,7 @@ $hero-art-right: max(#{$gutter}, calc((100% - #{$max-width}) / 2 + #{$gutter}));
   }
 
   // Tablets: the dragon is only 70% wide, so it is 70% as tall too — pull the text up to meet it.
-  @media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) {
+  @media (min-width: $hero-tablet-from) and (max-width: #{$bp-desktop - 1px}) {
     padding-top: calc(#{$hero-art-tablet} * 2 / 3 - 140px);
   }
 }

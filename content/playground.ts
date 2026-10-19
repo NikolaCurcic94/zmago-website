@@ -10,11 +10,11 @@ export const MODEL_URL = "/zmago-render.glb";
  */
 export const JAW_PART_NAMES = [
   // hinge clips (jaw side)
-  "63868.dat.002", "63868.dat.003",
+  "63868.dat", "63868.dat.003",
   // jaw body, top and teeth
-  "3023a.dat", "4871.dat.003", "3020.dat.009", "11203.dat.005", "3710.dat.006", "3710.dat.004",
-  "3069b.dat.014", "11477.dat.018", "11477.dat.019", "32803.dat.015", "41769.dat.001", "41770.dat",
-  "51739.dat.002", "54200.dat", "54200.dat.001", "54200.dat.002", "54200.dat.003",
+  "3023a.dat", "4871.dat.003", "3020.dat.008", "11203.dat.005", "3710.dat.005", "3710.dat.004",
+  "3069b.dat.014", "11477.dat.019", "11477.dat.018", "32803.dat.017", "41769.dat", "41770.dat",
+  "51739.dat.002", "54200.dat", "54200.dat.003", "54200.dat.002", "54200.dat.001",
   // tongue (sits on the jaw plates, so it opens with the jaw)
   "3068b.dat", "15068.dat.008",
 ] as const;
@@ -33,20 +33,22 @@ export const JAW_PIVOT: [number, number, number] = [1.5594, 2.2515, 8.6453];
  */
 export const UPPER_JAW_PART_NAMES = [
   // hinge clips (head side) and the plate the head is built on
-  "63868.dat", "63868.dat.001", "3020.dat.008",
+  "63868.dat.002", "63868.dat.001", "3020.dat.009",
   // skull, snout and brow
-  "99780.dat.002", "15571.dat", "15068.dat.006", "99206.dat", "3022.dat.013", "11477.dat.020", "11477.dat.021",
-  "33909.dat", "3623.dat.005", "3710.dat.005", "3070b.dat.010", "41770.dat.001", "41769.dat", "3069b.dat.015",
-  "3069b.dat.016", "15068.dat.007", "32828.dat", "32828.dat.001", "51739.dat.003",
+  "99780.dat.002", "15571.dat", "15068.dat.007", "99206.dat", "3022.dat.014",
+  "3623.dat.004", "3710.dat.006", "3070b.dat.010", "41770.dat.001", "41769.dat.001",
+  "3069b.dat.015", "15068.dat.009", "32828.dat", "32828.dat.001", "51739.dat.003",
   // upper teeth
-  "15070.dat", "15070.dat.001", "15070.dat.002", "15070.dat.003", "15070.dat.004", "15070.dat.005",
+  "15070.dat", "15070.dat.002", "15070.dat.001", "15070.dat.003",
   // eyes and the clips that hold eyes, whiskers and horns
   "98138p33.dat", "98138p33.dat.001", "4085c.dat", "4085c.dat.001",
-  "4081b.dat.033", "4081b.dat.034", "4081b.dat.035", "4081b.dat.036", "4081b.dat.040", "4081b.dat.041",
+  "4081b.dat.033", "4081b.dat.034", "4081b.dat.039", "4081b.dat.040", "4081b.dat.041",
   // whiskers and horns
-  "bl_1578.dat", "bl_1578.dat.001", "18395.dat", "18395.dat.001", "18950.dat", "18950.dat.001",
+  "bl_1578.dat", "bl_1578.dat.001", "18395.dat", "18395.dat.001",
   // the two clips on the front of the snout (on 51739.003) and the barbs they hold
-  "4085c.dat.002", "4085c.dat.003", "53451.dat.032", "53451.dat.033",
+  "4085c.dat.002", "4085c.dat.003", "53451.dat.030", "53451.dat.031",
+  // added in the zmago-final-potential export
+  "3023b.dat.017", "3023b.dat.018", "4081b.dat.038", "5091.dat.029", "5092.dat.029", "15068.dat.010", "18395.dat.002", "18395.dat.003",
 ] as const;
 
 /** Upper hinge axis: centre of the 60478.003/.004 handle bars (export space); the axis runs along X. */
@@ -91,7 +93,7 @@ export const JAW_ON_LOAD = 0.33;
  */
 export const HEAD_MOUNT_PART_NAMES = [
   "3730.dat", "51739.dat", "51739.dat.001", "11203.dat.004",
-  "60478.dat.001", "60478.dat.002", "60478.dat.003", "60478.dat.004",
+  "60478.dat", "60478.dat.002", "60478.dat.001", "60478.dat.003",
   "85984.dat.004", "85984.dat.005",
 ] as const;
 
@@ -527,15 +529,16 @@ export function headRangeForJaw(jaw: number): { min: number; max: number } {
  */
 export const NECK_LOWER_PART_NAMES = [
   // 1st neck vertebra (sits on the trunk)
-  "22890.dat.016", "22890.dat.017", "14418.dat.018", "14418.dat.019", "53451.dat.028", "53451.dat.029", "15068.dat.005",
-  "3023b.dat.012", "3022.dat.012", "32803.dat.014", "4081b.dat.030", "4081b.dat.031", "4081b.dat.032",
+  "22890.dat.016", "22890.dat.017", "14418.dat.018", "14418.dat.019", "53451.dat.026", "53451.dat.027", "15068.dat.005",
+  "3023b.dat.011", "3022.dat.012", "32803.dat.014", "4081b.dat.030", "4081b.dat.031", "4081b.dat.032",
   // 2nd neck vertebra (carries the head's ball, 14417.dat.007)
-  "22890.dat.018", "22890.dat.019", "14417.dat.007", "53451.dat.030", "53451.dat.031", "15068.dat.009", "3023b.dat.015",
-  "3023b.dat.016", "3022.dat.014", "32803.dat.017", "4081b.dat.037", "4081b.dat.038", "4081b.dat.039",
+  "22890.dat.018", "22890.dat.019", "14417.dat.007", "53451.dat.028", "53451.dat.029", "15068.dat.006", "3023b.dat.014",
+  "3023b.dat.015", "3022.dat.013", "32803.dat.016", "4081b.dat.035", "4081b.dat.036", "4081b.dat.037",
 ] as const;
 
 /**
- * The current export (zmago-render-final-fix) also re-posed the neck and head a little: the 1st vertebra
+ * The zmago-render-final-fix export (the pose EXPORT_RESTORE first puts the current export back into, see
+ * content/exportRestore.ts) also re-posed the neck and head a little: the 1st vertebra
  * bent 10° down on the trunk hinge and the 2nd bent 10° back up on it, the head turned 0.5° on its ball and
  * the lower jaw shut 5° on its hinge. Every head, jaw and neck limit in this file was measured on the
  * previous export, so on load (applyExportPoseFixes, before rigging) those parts are put back exactly where
@@ -568,7 +571,7 @@ export const NECK_LOWER_MAX_DEG = 50;
 
 /**
  * Neck bent UP (the other half of the Neck slider), head neutral: both vertebrae and the whole head turn
- * back about the same hinge until a spike on the neck (53451.dat.029) meets a clip on the back
+ * back about the same hinge until a spike on the neck (53451.dat.027) meets a clip on the back
  * (4081b.dat.007) at 44.7° — by penetration depth (> 0.25 LDU, both directions), jaw shut and fully open,
  * on the full-detail and the compressed geometry; less 0.5°.
  */
@@ -585,25 +588,25 @@ export const PAWS = [
     label: "Front left",
     pivot: [4.2216, 0.432, 6.6088],
     axis: [0.9862, 0, -0.1658],
-    parts: ["14704.dat.010", "26047.dat.002", "85984.dat.002", "92692.dat.002", "76116.dat.008", "76116.dat.009", "76116.dat.010", "76116.dat.011", "53451.dat.020", "53451.dat.021", "53451.dat.022", "53451.dat.023"],
+    parts: ["14704.dat.010", "26047.dat.002", "85984.dat.002", "92692.dat.002", "76116.dat.008", "76116.dat.009", "76116.dat.010", "76116.dat.011", "53451.dat.018", "53451.dat.019", "53451.dat.020", "53451.dat.021"],
   },
   {
     label: "Front right",
     pivot: [-1.2594, 0.5248, 6.7319],
     axis: [0.9937, 0, 0.1122],
-    parts: ["14704.dat.011", "26047.dat.003", "85984.dat.003", "92692.dat.003", "76116.dat.012", "76116.dat.013", "76116.dat.014", "76116.dat.015", "53451.dat.024", "53451.dat.025", "53451.dat.026", "53451.dat.027"],
+    parts: ["14704.dat.011", "26047.dat.003", "85984.dat.003", "92692.dat.003", "76116.dat.012", "76116.dat.013", "76116.dat.014", "76116.dat.015", "53451.dat.022", "53451.dat.023", "53451.dat.024", "53451.dat.025"],
   },
   {
     label: "Rear left",
     pivot: [2.4762, 0.452, 4.1056],
     axis: [0.9842, 0, -0.1773],
-    parts: ["14704.dat.008", "26047.dat", "85984.dat", "92692.dat", "76116.dat", "76116.dat.001", "76116.dat.002", "76116.dat.003", "53451.dat.012", "53451.dat.013", "53451.dat.014", "53451.dat.015"],
+    parts: ["14704.dat.008", "26047.dat", "85984.dat", "92692.dat", "76116.dat", "76116.dat.001", "76116.dat.002", "76116.dat.003", "53451.dat.010", "53451.dat.011", "53451.dat.012", "53451.dat.013"],
   },
   {
     label: "Rear right",
     pivot: [0.537, 0.4531, 4.0466],
     axis: [0.9643, 0, 0.2649],
-    parts: ["14704.dat.009", "26047.dat.001", "85984.dat.001", "92692.dat.001", "76116.dat.004", "76116.dat.005", "76116.dat.006", "76116.dat.007", "53451.dat.016", "53451.dat.017", "53451.dat.018", "53451.dat.019"],
+    parts: ["14704.dat.009", "26047.dat.001", "85984.dat.001", "92692.dat.001", "76116.dat.004", "76116.dat.005", "76116.dat.006", "76116.dat.007", "53451.dat.014", "53451.dat.015", "53451.dat.016", "53451.dat.017"],
   },
 ] as const satisfies readonly { label: string; pivot: readonly number[]; axis: readonly number[]; parts: readonly string[] }[];
 
@@ -626,31 +629,31 @@ export const PAW_MAX_DEG = 90;
 export const PAW_FINGERS: readonly (readonly { parts: readonly string[]; pivot: readonly number[]; axis: readonly number[]; maxDeg: number }[])[] = [
   // Front left
   [
-    { parts: ["76116.dat.008", "53451.dat.020"], pivot: [4.3084, 0.1875, 7.1533], axis: [0.9791, -0.0862, -0.1841], maxDeg: 125.1 },
-    { parts: ["76116.dat.009", "53451.dat.021"], pivot: [4.477, 0.1827, 7.0886], axis: [0.8563, 0.0336, -0.5153], maxDeg: 125.1 },
-    { parts: ["76116.dat.010", "53451.dat.022"], pivot: [4.1237, 0.2129, 7.1575], axis: [0.9657, -0.1941, 0.1728], maxDeg: 125.1 },
-    { parts: ["76116.dat.011", "53451.dat.023"], pivot: [3.9423, 0.255, 6.8326], axis: [0.3169, -0.3209, 0.8925], maxDeg: 126 }, // thumb
+    { parts: ["76116.dat.008", "53451.dat.018"], pivot: [4.3084, 0.1875, 7.1533], axis: [0.9791, -0.0862, -0.1841], maxDeg: 125.1 },
+    { parts: ["76116.dat.009", "53451.dat.019"], pivot: [4.477, 0.1827, 7.0886], axis: [0.8563, 0.0336, -0.5153], maxDeg: 125.1 },
+    { parts: ["76116.dat.010", "53451.dat.020"], pivot: [4.1237, 0.2129, 7.1575], axis: [0.9657, -0.1941, 0.1728], maxDeg: 125.1 },
+    { parts: ["76116.dat.011", "53451.dat.021"], pivot: [3.9423, 0.255, 6.8326], axis: [0.3169, -0.3209, 0.8925], maxDeg: 126 }, // thumb
   ],
   // Front right
   [
-    { parts: ["76116.dat.013", "53451.dat.025"], pivot: [-1.4955, 0.2792, 7.2234], axis: [0.8839, -0.0767, 0.4614], maxDeg: 125 },
-    { parts: ["76116.dat.014", "53451.dat.026"], pivot: [-1.1377, 0.2937, 7.2709], axis: [0.9607, 0.1564, -0.2292], maxDeg: 125 },
-    { parts: ["76116.dat.015", "53451.dat.027"], pivot: [-1.3232, 0.276, 7.2777], axis: [0.9913, 0.0429, 0.1248], maxDeg: 125 },
-    { parts: ["76116.dat.012", "53451.dat.024"], pivot: [-0.9751, 0.3327, 6.9368], axis: [0.2754, 0.3206, -0.9063], maxDeg: 127.6 }, // thumb
+    { parts: ["76116.dat.013", "53451.dat.023"], pivot: [-1.4955, 0.2792, 7.2234], axis: [0.8839, -0.0767, 0.4614], maxDeg: 125 },
+    { parts: ["76116.dat.014", "53451.dat.024"], pivot: [-1.1377, 0.2937, 7.2709], axis: [0.9607, 0.1564, -0.2292], maxDeg: 125 },
+    { parts: ["76116.dat.015", "53451.dat.025"], pivot: [-1.3232, 0.276, 7.2777], axis: [0.9913, 0.0429, 0.1248], maxDeg: 125 },
+    { parts: ["76116.dat.012", "53451.dat.022"], pivot: [-0.9751, 0.3327, 6.9368], axis: [0.2754, 0.3206, -0.9063], maxDeg: 127.6 }, // thumb
   ],
   // Rear left
   [
-    { parts: ["76116.dat", "53451.dat.013"], pivot: [2.4209, 0.3321, 4.6917], axis: [0.98, -0.0403, 0.1948], maxDeg: 89.4 },
-    { parts: ["76116.dat.002", "53451.dat.014"], pivot: [2.5723, 0.3293, 4.6883], axis: [0.9843, -0.0023, -0.1764], maxDeg: 89.4 },
-    { parts: ["76116.dat.003", "53451.dat.015"], pivot: [2.7327, 0.3316, 4.6344], axis: [0.8516, 0.036, -0.523], maxDeg: 89.4 },
-    { parts: ["76116.dat.001", "53451.dat.012"], pivot: [2.2219, 0.2884, 4.3754], axis: [0.4002, -0.1019, 0.9107], maxDeg: 160.7 }, // thumb
+    { parts: ["76116.dat", "53451.dat.011"], pivot: [2.4209, 0.3321, 4.6917], axis: [0.98, -0.0403, 0.1948], maxDeg: 89.4 },
+    { parts: ["76116.dat.002", "53451.dat.012"], pivot: [2.5723, 0.3293, 4.6883], axis: [0.9843, -0.0023, -0.1764], maxDeg: 89.4 },
+    { parts: ["76116.dat.003", "53451.dat.013"], pivot: [2.7327, 0.3316, 4.6344], axis: [0.8516, 0.036, -0.523], maxDeg: 89.4 },
+    { parts: ["76116.dat.001", "53451.dat.010"], pivot: [2.2219, 0.2884, 4.3754], axis: [0.4002, -0.1019, 0.9107], maxDeg: 160.7 }, // thumb
   ],
   // Rear right
   [
-    { parts: ["76116.dat.005", "53451.dat.016"], pivot: [0.5401, 0.3333, 4.6354], axis: [0.9935, 0.0387, -0.1075], maxDeg: 89.4 },
-    { parts: ["76116.dat.006", "53451.dat.017"], pivot: [0.3896, 0.3307, 4.6186], axis: [0.9649, 0.0008, 0.2625], maxDeg: 89.4 },
-    { parts: ["76116.dat.007", "53451.dat.018"], pivot: [0.2347, 0.3332, 4.5508], axis: [0.8021, -0.0372, 0.596], maxDeg: 89.4 },
-    { parts: ["76116.dat.004", "53451.dat.019"], pivot: [0.7662, 0.2891, 4.3379], axis: [0.4792, 0.1009, -0.8719], maxDeg: 160.7 }, // thumb
+    { parts: ["76116.dat.005", "53451.dat.014"], pivot: [0.5401, 0.3333, 4.6354], axis: [0.9935, 0.0387, -0.1075], maxDeg: 89.4 },
+    { parts: ["76116.dat.006", "53451.dat.015"], pivot: [0.3896, 0.3307, 4.6186], axis: [0.9649, 0.0008, 0.2625], maxDeg: 89.4 },
+    { parts: ["76116.dat.007", "53451.dat.016"], pivot: [0.2347, 0.3332, 4.5508], axis: [0.8021, -0.0372, 0.596], maxDeg: 89.4 },
+    { parts: ["76116.dat.004", "53451.dat.017"], pivot: [0.7662, 0.2891, 4.3379], axis: [0.4792, 0.1009, -0.8719], maxDeg: 160.7 }, // thumb
   ],
 ];
 
@@ -672,7 +675,7 @@ export const PAW_FINGERS: readonly (readonly { parts: readonly string[]; pivot: 
  */
 export const TAIL_JOINTS: readonly { parts: readonly string[]; pivot: readonly number[]; axis: readonly number[]; left: number; right: number }[] = [
   {
-    parts: ["14704.dat.012", "3794b.dat.008", "11477.dat.022", "3024.dat.029", "14417.dat.008"],
+    parts: ["14704.dat.012", "3794b.dat.008", "11477.dat.020", "3024.dat.029", "14417.dat.008"],
     pivot: [1.4999, 1.2066, 3.9371],
     axis: [-0.0436, 0.9667, 0.2523],
     left: 3.38, // as built: 9.04° to the left of the previous export
@@ -728,7 +731,7 @@ export const TAIL_JOINTS: readonly { parts: readonly string[]; pivot: readonly n
     right: 10.7,
   },
   {
-    parts: ["14704.dat.003", "3794b.dat.003", "11477.dat", "3024.dat.007", "2555.dat", "2555.dat.001", "3623.dat", "4596.dat", "48729b.dat", "53451.dat.008", "53451.dat.009", "60478.dat", "85861.dat", "85861.dat.001", "98141.dat", "98141.dat.001"],
+    parts: ["14704.dat.003", "3794b.dat.003", "11477.dat", "3024.dat.007", "2555.dat.001", "2555.dat", "3623.dat.005", "4596.dat", "53451.dat.034", "53451.dat.035", "85861.dat.002", "85861.dat.003", "98141.dat", "98141.dat.001", "14418.dat.020", "22484.dat"],
     pivot: [1.8711, 2.4576, 1.7407],
     axis: [-0.0436, 0.9667, 0.2522],
     left: 21.96,
@@ -814,27 +817,29 @@ export const WINGS = [
       "3710.dat", "3024.dat.014", "32803.dat.003", "4081b.dat.012", "3024.dat.010", "4081b.dat.015",
       "3024.dat.012", "5091.dat.005", "88646.dat.001", "3070b.dat.002", "5091.dat.004", "3070b.dat.005",
       "5091.dat.010", "11477.dat.008", "63864.dat.003", "65429.dat.001", "63864.dat.004", "3024.dat.015",
-      "3623.dat.001", "50305.dat", "35463.dat", "30374.dat", "4081b.dat.013", "4081b.dat.014",
-      "15209.dat.003", "5091.dat.003", "3023b.dat.002", "3020.dat", "3023b.dat", "88646.dat",
-      "32803.dat.002", "3623.dat.002", "35463.dat.001", "3022.dat.009", "15209.dat.001", "63864.dat.008",
+      "3623.dat", "50305.dat", "35463.dat", "30374.dat", "4081b.dat.013", "4081b.dat.014",
+      "15209.dat.003", "5091.dat.003", "3023b.dat.001", "3020.dat", "3023b.dat", "88646.dat",
+      "32803.dat.002", "3623.dat.001", "35463.dat.001", "3022.dat.009", "15209.dat.001", "63864.dat.008",
       "50305.dat.001", "32803.dat.005", "5091.dat", "5091.dat.002", "5091.dat.008", "63864.dat.002",
       "63864.dat.001", "5091.dat.009", "5091.dat.011", "5091.dat.012", "15209.dat.004", "65429.dat",
-      "3023b.dat.004", "4081b.dat.019", "3020.dat.002", "4081b.dat.016", "11477.dat.012", "15209.dat.007",
-      "3023b.dat.005", "88646.dat.003", "14418.dat.013", "32803.dat.006", "35463.dat.002", "3024.dat.017",
+      "3023b.dat.003", "4081b.dat.019", "3020.dat.002", "4081b.dat.016", "11477.dat.012", "15209.dat.007",
+      "3023b.dat.004", "88646.dat.003", "14418.dat.013", "32803.dat.006", "35463.dat.002", "3024.dat.017",
       "4081b.dat.018", "3020.dat.001", "3666.dat.001", "63864.dat", "15209.dat.008", "63864.dat.007",
       "32803.dat.004", "5091.dat.014", "5091.dat.015", "5091.dat.018", "63864.dat.009", "5091.dat.016",
       "5091.dat.017", "5091.dat.019", "15209.dat.009", "65429.dat.002", "30374.dat.001", "5091.dat.001",
       "3024.dat.016", "11477.dat.009", "15209.dat.002", "43723b.dat.001", "63864.dat.006", "3020.dat.003",
-      "22890.dat.012", "3023b.dat.003", "3024.dat.011", "4081b.dat.017", "5091.dat.020", "5091.dat.007",
-      "54384.dat", "3069b.dat.008", "85861.dat.002", "3022.dat.008", "3666.dat", "99780.dat",
+      "22890.dat.012", "3023b.dat.002", "3024.dat.011", "4081b.dat.017", "5091.dat.020",
+      "54384.dat", "3069b.dat.008", "85861.dat", "3022.dat.008", "3666.dat", "99780.dat",
       "2431.dat.002", "5091.dat.006", "35649.dat", "50304.dat", "54383.dat", "48205.dat", "3070b.dat.003",
-      "22890.dat.013", "3023b.dat.001", "3934.dat", "3069b.dat.009", "4162.dat", "5092.dat.006",
+      "22890.dat.013", "3934.dat", "3069b.dat.009", "4162.dat", "5092.dat.006",
       "11477.dat.010", "63864.dat.005", "88646.dat.002", "5092.dat.004", "15209.dat.006", "5092.dat.007",
       "3069b.dat.010", "11477.dat.011", "5092.dat.005", "5092.dat.002", "5092.dat.003", "5092.dat",
       "3070b.dat.004", "5092.dat.001", "15209.dat", "5091.dat.013", "43723b.dat", "15209.dat.005",
-      "3024.dat.018", "87747.dat.002", "4081b.dat.020",
+      "3024.dat.018", "4081b.dat.020",
       // the two upright plates clipped onto the front leg
       "35459.dat.002", "35459.dat.003",
+      // added in the zmago-final-potential export
+      "3023b.dat.016", "5092.dat.025", "35459.dat.006", "35459.dat.007", "87747.dat",
     ],
   },
   {
@@ -848,27 +853,29 @@ export const WINGS = [
       "3710.dat.003", "3021.dat.001", "3024.dat.027", "3024.dat.025", "4081b.dat.026", "3024.dat.019",
       "32803.dat.008", "4081b.dat.022", "88646.dat.005", "5092.dat.026", "3070b.dat.007", "3070b.dat.009",
       "63864.dat.012", "5092.dat.017", "11477.dat.015", "5092.dat.024", "65426.dat", "3024.dat.023",
-      "3623.dat.004", "63864.dat.010", "50304.dat.001", "35463.dat.005", "4081b.dat.028", "30374.dat.003",
-      "4081b.dat.025", "15209.dat.015", "5092.dat.008", "3020.dat.005", "3023b.dat.010", "88646.dat.006",
-      "3023b.dat.011", "32803.dat.010", "3024.dat.024", "3623.dat.003", "35463.dat.004", "3022.dat.010",
+      "3623.dat.003", "63864.dat.010", "50304.dat.001", "35463.dat.005", "4081b.dat.028", "30374.dat.003",
+      "4081b.dat.025", "15209.dat.015", "5092.dat.008", "3020.dat.005", "3023b.dat.009", "88646.dat.006",
+      "3023b.dat.010", "32803.dat.010", "3024.dat.024", "3623.dat.002", "35463.dat.004", "3022.dat.010",
       "63864.dat.011", "15209.dat.011", "63864.dat.014", "50304.dat.002", "32803.dat.007", "5092.dat.009",
       "5092.dat.015", "5092.dat.014", "5092.dat.011", "5092.dat.012", "15209.dat.010", "5092.dat.013",
-      "63864.dat.013", "65426.dat.001", "3020.dat.004", "3023b.dat.006", "4081b.dat.027", "4081b.dat.023",
-      "11477.dat.013", "15209.dat.014", "3020.dat.006", "3023b.dat.009", "3024.dat.022", "14418.dat.014",
+      "63864.dat.013", "65426.dat.001", "3020.dat.004", "3023b.dat.005", "4081b.dat.027", "4081b.dat.023",
+      "11477.dat.013", "15209.dat.014", "3020.dat.006", "3023b.dat.008", "3024.dat.022", "14418.dat.014",
       "88646.dat.004", "32803.dat.012", "30374.dat.002", "35463.dat.003", "63864.dat.018", "3024.dat.021",
       "4081b.dat.021", "3666.dat.002", "63864.dat.017", "15209.dat.013", "63864.dat.015", "32803.dat.009",
       "5092.dat.016", "5092.dat.023", "5092.dat.020", "5092.dat.019", "5092.dat.021", "15209.dat.012",
       "5092.dat.022", "63864.dat.016", "65426.dat.002", "5092.dat.010", "4081b.dat.024", "3024.dat.020",
       "11477.dat.014", "3020.dat.007", "22890.dat.014", "15209.dat.016", "43722b.dat", "3069b.dat.013",
-      "54383.dat.001", "5092.dat.025", "85861.dat.003", "3023b.dat.007", "5092.dat.018", "3022.dat.011",
+      "54383.dat.001", "85861.dat.001", "3023b.dat.006", "5092.dat.018", "3022.dat.011",
       "3666.dat.003", "99780.dat.001", "5092.dat.028", "2431.dat.003", "35649.dat.001", "50305.dat.002",
-      "48208.dat", "54384.dat.001", "3070b.dat.008", "22890.dat.015", "3023b.dat.008", "3933.dat.001",
+      "48208.dat", "54384.dat.001", "3070b.dat.008", "22890.dat.015", "3933.dat.001",
       "88646.dat.007", "4162.dat.001", "3069b.dat.012", "63864.dat.019", "15209.dat.019", "5091.dat.028",
       "5091.dat.027", "11477.dat.017", "5091.dat.021", "3069b.dat.011", "5091.dat.025", "5091.dat.024",
       "15209.dat.017", "11477.dat.016", "5091.dat.022", "5091.dat.023", "3070b.dat.006", "5091.dat.026",
-      "15209.dat.018", "5092.dat.027", "43722b.dat.001", "3024.dat.028", "87747.dat.003", "4081b.dat.029",
+      "15209.dat.018", "5092.dat.027", "43722b.dat.001", "3024.dat.028", "87747.dat.001", "4081b.dat.029",
       // the two upright plates clipped onto the front leg
       "35459.dat", "35459.dat.001",
+      // added in the zmago-final-potential export
+      "3023b.dat.007", "5091.dat.007", "35459.dat.004", "35459.dat.005",
     ],
   },
 ] as const satisfies readonly { label: string; pivot: readonly number[]; down: readonly number[]; forward: readonly number[]; pawIndex: number; parts: readonly string[] }[];

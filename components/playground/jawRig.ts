@@ -29,6 +29,7 @@ import {
   UPPER_JAW_AS_EXPORTED_DEG,
   UPPER_JAW_PIVOT,
 } from "@/content/playground";
+import { EXPORT_RESTORE } from "@/content/exportRestore";
 
 /**
  * Builds a pivot Group on a hinge and moves the given parts under it.
@@ -62,15 +63,18 @@ function rigPivot(
   return pivot;
 }
 
-/**
- * Puts the parts listed in EXPORT_POSE_FIXES back into the pose every limit was measured on (one rigid
- * export-space transform per group). Call first, on the untouched clone, before any rig* function.
- */
-export function applyExportPoseFixes(model: Object3D): void {
+type PoseFix = {
+  parts: readonly string[];
+  quaternion: readonly [number, number, number, number];
+  translation: readonly [number, number, number];
+};
+
+/** Moves each listed part by its group's rigid export-space transform. */
+function applyPoseFixes(model: Object3D, fixes: readonly PoseFix[]): void {
   model.updateMatrixWorld(true);
   const fix = new Matrix4();
   const local = new Matrix4();
-  for (const { parts, quaternion, translation } of EXPORT_POSE_FIXES) {
+  for (const { parts, quaternion, translation } of fixes) {
     fix.compose(new Vector3(...translation), new Quaternion(...quaternion), new Vector3(1, 1, 1));
     for (const name of parts) {
       const part = model.getObjectByName(PropertyBinding.sanitizeNodeName(name));
@@ -80,6 +84,16 @@ export function applyExportPoseFixes(model: Object3D): void {
     }
   }
   model.updateMatrixWorld(true);
+}
+
+/**
+ * Puts every part back into the pose every limit was measured on: first the current export back into the
+ * previous one's pose (EXPORT_RESTORE), then the parts listed in EXPORT_POSE_FIXES back into the one before.
+ * Call first, on the untouched clone, before any rig* function.
+ */
+export function applyExportPoseFixes(model: Object3D): void {
+  applyPoseFixes(model, EXPORT_RESTORE);
+  applyPoseFixes(model, EXPORT_POSE_FIXES);
 }
 
 /**

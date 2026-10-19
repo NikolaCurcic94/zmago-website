@@ -1,8 +1,14 @@
 "use client";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+/**
+ * Source of the hero's animation video (public/videos/hero-loop-*): the live Zmago in the hero render's view,
+ * drawn for a given moment of one seamless loop. It is not shown on the site — the hero plays the recorded
+ * video (HeroVideo) — and is rendered frame by frame offline only, whenever the model or the motion changes.
+ */
+
+import { Canvas, useThree } from "@react-three/fiber";
 import { Bounds, Center, useGLTF } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { MathUtils, NeutralToneMapping, PerspectiveCamera, Quaternion, Vector3 } from "three";
 import { JAW_AS_EXPORTED, JAW_MIN, MODEL_URL, WINGS, headRangeForJaw, maxJawAtHead } from "@/content/playground";
 import {
@@ -27,16 +33,20 @@ const FOV = 30;
 const FIT_MARGIN = 0.62;
 const SHIFT_RIGHT = 0.05;
 const SHIFT_UP = 0.07;
-/** Redraws per second while the hero is on screen; idle motion is slow, so 30 is plenty. */
-const FPS = 30;
+
+/**
+ * One loop of the idle motion, seconds. Every movement below repeats a whole number of times in it, so the
+ * video's last frame runs straight into its first.
+ */
+export const HERO_LOOP_SECONDS = 19.5;
 
 /**
  * Idle motion. The dragon stands: all four paws stay planted. Above them it breathes — the shoulders roll
- * and the neck lifts on each breath — the tail sways, the jaw opens now and then, and the head turns towards
- * the cursor (or looks around on its own while the cursor is still). Joint values are in Playground slider
- * units and stay inside the same limits; the shoulder roll was checked for contact up to 5°.
+ * and the neck lifts on each breath — the tail sways, the jaw opens now and then, and the head looks around.
+ * Joint values are in Playground slider units and stay inside the same limits; the shoulder roll was checked
+ * for contact up to 5°.
  */
-const BREATH_PERIOD = 6.5;
+const BREATH_PERIOD = HERO_LOOP_SECONDS / 3;
 const NECK_BREATH = 0.05;
 /**
  * Shoulders, degrees each way. Each front leg hangs from its wing's shoulder, so the shoulder turns about the
@@ -50,14 +60,14 @@ const SHOULDER_ROLL_DEG = 2.8;
  * stand; checked for contact up to 8°.
  */
 const FINGER_LIFT_DEG = 5;
-const FINGER_PERIOD = 4.6;
+const FINGER_PERIOD = HERO_LOOP_SECONDS / 4;
 /**
  * Tail: a slow wave running from the body to the tip, like a snake's — each joint follows the one before it
  * TAIL_WAVE_LAG (radians of the cycle) later, so the tail bends in a travelling S rather than swinging as one
  * piece. Checked for contact with the body, the wings and its own segments over the whole cycle, up to 0.35 / 0.7.
  */
 const TAIL_SWAY = 0.24;
-const TAIL_PERIOD = 11;
+const TAIL_PERIOD = HERO_LOOP_SECONDS / 2;
 const TAIL_WAVE_LAG = 0.55;
 /**
  * The hero model rests in the pose of the hero render it cross-fades from — the previous export (see
@@ -67,41 +77,51 @@ const TAIL_WAVE_LAG = 0.55;
  */
 const TAIL_RENDER_POSE_DEG = [9.036, -9.12, 0, 0, 0, 0, 0, 9.35, 0];
 /**
- * The mouth: open as in the render when the model appears (the jaw as exported), held for JAW_HOLD seconds,
- * then closing softly over JAW_CLOSE seconds to JAW_REST. From then on it opens a little now and then (to
- * JAW_OPEN), the first time JAW_FIRST_OPEN seconds after it has closed.
+ * The mouth: open as in the render at the start of the loop (the jaw as exported, so the cross-fade from the
+ * still render matches), held, then closing softly to JAW_REST; halfway through the loop it opens a little
+ * again (to JAW_OPEN). Each opening is a plateau: held for its `hold`, eased in and out over `ramp` seconds.
  */
-const JAW_RENDER = JAW_AS_EXPORTED;
-const JAW_HOLD = 3.5;
-const JAW_CLOSE = 1.6;
-const JAW_FIRST_OPEN = 4;
 const JAW_REST = 0.2;
-const JAW_OPEN = 0.45;
-const JAW_PERIOD = 9;
-/** Share of each JAW_PERIOD the mouth spends opening and closing again. */
-const JAW_OPEN_SHARE = 0.32;
-const HEAD_FOLLOW = 0.7;
-/** Looking around while the cursor is still: two slow, unrelated sways, so it never reads as a loop. */
-const HEAD_DRIFT = 0.35;
+const JAW_OPENINGS = [
+  { at: 0, peak: JAW_AS_EXPORTED, hold: 2.4, ramp: 1.6 },
+  { at: HERO_LOOP_SECONDS / 2, peak: 0.45, hold: 0.5, ramp: 1.3 },
+];
+/** Looking around: two slow sways (one and two per loop), starting from the render's straight-ahead head. */
+const HEAD_DRIFT = 0.3;
 const HEAD_DRIFT_DETAIL = 0.08;
-/** The head keeps following the cursor this long after it last moved, then drifts on its own again. */
-const FOLLOW_HOLD = 4;
+
+/** Shortest signed distance from `at` to `t` around the loop. */
+function loopOffset(t: number, at: number): number {
+  const d = (((t - at) % HERO_LOOP_SECONDS) + HERO_LOOP_SECONDS) % HERO_LOOP_SECONDS;
+  return d > HERO_LOOP_SECONDS / 2 ? d - HERO_LOOP_SECONDS : d;
+}
+
+/** 1 within `hold` around `at`, easing (smoothstep) to 0 over `ramp` either side, 0 elsewhere. */
+function plateau(t: number, at: number, hold: number, ramp: number): number {
+  const d = Math.abs(loopOffset(t, at)) - hold / 2;
+  if (d <= 0) return 1;
+  if (d >= ramp) return 0;
+  const x = 1 - d / ramp;
+  return x * x * (3 - 2 * x);
+}
 
 type HeroModelProps = {
-  /** The hero is on screen: animate. Off screen nothing is drawn at all. */
-  active: boolean;
-  /** Called once the model is in and framed (first frame drawn), so the hero can cross-fade to it. */
-  onReady: () => void;
+  /** Moment of the loop to draw, seconds (0 … HERO_LOOP_SECONDS). */
+  time: number;
+  /** Device pixel ratio of the drawing buffer (the recording renders larger than it plays, for clean edges). */
+  dpr?: number;
+  /** Called once the model is in and framed (first frame drawn). */
+  onReady?: () => void;
 };
 
-/** The hero's live Zmago: no controls, just a slow idle and a head that follows the cursor. */
-export default function HeroModel({ active, onReady }: HeroModelProps) {
+/** The hero's Zmago at one moment of its idle loop. Draws only when `time` changes. */
+export default function HeroModel({ time, dpr = 1, onReady }: HeroModelProps) {
   return (
     <Canvas
       frameloop="demand"
-      dpr={[1, 1.5]}
+      dpr={dpr}
       camera={{ fov: FOV, near: 0.1, far: 1000, position: VIEW_DIRECTION.clone().multiplyScalar(10).toArray() }}
-      gl={{ antialias: true, alpha: true, powerPreference: "low-power", }}
+      gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}
       onCreated={({ gl }) => {
         // As in the Playground: neutral tone mapping, slightly under 1 so near-white bricks keep their shading.
         gl.toneMapping = NeutralToneMapping;
@@ -114,39 +134,19 @@ export default function HeroModel({ active, onReady }: HeroModelProps) {
       <Suspense fallback={null}>
         <Bounds fit clip margin={FIT_MARGIN}>
           <Center>
-            <IdleDragon onReady={onReady} />
+            <IdleDragon time={time} onReady={onReady} />
           </Center>
         </Bounds>
         <ModelAmbientOcclusion />
       </Suspense>
-      <Ticker active={active} />
       <FramingShift />
     </Canvas>
   );
 }
 
-/** Asks for a frame FPS times a second while active (frameloop="demand": nothing renders otherwise). */
-function Ticker({ active }: { active: boolean }) {
-  const invalidate = useThree((s) => s.invalidate);
-  useEffect(() => {
-    if (!active) return;
-    let id = 0;
-    let last = 0;
-    const tick = (now: number) => {
-      if (now - last >= 1000 / FPS - 2) {
-        last = now;
-        invalidate();
-      }
-      id = requestAnimationFrame(tick);
-    };
-    id = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(id);
-  }, [active, invalidate]);
-  return null;
-}
-
-function IdleDragon({ onReady }: { onReady: () => void }) {
+function IdleDragon({ time, onReady }: { time: number; onReady?: () => void }) {
   const { scene } = useGLTF(MODEL_URL);
+  const invalidate = useThree((s) => s.invalidate);
   const rig = useMemo(() => {
     const built = buildZmago(scene);
     // The render's tail is not lowered: drop the Playground's droop on this (hero-only) rig.
@@ -160,20 +160,11 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
   );
   useEffect(() => () => rig.materials.forEach((material) => material.dispose()), [rig]);
   const shoulders = useMemo(() => shoulderRolls(rig), [rig]);
-
-  // Cursor across the window, -1 (left edge) … 1 (right edge), and when it last moved.
-  const pointer = useRef({ x: 0, movedAt: -Infinity });
-  useEffect(() => {
-    const onMove = (event: PointerEvent) => {
-      pointer.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      pointer.current.movedAt = performance.now() / 1000;
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  }, []);
+  const q = useMemo(() => new Quaternion(), []);
 
   // Ready once the model has been framed and drawn (two frames after mount).
   useEffect(() => {
+    if (!onReady) return;
     let second = 0;
     const first = requestAnimationFrame(() => (second = requestAnimationFrame(onReady)));
     return () => {
@@ -182,42 +173,27 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
     };
   }, [onReady]);
 
-  const q = useMemo(() => new Quaternion(), []);
-  const head = useRef(0);
-  const lastTime = useRef<number | null>(null);
-
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
-    const dt = lastTime.current === null ? 0 : Math.min(0.1, t - lastTime.current);
-    lastTime.current = t;
+  // Pose for `time`, then one redraw.
+  useEffect(() => {
+    const t = time;
     const { jaws, head: headRig, neck, tail } = rig;
-    const breath = Math.sin((t / BREATH_PERIOD) * Math.PI * 2);
+    const turn = (period: number) => (t / period) * Math.PI * 2;
+    const breath = Math.sin(turn(BREATH_PERIOD));
 
-    // Jaw: open as in the render, closing softly (smoothstep) after the hold; then a soft opening at the start
-    // of each JAW_PERIOD (eased in and out), shut to JAW_REST otherwise.
-    const closing = Math.min(1, Math.max(0, (t - JAW_HOLD) / JAW_CLOSE));
-    const settled = JAW_RENDER + (JAW_REST - JAW_RENDER) * closing * closing * (3 - 2 * closing);
-    const idle = t - (JAW_HOLD + JAW_CLOSE + JAW_FIRST_OPEN);
-    const phase = idle > 0 ? (idle % JAW_PERIOD) / JAW_PERIOD : 1;
-    const bump = phase < JAW_OPEN_SHARE ? Math.sin((phase / JAW_OPEN_SHARE) * Math.PI) ** 2 : 0;
-    let jaw = settled + (JAW_OPEN - JAW_REST) * bump;
+    let jaw = JAW_REST;
+    for (const { at, peak, hold, ramp } of JAW_OPENINGS) jaw += (peak - JAW_REST) * plateau(t, at, hold, ramp);
 
-    // Head: towards the cursor while it moves, otherwise looking around; eased, never snapping.
-    const following = performance.now() / 1000 - pointer.current.movedAt < FOLLOW_HOLD;
-    const target = following
-      ? pointer.current.x * HEAD_FOLLOW
-      : Math.sin(t * 0.17) * HEAD_DRIFT + Math.sin(t * 0.53 + 1.3) * HEAD_DRIFT_DETAIL;
-    head.current += (target - head.current) * (1 - Math.exp(-dt * 1.5));
-    // Same joint limits as the Playground sliders: the head stays where the open jaw clears the neck.
+    // Head: looking around; same joint limits as the Playground sliders (the open jaw clears the neck).
+    const drift = Math.sin(turn(HERO_LOOP_SECONDS)) * HEAD_DRIFT + Math.sin(turn(HERO_LOOP_SECONDS / 2)) * HEAD_DRIFT_DETAIL;
     const range = headRangeForJaw(jaw);
-    const headValue = Math.min(range.max, Math.max(range.min, head.current));
+    const headValue = Math.min(range.max, Math.max(range.min, drift));
     jaw = Math.max(JAW_MIN, Math.min(jaw, maxJawAtHead(headValue)));
 
     jaws.lower?.rotation.set(lowerJawAngle(jaw), 0, 0);
     jaws.upper?.rotation.set(upperJawAngle(jaw), 0, 0);
     if (headRig) headRig.pivot.quaternion.copy(headQuaternion(headValue, headRig, q));
     if (neck) neck.pivot.quaternion.copy(neckQuaternion(breath * NECK_BREATH, neck, q));
-    const tailPhase = (t / TAIL_PERIOD) * Math.PI * 2;
+    const tailPhase = turn(TAIL_PERIOD);
     tail.forEach((joint, k) =>
       joint.pivot.quaternion.copy(
         tailJointQuaternion(Math.sin(tailPhase - k * TAIL_WAVE_LAG) * TAIL_SWAY, joint, q).multiply(tailRenderPose[k]),
@@ -226,7 +202,7 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
     // Toes: a soft lift and settle per finger, each paw and each finger on its own phase.
     rig.fingers.forEach((pawFingers, p) =>
       pawFingers.forEach((finger, f) => {
-        const wave = 0.5 - 0.5 * Math.cos((t / FINGER_PERIOD) * Math.PI * 2 + p * 1.7 + f * 0.9);
+        const wave = 0.5 - 0.5 * Math.cos(turn(FINGER_PERIOD) + p * 1.7 + f * 0.9);
         finger.pivot.quaternion.setFromAxisAngle(finger.axis, -MathUtils.degToRad(FINGER_LIFT_DEG * wave * wave));
       }),
     );
@@ -235,7 +211,8 @@ function IdleDragon({ onReady }: { onReady: () => void }) {
       wing.quaternion.setFromAxisAngle(axis, MathUtils.degToRad(breath * SHOULDER_ROLL_DEG * side));
       paw.quaternion.copy(wing.quaternion).invert();
     }
-  });
+    invalidate();
+  }, [time, rig, tailRenderPose, shoulders, q, invalidate]);
 
   return <primitive object={rig.model} />;
 }
